@@ -1,12 +1,11 @@
-import org.jetbrains.kotlin.config.KotlinCompilerVersion
 import com.example.buildsrc.Deps
+import org.jetbrains.kotlin.config.KotlinCompilerVersion
 
 plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("android.extensions")
 }
-
 
 android {
     compileSdkVersion(29)
@@ -34,10 +33,10 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
-    lintOptions {
-        isWarningsAsErrors = true
-        isAbortOnError = true
-    }
+//    lintOptions {
+//        isWarningsAsErrors = false
+//        isAbortOnError = false
+//    }
 }
 
 dependencies {

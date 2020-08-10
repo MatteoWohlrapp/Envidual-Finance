@@ -20,10 +20,10 @@ android {
         multiDexEnabled = true
     }
 
-    lintOptions {
-        isWarningsAsErrors = true
-        isAbortOnError = true
-    }
+//    lintOptions {
+//        isWarningsAsErrors = false
+//        isAbortOnError = false
+//    }
 }
 
 kotlin {
