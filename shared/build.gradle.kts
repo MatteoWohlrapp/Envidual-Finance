@@ -110,8 +110,8 @@ kotlin {
     }
 
     cocoapodsext {
-        summary = "Common library for the KaMP starter kit"
-        homepage = "https://github.com/touchlab/KaMPKit"
+        summary = "Common library for envidual finance"
+        homepage = "https://github.com/MatteoWohlrapp/Envidual-Finance-Touchlab"
         framework {
             isStatic = false
             export(Deps.kermit)
@@ -121,7 +121,7 @@ kotlin {
 }
 
 sqldelight {
-    database("KaMPKitDb") {
-        packageName = "co.touchlab.kampkit.db"
+    database("EnvidualFinanceDatabase") {
+        packageName = "com.example.envidual.finance.touchlab.shared.db"
     }
 }
