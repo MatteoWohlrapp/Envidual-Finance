@@ -1,7 +1,7 @@
 package remote
 
-import domain.data.IntradayDataContainer
+import domain.data.CompanyData
 
 interface RemoteFinanceInterface {
-    suspend fun getIntradayData(): String
+    suspend fun getCompanyData(): CompanyData
 }

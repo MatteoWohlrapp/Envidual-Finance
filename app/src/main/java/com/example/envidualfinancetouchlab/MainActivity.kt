@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         stockDataViewModel = ViewModelProviders.of(this).get(StockDataViewModel::class.java)
-        stockDataViewModel.getIntraDay()
+        stockDataViewModel.getCompanyData()
 //        stockDataViewModel.insertStockData("APL")
 //        stockDataViewModel.insertStockData("IBM")
 //        stockDataViewModel.insertStockData("BMWY")

@@ -2,7 +2,7 @@ package remote
 
 import co.touchlab.kampkit.ktor.network
 import co.touchlab.stately.ensureNeverFrozen
-import domain.data.IntradayDataContainer
+import domain.data.CompanyData
 import io.ktor.client.HttpClient
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
@@ -39,18 +39,16 @@ class FinanceRemote : RemoteFinanceInterface{
     }
 
 
-    override suspend fun getIntradayData(): String =
+    override suspend fun getCompanyData(): CompanyData =
         network {
-            client.get<String>("https://finnhub.io/api/v1/stock/profile2?symbol=AAPL&token=bsp7bq7rh5r8ktikc24g")
-//            log.d { "Fetching Breeds from network" }
-//            client.get<IntradayDataContainer> {
-//                intraday("query?function=TIME_SERIES_INTRADAY&symbol=AAPL&interval=5min&apikey=JVCK1O23CTQ7TPQM")
-//            }
+            client.get<CompanyData> {
+                companyData("api/v1/stock/profile2?symbol=AAPL&token=bsp7bq7rh5r8ktikc24g")
+            }
         }
 
-    private fun HttpRequestBuilder.intraday(path: String) {
+    private fun HttpRequestBuilder.companyData(path: String) {
         url {
-            takeFrom("https://www.alphavantage.co/")
+            takeFrom("https://finnhub.io/")
             encodedPath = path
         }
     }

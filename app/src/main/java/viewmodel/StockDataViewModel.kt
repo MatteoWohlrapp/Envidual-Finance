@@ -10,7 +10,6 @@ import androidx.lifecycle.viewModelScope
 import co.example.envidual.finance.touchlab.db.EnvidualFinanceDatabase
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
-import domain.data.IntradayDataContainer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collect
@@ -27,9 +26,9 @@ public class StockDataViewModel(application: Application) : AndroidViewModel(app
     private var remoteFinance : RemoteFinanceInterface = FinanceRemote()
     private var db : DatabaseHelper  = DatabaseHelper(AndroidSqliteDriver(EnvidualFinanceDatabase.Schema, application.baseContext, "EnvidualFinanceDatabase"), Dispatchers.IO)
 
-    fun getIntraDay(){
+    fun getCompanyData(){
         viewModelScope.launch {
-            val data = remoteFinance.getIntradayData()
+            val data = remoteFinance.getCompanyData()
 //            stockLiveData.postValue(data)
             Log.d("Finance", data.toString())
         }
