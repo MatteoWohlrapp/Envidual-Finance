@@ -2,7 +2,7 @@ package remote
 
 import co.touchlab.kampkit.ktor.network
 import co.touchlab.stately.ensureNeverFrozen
-import domain.data.IntradayData
+import domain.data.IntradayDataContainer
 import io.ktor.client.HttpClient
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
@@ -39,11 +39,11 @@ class FinanceRemote : RemoteFinanceInterface{
     }
 
 
-    override suspend fun getIntradayData(): IntradayData =
+    override suspend fun getIntradayData(): IntradayDataContainer =
         network {
 //            log.d { "Fetching Breeds from network" }
-            client.get<IntradayData> {
-                intraday("query?function=TIME_SERIES_INTRADAY&symbol=APPL&interval=5min&apikey= JVCK1O23CTQ7TPQM")
+            client.get<IntradayDataContainer> {
+                intraday("query?function=TIME_SERIES_INTRADAY&symbol=AAPL&interval=5min&apikey=JVCK1O23CTQ7TPQM")
             }
         }
 

@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import domain.data.IntradayData
+import domain.data.IntradayDataContainer
 import kotlinx.coroutines.launch
 import remote.FinanceRemote
 import remote.RemoteFinanceInterface
