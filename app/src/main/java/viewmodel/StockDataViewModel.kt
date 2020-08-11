@@ -26,9 +26,9 @@ public class StockDataViewModel(application: Application) : AndroidViewModel(app
     private var remoteFinance : RemoteFinanceInterface = FinanceRemote()
     private var db : DatabaseHelper  = DatabaseHelper(AndroidSqliteDriver(EnvidualFinanceDatabase.Schema, application.baseContext, "EnvidualFinanceDatabase"), Dispatchers.IO)
 
-    fun getCompanyData(){
+    fun getCompanyData(symbol: String){
         viewModelScope.launch {
-            val data = remoteFinance.getCompanyData()
+            val data = remoteFinance.getCompanyData(symbol)
 //            stockLiveData.postValue(data)
             Log.d("Finance", data.toString())
         }
