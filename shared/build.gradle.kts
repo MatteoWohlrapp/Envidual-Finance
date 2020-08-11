@@ -122,6 +122,6 @@ kotlin {
 
 sqldelight {
     database("EnvidualFinanceDatabase") {
-        packageName = "com.example.envidual.finance.touchlab.shared.db"
+        packageName = "co.example.envidual.finance.touchlab.db"
     }
 }

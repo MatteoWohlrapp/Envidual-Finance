@@ -1,0 +1,23 @@
+CREATE TABLE stockdata (
+id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+symbol TEXT NOT NULL
+);
+
+selectAll:
+SELECT * FROM stockdata;
+
+selectById:
+SELECT * FROM stockdata WHERE id = ?;
+
+selectByName:
+SELECT * FROM stockdata WHERE symbol = ?;
+
+insertStock:
+INSERT OR REPLACE INTO stockdata(id, symbol)
+VALUES (?,?);
+
+deleteAll:
+DELETE FROM stockdata;
+
+-- updateFavorite:
+-- UPDATE Breed SET favorite = ? WHERE id = ?;

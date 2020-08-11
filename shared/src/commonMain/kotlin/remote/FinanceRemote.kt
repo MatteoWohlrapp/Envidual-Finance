@@ -39,12 +39,13 @@ class FinanceRemote : RemoteFinanceInterface{
     }
 
 
-    override suspend fun getIntradayData(): IntradayDataContainer =
+    override suspend fun getIntradayData(): String =
         network {
+            client.get<String>("https://finnhub.io/api/v1/stock/profile2?symbol=AAPL&token=bsp7bq7rh5r8ktikc24g")
 //            log.d { "Fetching Breeds from network" }
-            client.get<IntradayDataContainer> {
-                intraday("query?function=TIME_SERIES_INTRADAY&symbol=AAPL&interval=5min&apikey=JVCK1O23CTQ7TPQM")
-            }
+//            client.get<IntradayDataContainer> {
+//                intraday("query?function=TIME_SERIES_INTRADAY&symbol=AAPL&interval=5min&apikey=JVCK1O23CTQ7TPQM")
+//            }
         }
 
     private fun HttpRequestBuilder.intraday(path: String) {
