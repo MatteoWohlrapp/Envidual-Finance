@@ -5,9 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.example.envidual.finance.touchlab.R
 import kotlinx.coroutines.InternalCoroutinesApi
+import org.koin.core.KoinComponent
 import viewmodel.StockDataViewModel
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(){
 
     lateinit var stockDataViewModel: StockDataViewModel
 

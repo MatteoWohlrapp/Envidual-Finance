@@ -18,6 +18,3 @@ VALUES (?,?);
 
 deleteAll:
 DELETE FROM stockdata;
-
--- updateFavorite:
--- UPDATE Breed SET favorite = ? WHERE id = ?;

@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import co.example.envidual.finance.touchlab.db.EnvidualFinanceDatabase
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
+import domain.use_cases.GetCompanyUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collect
@@ -22,13 +23,11 @@ import org.koin.dsl.module
 
 public class StockDataViewModel(application: Application) : AndroidViewModel(application){
 
-//    val stockLiveData = MutableLiveData<IntradayData>()
-    private var remoteFinance : RemoteFinanceInterface = FinanceRemote()
-    private var db : DatabaseHelper  = DatabaseHelper(AndroidSqliteDriver(EnvidualFinanceDatabase.Schema, application.baseContext, "EnvidualFinanceDatabase"), Dispatchers.IO)
+    val companyUseCase = GetCompanyUseCase()
 
     fun getCompanyData(symbol: String){
         viewModelScope.launch {
-            val data = remoteFinance.getCompanyData(symbol)
+            val data = companyUseCase.getCompany(symbol)
 //            stockLiveData.postValue(data)
             Log.d("Finance", data.toString())
         }
@@ -36,14 +35,14 @@ public class StockDataViewModel(application: Application) : AndroidViewModel(app
 
     fun insertStockData(symbol: String){
         viewModelScope.launch {
-            db.insertStockData(listOf(symbol))
+//            db.insertStockData(listOf(symbol))
         }
     }
 
 
     fun getStockData() {
         viewModelScope.launch {
-            db.selectAllItems().collect { value -> Log.d("Finance", value.toString()) }
+//            db.selectAllItems().collect { value -> Log.d("Finance", value.toString()) }
         }
     }
 
