@@ -20,5 +20,3 @@ class GetCompanyUseCase : KoinComponent {
         return remoteFinance.getCompanyData(symbol)
     }
 }
-
-internal expect fun getSqlDriver() : SqlDriver
