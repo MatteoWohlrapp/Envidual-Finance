@@ -22,10 +22,10 @@ class DatabaseHelper(
             .mapToList()
             .flowOn(backgroundDispatcher)
 
-    suspend fun insertStockData(symbols: List<String>) {
+    suspend fun insertStockData(tickers: List<String>) {
         dbRef.transactionWithContext(backgroundDispatcher) {
-            symbols.forEach { symbol ->
-                dbRef.tableQueries.insertStock(null, symbol)
+            tickers.forEach { ticker ->
+                dbRef.tableQueries.insertStock(null, ticker)
             }
         }
     }

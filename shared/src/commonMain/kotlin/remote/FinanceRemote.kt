@@ -39,11 +39,11 @@ class FinanceRemote : RemoteFinanceInterface{
     }
 
 
-    override suspend fun getCompanyData(symbol: String): CompanyData =
+    override suspend fun getCompanyData(ticker: String): CompanyData =
         network {
             try {
                 client.get<CompanyData> {
-                    companyData("api/v1/stock/profile2?symbol=$symbol&token=bsp7bq7rh5r8ktikc24g")
+                    companyData("api/v1/stock/profile2?symbol=$ticker&token=bsp7bq7rh5r8ktikc24g")
                 }
             } catch(e: kotlinx.serialization.MissingFieldException){
                 return@network CompanyData()

@@ -12,15 +12,15 @@ import org.koin.core.parameter.parametersOf
 import sql.DatabaseHelper
 
 
-class GetCompanyBySymbolUseCase : KoinComponent {
+class GetCompanyByTickerUseCase : KoinComponent {
 
     private val remoteFinance : RemoteFinanceInterface by inject()
     private val dbHelper : DatabaseHelper by inject()
 
-    suspend fun getCompany(symbol: String) : CompanyData {
+    suspend fun getCompany(ticker: String) : CompanyData {
         println("Before Database search")
 
-//        dbHelper.selectByName(symbol).collect {
+//        dbHelper.selectByName(ticker).collect {
 //            println(it.toString())
 //        }
 //        println("Before Database select")
@@ -28,7 +28,7 @@ class GetCompanyBySymbolUseCase : KoinComponent {
 //            println(it.toString())
 //        }
         println("After Database select")
-        val data = remoteFinance.getCompanyData(symbol)
+        val data = remoteFinance.getCompanyData(ticker)
         println(data.toString())
         return data
     }

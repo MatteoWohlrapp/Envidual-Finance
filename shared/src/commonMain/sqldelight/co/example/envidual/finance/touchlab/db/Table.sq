@@ -1,6 +1,6 @@
 CREATE TABLE stockdata (
 id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-symbol TEXT NOT NULL
+ticker TEXT NOT NULL
 );
 
 selectAll:
@@ -10,10 +10,10 @@ selectById:
 SELECT * FROM stockdata WHERE id = ?;
 
 selectByName:
-SELECT * FROM stockdata WHERE symbol = ?;
+SELECT * FROM stockdata WHERE ticker = ?;
 
 insertStock:
-INSERT OR REPLACE INTO stockdata(id, symbol)
+INSERT OR REPLACE INTO stockdata(id, ticker)
 VALUES (?,?);
 
 deleteAll:
