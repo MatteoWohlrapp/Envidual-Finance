@@ -23,7 +23,9 @@ class NativeViewModel(
 
     private fun getCompanyByTicker(ticker:String) {
         scope.launch {
-            getCompanyByTickerUseCase.getCompany(ticker)
+            val companyData = getCompanyByTickerUseCase.getCompany(ticker)
+            viewUpdate(companyData)
+
         }
     }
 
