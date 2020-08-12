@@ -1,5 +1,6 @@
 package koin
 
+import android.content.Context
 import co.example.envidual.finance.touchlab.db.EnvidualFinanceDatabase
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
@@ -10,7 +11,7 @@ actual val platformModule: Module = module {
     single<SqlDriver> {
         AndroidSqliteDriver(
             EnvidualFinanceDatabase.Schema,
-            get(),
+            get<Context>(),
             "EnvidualFinanceDatabase"
         )
     }

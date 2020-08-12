@@ -24,8 +24,6 @@ fun initKoinIos(
 ): KoinApplication = initKoin(
     module {
         single<Settings> { AppleSettings(userDefaults) }
-        single { appInfo }
-        single { doOnStartup }
     }
 )
 

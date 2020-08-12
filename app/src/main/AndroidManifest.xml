@@ -12,6 +12,7 @@
         android:theme="@style/AppTheme"
         android:name="com.example.envidualfinancetouchlab.MainApp">
 
+
         <activity android:name="com.example.envidualfinancetouchlab.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
