@@ -8,6 +8,7 @@ import domain.data.CompanyData
 import domain.use_cases.GetCompanyByTickerUseCase
 import kotlinx.coroutines.launch
 import java.util.*
+import kotlin.coroutines.suspendCoroutine
 
 public class CompanyDataViewModel() : ViewModel(){
 
@@ -23,4 +24,6 @@ public class CompanyDataViewModel() : ViewModel(){
             companyDataList.postValue(listOfCompanies)
         }
     }
+
+
 }
