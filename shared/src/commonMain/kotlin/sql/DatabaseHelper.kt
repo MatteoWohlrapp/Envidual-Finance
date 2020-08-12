@@ -37,6 +37,13 @@ class DatabaseHelper(
             .mapToList()
             .flowOn(backgroundDispatcher)
 
+    suspend fun selectByName(name: String): Flow<List<Stockdata>> =
+        dbRef.tableQueries
+            .selectByName(name)
+            .asFlow()
+            .mapToList()
+            .flowOn(backgroundDispatcher)
+
     suspend fun deleteAll() {
         dbRef.transactionWithContext(backgroundDispatcher) {
             dbRef.tableQueries.deleteAll()

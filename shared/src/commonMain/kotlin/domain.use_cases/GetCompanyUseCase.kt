@@ -17,8 +17,11 @@ class GetCompanyUseCase : KoinComponent {
     private val remoteFinance : RemoteFinanceInterface by inject()
     private val dbHelper : DatabaseHelper by inject()
 
-    suspend fun getCompany(symbol: String) : CompanyData{
-        dbHelper.insertStockData(listOf("APL"))
+    suspend fun getCompany(symbol: String) : CompanyData {
+        dbHelper.selectByName(symbol).collect { if(it.isEmpty()) {
+            dbHelper.insertStockData(listOf(symbol))
+            }
+        }
         dbHelper.selectAllItems().collect{
             println(it.toString())
         }
