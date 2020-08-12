@@ -22,16 +22,16 @@ class FinanceRemote : RemoteFinanceInterface{
         install(JsonFeature) {
             serializer = KotlinxSerializer(Json(JsonConfiguration(ignoreUnknownKeys = true)))
         }
-        install(Logging) {
-            logger = object : Logger {
-                override fun log(message: String) {
-//                    log("").v("Network") { message }
-//                    log("")
-                }
-            }
-
-            level = LogLevel.INFO
-        }
+//        install(Logging) {
+//            logger = object : Logger {
+//                override fun log(message: String) {
+////                    log("").v("Network") { message }
+////                    log("")
+//                }
+//            }
+//
+//            level = LogLevel.INFO
+//        }
     }
 
     init {

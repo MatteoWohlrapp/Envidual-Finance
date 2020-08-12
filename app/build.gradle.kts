@@ -37,6 +37,9 @@ android {
 //        isWarningsAsErrors = false
 //        isAbortOnError = false
 //    }
+    viewBinding{
+        isEnabled = true
+    }
 }
 
 dependencies {

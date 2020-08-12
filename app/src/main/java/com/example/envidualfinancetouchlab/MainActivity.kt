@@ -4,24 +4,40 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.example.envidual.finance.touchlab.R
-import kotlinx.coroutines.InternalCoroutinesApi
-import org.koin.core.KoinComponent
-import viewmodel.StockDataViewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import fragments.ExploreFragment
+import fragments.SearchFragment
+import kotlinx.android.synthetic.main.activity_main.*
+import viewmodel.CompanyDataViewModel
 
 class MainActivity : AppCompatActivity(){
 
-    lateinit var stockDataViewModel: StockDataViewModel
-
+    lateinit var bottomNavigation: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        stockDataViewModel = ViewModelProviders.of(this).get(StockDataViewModel::class.java)
-        stockDataViewModel.getCompanyData("IBM")
-//        stockDataViewModel.insertStockData("APL")
-//        stockDataViewModel.insertStockData("IBM")
-//        stockDataViewModel.insertStockData("BMWY")
-//        stockDataViewModel.insertStockData("MAX")
-        stockDataViewModel.getStockData()
+
+        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, ExploreFragment()).commit()
+
+        bottomNavigation = findViewById(R.id.bottomNavigationView)
+        setupBottomNavigation()
+    }
+
+
+    private fun setupBottomNavigation(){
+        bottomNavigation.setOnNavigationItemSelectedListener { item ->
+
+            when(item.itemId){
+                R.id.search -> supportFragmentManager.beginTransaction().replace(R.id.fragment_container,
+                    SearchFragment()
+                ).commit()
+                else -> supportFragmentManager.beginTransaction().replace(R.id.fragment_container,
+                    ExploreFragment()
+                ).commit()
+            }
+
+            return@setOnNavigationItemSelectedListener true
+        }
     }
 }
