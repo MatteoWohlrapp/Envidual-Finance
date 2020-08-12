@@ -18,26 +18,9 @@ public class CompanyDataViewModel() : ViewModel(){
     fun getCompanyData(symbol: String){
         viewModelScope.launch {
             val data = companyBySymbolUseCase.getCompany(symbol)
-//            stockLiveData.postValue(data)
+            Log.d("Finance", data.toString())
             listOfCompanies.add(data)
             companyDataList.postValue(listOfCompanies)
-            Log.d("Finance", data.toString())
         }
     }
-
-    fun insertStockData(symbol: String){
-        viewModelScope.launch {
-//            db.insertStockData(listOf(symbol))
-        }
-    }
-
-
-    fun getStockData() {
-        viewModelScope.launch {
-//            db.selectAllItems().collect { value -> Log.d("Finance", value.toString()) }
-        }
-    }
-
-
-
 }

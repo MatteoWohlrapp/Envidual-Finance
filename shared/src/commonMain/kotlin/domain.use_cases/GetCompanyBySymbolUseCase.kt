@@ -20,13 +20,13 @@ class GetCompanyBySymbolUseCase : KoinComponent {
     suspend fun getCompany(symbol: String) : CompanyData {
         println("Before Database search")
 
-        dbHelper.selectByName(symbol).collect {
-            println(it.toString())
-        }
-        println("Before Database select")
-        dbHelper.selectAllItems().collect{
-            println(it.toString())
-        }
+//        dbHelper.selectByName(symbol).collect {
+//            println(it.toString())
+//        }
+//        println("Before Database select")
+//        dbHelper.selectAllItems().collect{
+//            println(it.toString())
+//        }
         println("After Database select")
         val data = remoteFinance.getCompanyData(symbol)
         println(data.toString())

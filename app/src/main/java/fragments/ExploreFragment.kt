@@ -27,6 +27,7 @@ class ExploreFragment : Fragment(){
         super.onCreate(savedInstanceState)
 
         companyDataViewModel.getCompanyData("IBM")
+        companyDataViewModel.getCompanyData("AAPL")
     }
 
 
@@ -43,7 +44,8 @@ class ExploreFragment : Fragment(){
 
         companyAdapter= CompanyAdapter()
 
-        companyDataViewModel.companyDataList.observe(viewLifecycleOwner, Observer { companyAdapter.submitList(it) })
+        companyDataViewModel.companyDataList.observe(viewLifecycleOwner, Observer { companyAdapter.submitList(it)
+        })
 
         explore_company_data.apply {
             layoutManager = LinearLayoutManager(context)
