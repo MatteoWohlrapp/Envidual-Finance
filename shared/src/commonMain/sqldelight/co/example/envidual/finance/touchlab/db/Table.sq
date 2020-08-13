@@ -1,3 +1,4 @@
+import io.ktor.util.date.GMTDate;
 import java.util.Date;
 
 CREATE TABLE explorecompanydata (
@@ -8,8 +9,7 @@ ipo TEXT NOT NULL,
 logo TEXT NOT NULL,
 marketCapitalization REAL AS Float,
 name TEXT NOT NULL,
-ticker TEXT NOT NULL,
-date TEXT AS Date NOT NULL
+ticker TEXT NOT NULL
 );
 
 selectAll:
@@ -26,8 +26,8 @@ SELECT * FROM explorecompanydata WHERE finnhubIndustry = ?;
 
 
 insertStock:
-INSERT OR REPLACE INTO explorecompanydata(id, country, finnhubIndustry, ipo, logo, marketCapitalization, name, ticker, date)
-VALUES (?,?,?,?,?,?,?,?,?);
+INSERT OR REPLACE INTO explorecompanydata(id, country, finnhubIndustry, ipo, logo, marketCapitalization, name, ticker)
+VALUES (?,?,?,?,?,?,?,?);
 
 deleteAll:
 DELETE FROM explorecompanydata;
