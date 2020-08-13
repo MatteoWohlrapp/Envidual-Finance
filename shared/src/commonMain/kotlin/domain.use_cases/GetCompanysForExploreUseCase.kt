@@ -4,7 +4,6 @@ import domain.data.CompanyData
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import remote.RemoteFinanceInterface
-import sql.DatabaseHelper
 
 class GetCompanysForExploreUseCase : KoinComponent {
 

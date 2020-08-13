@@ -8,7 +8,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 
-class DatabaseHelper(
+class ExploreDatabaseHelper(
     sqlDriver: SqlDriver,
     private val backgroundDispatcher: CoroutineDispatcher
 ) {

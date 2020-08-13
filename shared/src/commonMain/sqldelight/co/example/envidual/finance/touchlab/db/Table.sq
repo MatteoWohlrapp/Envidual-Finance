@@ -1,20 +1,42 @@
-CREATE TABLE stockdata (
+import java.util.Date;
+
+CREATE TABLE explorecompanydata (
 id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-ticker TEXT NOT NULL
+country TEXT NOT NULL,
+finnhubIndustry TEXT NOT NULL,
+ipo TEXT NOT NULL,
+logo TEXT NOT NULL,
+marketCapitalization REAL AS Float,
+name TEXT NOT NULL,
+ticker TEXT NOT NULL,
+date TEXT AS Date NOT NULL
 );
 
 selectAll:
-SELECT * FROM stockdata;
+SELECT * FROM explorecompanydata;
 
 selectById:
-SELECT * FROM stockdata WHERE id = ?;
+SELECT * FROM explorecompanydata WHERE id = ?;
 
-selectByName:
-SELECT * FROM stockdata WHERE ticker = ?;
+selectByTicker:
+SELECT * FROM explorecompanydata WHERE ticker = ?;
+
+selectByIndustry:
+SELECT * FROM explorecompanydata WHERE finnhubIndustry = ?;
+
 
 insertStock:
-INSERT OR REPLACE INTO stockdata(id, ticker)
-VALUES (?,?);
+INSERT OR REPLACE INTO explorecompanydata(id, country, finnhubIndustry, ipo, logo, marketCapitalization, name, ticker, date)
+VALUES (?,?,?,?,?,?,?,?,?);
 
 deleteAll:
-DELETE FROM stockdata;
+DELETE FROM explorecompanydata;
+
+-- data class CompanyData(val country: String? = null,
+--                        val currency: String? = null,
+--                        val finnhubIndustry: String? = null,
+--                        val ipo: String? = null,
+--                        val logo: String? = null,
+--                        val marketCapitalization: Float? = null,
+--                        val name: String? = null,
+--                        val ticker: String? = null)
