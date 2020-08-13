@@ -3,6 +3,7 @@ package fragments
 import adapter.CompanyAdapter
 import adapter.ItemSpacingDecoration
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,6 +46,7 @@ class ExploreFragment : Fragment(){
         companyAdapter= CompanyAdapter()
 
         companyDataViewModel.companyDataList.observe(viewLifecycleOwner, Observer { companyAdapter.submitList(it)
+            Log.d("Explore", it.toString())
         })
 
         explore_company_data.apply {
