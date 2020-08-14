@@ -3,6 +3,7 @@ package sql
 import co.example.envidual.finance.touchlab.db.EnvidualFinanceDatabase
 import co.example.envidual.finance.touchlab.db.Explorecompanydata
 import com.squareup.sqldelight.db.SqlDriver
+import domain.data.CompanyData
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -21,11 +22,11 @@ class ExploreDatabaseHelper(
             .mapToList()
             .flowOn(backgroundDispatcher)
 
-    suspend fun insertExploreCompanyData(explorecompanydata: List<Explorecompanydata>) {
+    suspend fun insertExploreCompanyData(companyData: List<CompanyData>) {
         dbReference.transactionWithContext(backgroundDispatcher) {
-            explorecompanydata.forEach { explorecompanydata ->
-                dbReference.tableQueries.insertStock(null, explorecompanydata.country, explorecompanydata.finnhubIndustry, explorecompanydata.ipo,
-                explorecompanydata.logo, explorecompanydata.marketCapitalization, explorecompanydata.name, explorecompanydata.ticker)
+            companyData.forEach { company ->
+                dbReference.tableQueries.insertStock(null, company.country!!, company.finnhubIndustry!!, company.ipo!!,
+                company.logo!!, company.marketCapitalization!!, company.name!!, company.ticker!!)
             }
         }
     }
@@ -37,12 +38,18 @@ class ExploreDatabaseHelper(
             .mapToList()
             .flowOn(backgroundDispatcher)
 
-    suspend fun selectByTicker(name: String): Flow<List<Explorecompanydata>> =
+//    suspend fun selectByTicker(name: String): Flow<List<Explorecompanydata>> =
+//        dbReference.tableQueries
+//            .selectByTicker(name)
+//            .asFlow()
+//            .mapToList()
+//            .flowOn(backgroundDispatcher)
+
+    suspend fun selectByTicker(ticker: String) : List<Explorecompanydata> =
         dbReference.tableQueries
-            .selectByTicker(name)
-            .asFlow()
-            .mapToList()
-            .flowOn(backgroundDispatcher)
+            .selectByTicker(ticker)
+            .executeAsList()
+
 
     suspend fun selectByCategory(name: String): Flow<List<Explorecompanydata>> =
         dbReference.tableQueries

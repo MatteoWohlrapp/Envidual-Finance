@@ -5,7 +5,7 @@ import org.koin.core.KoinComponent
 import org.koin.core.inject
 import remote.RemoteFinanceInterface
 
-class GetCompanysForExploreUseCase : KoinComponent {
+class GetCompaniesForExploreUseCase : KoinComponent {
 
     private val remoteFinance: RemoteFinanceInterface by inject()
     private val exploreCompaniesTicker =
