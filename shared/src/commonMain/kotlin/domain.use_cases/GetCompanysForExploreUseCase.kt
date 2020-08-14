@@ -7,7 +7,7 @@ import org.koin.core.inject
 import remote.RemoteFinanceInterface
 import sql.ExploreDatabaseHelper
 
-class GetCompanysForExploreUseCase : KoinComponent {
+class GetCompaniesForExploreUseCase : KoinComponent {
 
     private val remoteFinance: RemoteFinanceInterface by inject()
     private val exploreDatabaseHelper: ExploreDatabaseHelper by inject()

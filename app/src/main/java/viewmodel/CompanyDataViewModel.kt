@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import domain.data.CompanyData
 import domain.use_cases.GetCompanyByTickerUseCase
-import domain.use_cases.GetCompanysForExploreUseCase
+import domain.use_cases.GetCompaniesForExploreUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -19,7 +19,7 @@ public class CompanyDataViewModel() : ViewModel(){
     var count = 0
 
     var companyDataList = MutableLiveData<List<CompanyData>>()
-    val explorerUseCase = GetCompanysForExploreUseCase()
+    val explorerUseCase = GetCompaniesForExploreUseCase()
 
     private val listOfCompanies = LinkedList<CompanyData>()
 
