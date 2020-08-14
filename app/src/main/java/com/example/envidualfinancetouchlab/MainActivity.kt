@@ -2,13 +2,10 @@ package com.example.envidualfinancetouchlab
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProviders
 import com.example.envidual.finance.touchlab.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import fragments.ExploreFragment
-import fragments.SearchFragment
-import kotlinx.android.synthetic.main.activity_main.*
-import viewmodel.CompanyDataViewModel
+import fragments.FavouritesFragment
+import fragments.SearchesFragment
 
 class MainActivity : AppCompatActivity(){
 
@@ -18,7 +15,7 @@ class MainActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, ExploreFragment()).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, FavouritesFragment()).commit()
 
         bottomNavigation = findViewById(R.id.bottomNavigationView)
         setupBottomNavigation()
@@ -30,10 +27,10 @@ class MainActivity : AppCompatActivity(){
 
             when(item.itemId){
                 R.id.search -> supportFragmentManager.beginTransaction().replace(R.id.fragment_container,
-                    SearchFragment()
+                    SearchesFragment()
                 ).commit()
                 else -> supportFragmentManager.beginTransaction().replace(R.id.fragment_container,
-                    ExploreFragment()
+                    FavouritesFragment()
                 ).commit()
             }
 

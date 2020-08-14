@@ -2,7 +2,7 @@ package co.touchlab.kampkit
 
 import co.touchlab.stately.ensureNeverFrozen
 import domain.data.CompanyData
-import domain.use_cases.GetCompaniesForExploreUseCase
+import domain.use_cases.GetCompaniesForFavouritesUseCase
 import domain.use_cases.GetCompanyByTickerUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,12 +16,12 @@ class NativeViewModel(
 
     private val scope = MainScope(Dispatchers.Main)
     private var getCompanyByTickerUseCase: GetCompanyByTickerUseCase
-    private var getCompaniesForExploreUseCase: GetCompaniesForExploreUseCase
+    private var getCompaniesForFavouritesUseCase: GetCompaniesForFavouritesUseCase
 
     init {
         ensureNeverFrozen()
         getCompanyByTickerUseCase = GetCompanyByTickerUseCase()
-        getCompaniesForExploreUseCase = GetCompaniesForExploreUseCase()
+        getCompaniesForFavouritesUseCase = GetCompaniesForFavouritesUseCase()
     }
 
     fun getCompanyByTicker(ticker:String) {
@@ -33,7 +33,7 @@ class NativeViewModel(
 
     fun getCompaniesForExplore() {
         scope.launch {
-            val companyData = getCompaniesForExploreUseCase.invoke()
+            val companyData = getCompaniesForFavouritesUseCase.invoke()
             viewUpdate(companyData)
         }
     }

@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import com.example.envidual.finance.touchlab.R
 
 
-class SearchFragment : Fragment(){
+class SearchesFragment : Fragment(){
 
 
     override fun onCreateView(

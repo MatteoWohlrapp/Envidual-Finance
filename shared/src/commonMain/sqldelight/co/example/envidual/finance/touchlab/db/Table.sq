@@ -1,9 +1,10 @@
 import io.ktor.util.date.GMTDate;
 import java.util.Date;
 
-CREATE TABLE explorecompanydata (
+CREATE TABLE favourites(
 id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 country TEXT NOT NULL,
+currency TEXT NOT NULL,
 finnhubIndustry TEXT NOT NULL,
 ipo TEXT NOT NULL,
 logo TEXT NOT NULL,
@@ -12,25 +13,59 @@ name TEXT NOT NULL,
 ticker TEXT NOT NULL
 );
 
-selectAll:
-SELECT * FROM explorecompanydata;
+CREATE TABLE searches(
+id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+country TEXT NOT NULL,
+currency TEXT NOT NULL,
+finnhubIndustry TEXT NOT NULL,
+ipo TEXT NOT NULL,
+logo TEXT NOT NULL,
+marketCapitalization REAL AS Float,
+name TEXT NOT NULL,
+ticker TEXT NOT NULL
+);
 
-selectById:
-SELECT * FROM explorecompanydata WHERE id = ?;
+-- EXPLORE FRAME
 
-selectByTicker:
-SELECT * FROM explorecompanydata WHERE ticker = ?;
+selectAllFromFavourites:
+SELECT * FROM favourites;
 
-selectByIndustry:
-SELECT * FROM explorecompanydata WHERE finnhubIndustry = ?;
+selectByIdFromFavourites:
+SELECT * FROM favourites WHERE id = ?;
 
+selectByTickerFromFavourites:
+SELECT * FROM favourites WHERE ticker = ?;
 
-insertStock:
-INSERT OR REPLACE INTO explorecompanydata(id, country, finnhubIndustry, ipo, logo, marketCapitalization, name, ticker)
-VALUES (?,?,?,?,?,?,?,?);
+selectByIndustryFromFavourites:
+SELECT * FROM favourites WHERE finnhubIndustry = ?;
 
-deleteAll:
-DELETE FROM explorecompanydata;
+insertFavouriteCompanyFromFavourites:
+INSERT OR REPLACE INTO favourites(id, country, currency, finnhubIndustry, ipo, logo, marketCapitalization, name, ticker)
+VALUES (?,?,?,?,?,?,?,?, ?);
+
+deleteAllFromFavourites:
+DELETE FROM favourites;
+
+-- SEARCH FRAME
+
+selectAllFromSearch:
+SELECT * FROM searches;
+
+selectByIdFromSearch:
+SELECT * FROM searches WHERE id = ?;
+
+selectByTickerFromSearch:
+SELECT * FROM searches WHERE ticker = ?;
+
+selectByIndustryFromSearch:
+SELECT * FROM searches WHERE finnhubIndustry = ?;
+
+insertSearchedCompany:
+INSERT OR REPLACE INTO searches(id, country, currency, finnhubIndustry, ipo, logo, marketCapitalization, name, ticker)
+VALUES (?,?,?,?,?,?,?,?, ?);
+
+deleteAllFromSearch:
+DELETE FROM searches;
 
 -- data class CompanyData(val country: String? = null,
 --                        val currency: String? = null,

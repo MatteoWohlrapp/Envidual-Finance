@@ -13,22 +13,21 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.envidual.finance.touchlab.R
 import kotlinx.android.synthetic.main.explore_fragment.*
-import viewmodel.CompanyDataViewModel
+import viewmodel.FavouritesViewModel
 
-class ExploreFragment : Fragment(){
+class FavouritesFragment : Fragment(){
 
-    lateinit var companyDataViewModel : CompanyDataViewModel
+    lateinit var favouritesViewModel : FavouritesViewModel
 
     lateinit var companyAdapter: CompanyAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        companyDataViewModel = ViewModelProviders.of(this).get(CompanyDataViewModel::class.java)
+        favouritesViewModel = ViewModelProviders.of(this).get(FavouritesViewModel::class.java)
 
         super.onCreate(savedInstanceState)
 
-        companyDataViewModel.getCompanyData("IBM")
-        companyDataViewModel.getCompanyData("AAPL")
+        favouritesViewModel.getCompanyDataForFavourites()
     }
 
 
@@ -44,8 +43,7 @@ class ExploreFragment : Fragment(){
         super.onViewCreated(view, savedInstanceState)
 
         companyAdapter= CompanyAdapter()
-
-        companyDataViewModel.companyDataList.observe(viewLifecycleOwner, Observer { companyAdapter.submitList(it)
+        favouritesViewModel.favourites.observe(viewLifecycleOwner, Observer { companyAdapter.submitList(it)
             Log.d("Explore", it.toString())
         })
 
