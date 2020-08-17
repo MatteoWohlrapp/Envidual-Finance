@@ -13,8 +13,7 @@ class RemoveCompanyFromFavouritesUseCase: KoinComponent {
 
     suspend fun invoke(companyData: CompanyData){
         companyData.checked = false
-        dbHelperSearches.deleteCompanyFromSearch(companyData)
-        dbHelperSearches.insertSearches(listOf(companyData))
+        dbHelperSearches.changeCheckedForName(companyData.checked!!, companyData.name!!)
         dbHelperFavourites.deleteCompanyFromFavourites(companyData.name!!)
     }
 

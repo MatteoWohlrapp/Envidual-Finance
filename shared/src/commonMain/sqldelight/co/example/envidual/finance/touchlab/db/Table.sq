@@ -66,6 +66,9 @@ insertSearchedCompany:
 INSERT OR REPLACE INTO searches(country, currency, finnhubIndustry, ipo, logo, marketCapitalization, name, ticker, checked)
 VALUES (?,?,?,?,?,?,?, ?,?);
 
+changeCheckedValue:
+UPDATE searches SET checked = ? WHERE name = ?;
+
 deleteCompanyFromSearches:
 DELETE FROM searches WHERE name = ?;
 

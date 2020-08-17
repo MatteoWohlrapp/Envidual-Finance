@@ -62,6 +62,12 @@ class SearchesDatabaseHelper(
             .mapToList()
             .flowOn(backgroundDispatcher)
 
+    suspend fun changeCheckedForName(checked: Boolean, companyName:String) {
+        dbReference.transactionWithContext(backgroundDispatcher) {
+            dbReference.tableQueries.changeCheckedValue(checked, companyName)
+        }
+    }
+
 
     suspend fun deleteAllFromSearch() {
         dbReference.transactionWithContext(backgroundDispatcher) {
@@ -69,9 +75,9 @@ class SearchesDatabaseHelper(
         }
     }
 
-    suspend fun deleteCompanyFromSearch(companyData: CompanyData) {
+    suspend fun deleteCompanyFromSearch(companyName: String) {
         dbReference.transactionWithContext(backgroundDispatcher) {
-            dbReference.tableQueries.deleteCompanyFromSearches(companyData.name!!)
+            dbReference.tableQueries.deleteCompanyFromSearches(companyName)
         }
     }
 }

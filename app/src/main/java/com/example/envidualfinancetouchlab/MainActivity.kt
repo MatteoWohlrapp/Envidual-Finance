@@ -17,25 +17,8 @@ class MainActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, FavouritesFragment()).commit()
-
         bottomNavigationView = findViewById(R.id.bottomNavigationView)
         val navController = findNavController(R.id.fragment)
         bottomNavigationView.setupWithNavController(navController)
     }
-
-
-//    private fun setupBottomNavigation(){
-//        bottomNavigation.setOnNavigationItemSelectedListener { item ->
-//
-//            when(item.itemId){
-//                R.id.search -> supportFragmentManager?.beginTransaction()?.replace(R.id.fragment_container,
-//                    SearchesFragment()
-//                )?.addToBackStack("root").commit()
-//                else -> supportFragmentManager?.popBackStack()
-//            }
-//
-//            return@setOnNavigationItemSelectedListener true
-//        }
-//    }
 }

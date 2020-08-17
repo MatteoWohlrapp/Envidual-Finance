@@ -14,8 +14,7 @@ class AddCompanyToFavouritesUseCase : KoinComponent{
 
     suspend fun invoke(companyData: CompanyData){
         companyData.checked = true
-        dbHelperSearches.deleteCompanyFromSearch(companyData)
-        dbHelperSearches.insertSearches(listOf(companyData))
+        dbHelperSearches.changeCheckedForName(companyData.checked!!, companyData.name!!)
         dbHelperFavourites.insertFavourites(listOf(companyData))
     }
 }
