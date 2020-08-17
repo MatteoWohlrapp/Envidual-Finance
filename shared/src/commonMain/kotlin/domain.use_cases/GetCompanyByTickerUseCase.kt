@@ -37,7 +37,7 @@ class GetCompanyByTickerUseCase : KoinComponent {
                 companyInfos.currency,
                 companyInfos.finnhubIndustry,
                 companyInfos.ipo,
-                "not found",
+                companyInfos.logo,
                 companyInfos.marketCapitalization!!.toFloat(),
                 companyInfos.name,
                 companyInfos.ticker
@@ -52,7 +52,7 @@ class GetCompanyByTickerUseCase : KoinComponent {
                 companyInfos.currency,
                 companyInfos.finnhubIndustry,
                 companyInfos.ipo,
-                "not found",
+                companyInfos.logo,
                 companyInfos.marketCapitalization,
                 companyInfos.name,
                 companyInfos.ticker
@@ -69,7 +69,7 @@ class GetCompanyByTickerUseCase : KoinComponent {
                 companyInfos.currency,
                 companyInfos.finnhubIndustry,
                 companyInfos.ipo,
-                "not found",
+                companyInfos.logo,
                 companyInfos.marketCapitalization!!.toFloat(),
                 companyInfos.name,
                 companyInfos.ticker
