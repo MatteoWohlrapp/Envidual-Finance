@@ -69,19 +69,33 @@ class SearchesFragment : Fragment(){
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                var data = CompanyData()
-                if(query != null) searchesViewModel.getCompanyDataForSearchesWithTicker(query!!)
+                if(query != null){
+                    searchesViewModel.getCompanyDataForSearchesWithTicker(query!!)
+                }
+                Log.d("Searches", "onQueryTextSubmit: $query")
                 return true
             }
 
-            override fun onQueryTextChange(newText: String?) = true
+            override fun onQueryTextChange(newText: String?): Boolean{
+                if(newText == ""){
+                    searchesViewModel.getCompanyDataForSearches()
+                    Log.d("Searches", "onQueryTextChange: $newText")
+
+                }
+
+                return true
+            }
         })
 
         searchView.setOnCloseListener {
+            Log.d("Searches", "onCloseListener")
+
             searchesViewModel.getCompanyDataForSearches()
 
             true
         }
+
+        searchView
     }
 
 }

@@ -29,18 +29,18 @@ class SearchesDatabaseHelper(
     suspend fun insertSearches(companyData: List<CompanyData>) {
         dbReference.transactionWithContext(backgroundDispatcher) {
             companyData.forEach { company ->
-                dbReference.tableQueries.insertSearchedCompany(null, company.country!!, company.currency!!, company.finnhubIndustry!!, company.ipo!!,
+                dbReference.tableQueries.insertSearchedCompany(company.country!!, company.currency!!, company.finnhubIndustry!!, company.ipo!!,
                 company.logo!!, company.marketCapitalization!!, company.name!!, company.ticker!!)
             }
         }
     }
 
-    suspend fun selectByIdFromSearches(id: Long): Flow<List<Searches>> =
-        dbReference.tableQueries
-            .selectByIdFromSearch(id)
-            .asFlow()
-            .mapToList()
-            .flowOn(backgroundDispatcher)
+//    suspend fun selectByIdFromSearches(id: Long): Flow<List<Searches>> =
+//        dbReference.tableQueries
+//            .selectByIdFromSearch(id)
+//            .asFlow()
+//            .mapToList()
+//            .flowOn(backgroundDispatcher)
 
     suspend fun selectByTickerFromSearchesAsFlow(name: String): Flow<List<Searches>> =
         dbReference.tableQueries

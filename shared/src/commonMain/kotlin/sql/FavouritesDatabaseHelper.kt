@@ -33,19 +33,19 @@ class FavouritesDatabaseHelper(
     suspend fun insertFavourites(companiesData: List<CompanyData>) {
         dbReference.transactionWithContext(backgroundDispatcher) {
             companiesData.forEach { company ->
-                dbReference.tableQueries.insertFavouriteCompanyFromFavourites(null, company.country!!,
+                dbReference.tableQueries.insertFavouriteCompanyFromFavourites(company.country!!,
                     company.currency!!, company.finnhubIndustry!!, company.ipo!!,
                     company.logo!!, company.marketCapitalization!!, company.name!!, company.ticker!!)
             }
         }
     }
 
-    suspend fun selectByIdFromFavouritesAsFlow(id: Long): Flow<List<Favourites>> =
-        dbReference.tableQueries
-            .selectByIdFromFavourites(id)
-            .asFlow()
-            .mapToList()
-            .flowOn(backgroundDispatcher)
+//    suspend fun selectByIdFromFavouritesAsFlow(id: Long): Flow<List<Favourites>> =
+//        dbReference.tableQueries
+//            .selectByIdFromFavourites(id)
+//            .asFlow()
+//            .mapToList()
+//            .flowOn(backgroundDispatcher)
 
     suspend fun selectByTickerFromFavouritesAsFlow(name: String): Flow<List<Favourites>> =
         dbReference.tableQueries

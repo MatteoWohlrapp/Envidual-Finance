@@ -1,5 +1,6 @@
 package viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -34,6 +35,8 @@ class SearchesViewModel : ViewModel(), KoinComponent {
         viewModelScope.launch {
             withContext(Dispatchers.IO){
                 val data = getCompanyByTickerUseCase.invoke(ticker)
+                Log.d("Searches", data.name)
+//                searches.postValue(listOf())
                 searches.postValue(listOf(data))
             }
         }

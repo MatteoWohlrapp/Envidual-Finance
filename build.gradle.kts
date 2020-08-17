@@ -2,7 +2,7 @@
 import com.example.buildsrc.Deps
 
 buildscript {
-    val kotlin_version by extra("1.3.72")
+    val kotlin_version by extra("1.4.0")
     repositories {
         google()
         mavenCentral()

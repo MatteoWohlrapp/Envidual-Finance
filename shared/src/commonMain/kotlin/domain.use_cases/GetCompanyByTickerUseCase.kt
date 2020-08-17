@@ -37,7 +37,7 @@ class GetCompanyByTickerUseCase : KoinComponent {
                 companyInfos.currency,
                 companyInfos.finnhubIndustry,
                 companyInfos.ipo,
-                null,
+                "not found",
                 companyInfos.marketCapitalization!!.toFloat(),
                 companyInfos.name,
                 companyInfos.ticker
@@ -45,17 +45,20 @@ class GetCompanyByTickerUseCase : KoinComponent {
         } else if(companiesByTickerFromSearches.isEmpty()){
             println("found data for ticker in favourites")
 
+
             val companyInfos = companiesByTickerFromFavourites.first()
             data = CompanyData(
                 companyInfos.country,
                 companyInfos.currency,
                 companyInfos.finnhubIndustry,
                 companyInfos.ipo,
-                null,
-                companyInfos.marketCapitalization!!.toFloat(),
+                "not found",
+                companyInfos.marketCapitalization,
                 companyInfos.name,
                 companyInfos.ticker
             )
+
+            dbHelperSearches.insertSearches(listOf(data))
         } else {
             println("found data for ticker in both tables")
 
@@ -66,7 +69,7 @@ class GetCompanyByTickerUseCase : KoinComponent {
                 companyInfos.currency,
                 companyInfos.finnhubIndustry,
                 companyInfos.ipo,
-                null,
+                "not found",
                 companyInfos.marketCapitalization!!.toFloat(),
                 companyInfos.name,
                 companyInfos.ticker
