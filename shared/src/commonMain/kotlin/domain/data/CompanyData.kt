@@ -12,4 +12,4 @@ data class CompanyData(val country: String? = null,
                        val marketCapitalization: Float? = null,
                        val name: String? = null,
                        val ticker: String? = null,
-                       val checked: Boolean? = null)
+                       var checked: Boolean? = null)

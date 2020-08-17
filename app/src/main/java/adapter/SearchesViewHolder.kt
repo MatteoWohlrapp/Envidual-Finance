@@ -16,7 +16,8 @@ class SearchesViewHolder constructor(
     fun bind(companyData: CompanyData) {
         binding.companyName.text =  companyData.name
         binding.companyTicker.text = companyData.ticker
-        binding.favouritesCheckbox.isChecked = companyData.checked!!
+        if(companyData.checked != null)
+            binding.favouritesCheckbox.isChecked = companyData.checked!!
         binding.favouritesCheckbox.setOnClickListener {
             if(binding.favouritesCheckbox.isChecked){
                 onCheckboxClicked.postValue(CheckBoxCompany(true, companyData))
