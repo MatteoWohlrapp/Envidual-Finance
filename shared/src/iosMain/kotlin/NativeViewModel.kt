@@ -33,12 +33,11 @@ class NativeViewModel(
 
     fun getCompanyByTicker(ticker:String) {
         scope.launch {
-            val companyData = getCompanyByTickerUseCase.invoke(ticker)
-            viewUpdate(listOf(companyData))
+            getCompanyByTickerUseCase.invoke(ticker)
         }
     }
 
-    fun getCompaniesForExplore() {
+    fun startObservingFavorites() {
         scope.launch {
             val companyData = getCompaniesForFavouritesUseCase.invoke()
             companyData.collect {
