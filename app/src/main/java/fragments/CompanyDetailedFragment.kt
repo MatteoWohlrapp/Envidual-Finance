@@ -3,25 +3,19 @@ package fragments
 import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
+import coil.api.load
+import coil.transform.CircleCropTransformation
 import com.example.envidual.finance.touchlab.R
 import com.example.envidual.finance.touchlab.databinding.CompanydataDetailedBinding
 
 class CompanyDetailedFragment : Fragment() {
-
-    lateinit var country: String
-    lateinit var currency: String
-    lateinit var industry: String
-    lateinit var ipo: String
-    lateinit var logo: String
-    lateinit var marketCapitalization: String
-    lateinit var name: String
-    lateinit var ticker: String
 
     private lateinit var binding: CompanydataDetailedBinding
 
@@ -47,6 +41,10 @@ class CompanyDetailedFragment : Fragment() {
                 args.marketCapitalization + " " + args.currency
             binding.detailedName.text = args.name
             binding.detailedTicker.text = args.ticker
+            binding.companyDetailedLogo.load(args.logo){
+//                transformations(CircleCropTransformation())
+            }
+            Log.d("Logo", args.logo)
         }
 
         binding.detailedCompanyBack.setOnClickListener {

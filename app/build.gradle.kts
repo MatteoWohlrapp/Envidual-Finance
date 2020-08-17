@@ -41,6 +41,9 @@ android {
     viewBinding{
         isEnabled = true
     }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
@@ -64,5 +67,6 @@ dependencies {
     implementation(Deps.lifecycle_extension)
     implementation("androidx.navigation:navigation-fragment-ktx:2.1.0")
     implementation("androidx.navigation:navigation-ui-ktx:2.1.0")
+    implementation("io.coil-kt:coil:0.11.0")
     testImplementation(Deps.junit)
 }
