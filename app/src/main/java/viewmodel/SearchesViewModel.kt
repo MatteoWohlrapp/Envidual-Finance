@@ -8,7 +8,7 @@ import domain.data.CompanyData
 import domain.use_cases.AddCompanyToFavouritesUseCase
 import domain.use_cases.GetCompaniesForSearchesUseCase
 import domain.use_cases.GetCompanyByTickerUseCase
-import domain.use_cases.RemoveCompanyFromFavouritesUseCase
+import domain.use_cases.DeleteCompanyFromFavouritesUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -22,7 +22,7 @@ class SearchesViewModel : ViewModel(), KoinComponent {
     private val getCompaniesForSearches : GetCompaniesForSearchesUseCase by inject()
     private val getCompanyByTicker : GetCompanyByTickerUseCase by inject()
     private val addCompanyToFavourites: AddCompanyToFavouritesUseCase by inject()
-    private val removeCompanyFromFavourites: RemoveCompanyFromFavouritesUseCase by inject()
+    private val deleteCompanyFromFavourites: DeleteCompanyFromFavouritesUseCase by inject()
     var searches = MutableLiveData<List<CompanyData>>()
 
 
@@ -57,7 +57,7 @@ class SearchesViewModel : ViewModel(), KoinComponent {
     fun removeCompanyFromFavourites(companyData: CompanyData){
         viewModelScope.launch {
             withContext(Dispatchers.IO){
-                removeCompanyFromFavourites.invoke(companyData)
+                deleteCompanyFromFavourites.invoke(companyData)
             }
         }
     }

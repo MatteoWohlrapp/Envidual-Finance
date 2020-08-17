@@ -13,4 +13,5 @@ class FavouritesViewHolder constructor(
         binding.companyTicker.text = companyData.ticker
         binding.companyCapitalization.text = companyData.marketCapitalization.toString() + " " + companyData.currency
     }
+
 }

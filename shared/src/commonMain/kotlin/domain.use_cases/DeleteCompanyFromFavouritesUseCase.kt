@@ -6,7 +6,7 @@ import org.koin.core.inject
 import sql.FavouritesDatabaseHelper
 import sql.SearchesDatabaseHelper
 
-class RemoveCompanyFromFavouritesUseCase: KoinComponent {
+class DeleteCompanyFromFavouritesUseCase: KoinComponent {
 
     private val dbHelperFavourites : FavouritesDatabaseHelper by inject()
     private val dbHelperSearches : SearchesDatabaseHelper by inject()

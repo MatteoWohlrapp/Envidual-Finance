@@ -19,7 +19,7 @@ class NativeViewModel(
     private var getCompaniesForFavouritesUseCase: GetCompaniesForFavouritesUseCase
     private var getCompaniesForSearchesUseCase: GetCompaniesForSearchesUseCase
     private var addCompanyToFavouritesUseCase : AddCompanyToFavouritesUseCase
-    private var removeCompanyFromFavouritesUseCase : RemoveCompanyFromFavouritesUseCase
+    private var deleteCompanyFromFavouritesUseCase : DeleteCompanyFromFavouritesUseCase
 
 
     init {
@@ -28,7 +28,7 @@ class NativeViewModel(
         getCompaniesForFavouritesUseCase = GetCompaniesForFavouritesUseCase()
         getCompaniesForSearchesUseCase = GetCompaniesForSearchesUseCase()
         addCompanyToFavouritesUseCase = AddCompanyToFavouritesUseCase()
-        removeCompanyFromFavouritesUseCase = RemoveCompanyFromFavouritesUseCase()
+        deleteCompanyFromFavouritesUseCase = DeleteCompanyFromFavouritesUseCase()
     }
 
     fun getCompanyByTicker(ticker:String) {
@@ -63,7 +63,7 @@ class NativeViewModel(
 
     fun removeFavorite(company: CompanyData) {
         scope.launch {
-            removeCompanyFromFavouritesUseCase.invoke(company)
+            deleteCompanyFromFavouritesUseCase.invoke(company)
         }
     }
 

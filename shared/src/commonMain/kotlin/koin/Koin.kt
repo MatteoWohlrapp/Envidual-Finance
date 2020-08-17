@@ -60,7 +60,7 @@ private val coreModule = module {
         AddCompanyToFavouritesUseCase()
     }
     single {
-        RemoveCompanyFromFavouritesUseCase()
+        DeleteCompanyFromFavouritesUseCase()
     }
 
 }

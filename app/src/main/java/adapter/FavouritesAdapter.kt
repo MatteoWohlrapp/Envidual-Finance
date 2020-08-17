@@ -1,14 +1,19 @@
 package adapter
 
+import android.graphics.Canvas
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.example.envidual.finance.touchlab.R
 import com.example.envidual.finance.touchlab.databinding.FavouritesCardviewBinding
 import domain.data.CompanyData
 import fragments.FavouritesFragment
 import fragments.FavouritesFragmentDirections
+import kotlinx.android.synthetic.main.favourites_fragment.*
 
 class FavouritesAdapter : ListAdapter<CompanyData, FavouritesViewHolder>(
     CompanyDiffCallback()
@@ -23,22 +28,24 @@ class FavouritesAdapter : ListAdapter<CompanyData, FavouritesViewHolder>(
     }
 
     override fun onBindViewHolder(holder: FavouritesViewHolder, position: Int) {
+        Log.d("Position", "Binding at position ${holder.adapterPosition}")
+        Log.d("Position", "With company: ${getItem(holder.adapterPosition).name}")
         with(holder){
-            bind(getItem(position))
+            bind(getItem(adapterPosition))
             itemView.setOnClickListener {
                 val action = FavouritesFragmentDirections.actionFavouritesToCompanyDetailedFragment(
-                    getItem(position).country!!,
-                    getItem(position).currency!!,
-                    getItem(position).finnhubIndustry!!,
-                    getItem(position).ipo!!,
-                    getItem(position).logo!!,
-                    getItem(position).marketCapitalization.toString()!!,
-                    getItem(position).name!!,
-                    getItem(position).ticker!!
+                    getItem(adapterPosition).country!!,
+                    getItem(adapterPosition).currency!!,
+                    getItem(adapterPosition).finnhubIndustry!!,
+                    getItem(adapterPosition).ipo!!,
+                    getItem(adapterPosition).logo!!,
+                    getItem(adapterPosition).marketCapitalization.toString()!!,
+                    getItem(adapterPosition).name!!,
+                    getItem(adapterPosition).ticker!!
                     )
                 val navController = Navigation.findNavController(itemView).navigate(action)
             }
         }
     }
-
 }
+

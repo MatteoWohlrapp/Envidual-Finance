@@ -42,9 +42,7 @@ class CompanyDetailedFragment : Fragment() {
             binding.detailedName.text = args.name
             binding.detailedTicker.text = args.ticker
             binding.companyDetailedLogo.load(args.logo){
-//                transformations(CircleCropTransformation())
             }
-            Log.d("Logo", args.logo)
         }
 
         binding.detailedCompanyBack.setOnClickListener {

@@ -26,7 +26,7 @@ class GetCompanyByTickerUseCase : KoinComponent {
         if (companiesByTickerFromFavourites.isEmpty() && companiesByTickerFromSearches.isEmpty()) {
             // the company was not found in the database, we need to fetch from remote
             println("found no data for the ticker in both tables")
-            data = remoteFinance.getCompanyData(ticker)
+            data = remoteFinance.getCompanyData(ticker.toUpperCase())
             dbHelperSearches.insertSearches(listOf(data))
         } else if(companiesByTickerFromFavourites.isEmpty()) {
             println("found data for ticker in searches")
