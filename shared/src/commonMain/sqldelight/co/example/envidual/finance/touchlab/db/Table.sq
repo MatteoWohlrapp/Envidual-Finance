@@ -20,7 +20,8 @@ ipo TEXT NOT NULL,
 logo TEXT NOT NULL,
 marketCapitalization REAL AS Float,
 name TEXT NOT NULL,
-ticker TEXT NOT NULL
+ticker TEXT NOT NULL,
+checked INTEGER AS Boolean
 );
 
 -- EXPLORE FRAME
@@ -62,8 +63,11 @@ selectByIndustryFromSearch:
 SELECT * FROM searches WHERE finnhubIndustry = ?;
 
 insertSearchedCompany:
-INSERT OR REPLACE INTO searches(country, currency, finnhubIndustry, ipo, logo, marketCapitalization, name, ticker)
-VALUES (?,?,?,?,?,?,?, ?);
+INSERT OR REPLACE INTO searches(country, currency, finnhubIndustry, ipo, logo, marketCapitalization, name, ticker, checked)
+VALUES (?,?,?,?,?,?,?, ?,?);
+
+deleteCompanyFromSearches:
+DELETE FROM searches WHERE name = ?;
 
 deleteAllFromSearch:
 DELETE FROM searches;

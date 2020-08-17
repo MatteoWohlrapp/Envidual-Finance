@@ -30,7 +30,7 @@ class SearchesDatabaseHelper(
         dbReference.transactionWithContext(backgroundDispatcher) {
             companyData.forEach { company ->
                 dbReference.tableQueries.insertSearchedCompany(company.country!!, company.currency!!, company.finnhubIndustry!!, company.ipo!!,
-                company.logo!!, company.marketCapitalization!!, company.name!!, company.ticker!!)
+                company.logo!!, company.marketCapitalization!!, company.name!!, company.ticker!!, company.checked)
             }
         }
     }
@@ -63,9 +63,15 @@ class SearchesDatabaseHelper(
             .flowOn(backgroundDispatcher)
 
 
-    suspend fun deleteAllFormSearch() {
+    suspend fun deleteAllFromSearch() {
         dbReference.transactionWithContext(backgroundDispatcher) {
             dbReference.tableQueries.deleteAllFromSearch()
+        }
+    }
+
+    suspend fun deleteCompanyFromSearch(companyData: CompanyData) {
+        dbReference.transactionWithContext(backgroundDispatcher) {
+            dbReference.tableQueries.deleteCompanyFromSearches(companyData.name!!)
         }
     }
 }

@@ -17,7 +17,7 @@ class GetCompaniesForSearchesUseCase: KoinComponent {
 
             for(search in it){
                 companies.add(CompanyData(search.country, search.currency, search.finnhubIndustry, search.ipo,
-                search.logo, search.marketCapitalization, search.name, search.ticker))
+                search.logo, search.marketCapitalization, search.name, search.ticker, search.checked))
             }
 
             companies

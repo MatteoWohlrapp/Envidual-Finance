@@ -11,4 +11,5 @@ data class CompanyData(val country: String? = null,
                        val logo: String? = null,
                        val marketCapitalization: Float? = null,
                        val name: String? = null,
-                       val ticker: String? = null)
+                       val ticker: String? = null,
+                       val checked: Boolean? = null)
