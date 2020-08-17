@@ -89,6 +89,12 @@ class FavouritesFragment : Fragment(){
 
         favouritesAdapter= FavouritesAdapter()
         favouritesViewModel.favourites.observe(viewLifecycleOwner, Observer { favouritesAdapter.submitList(it)})
+        favouritesViewModel.favouritesProgressBar.observe(viewLifecycleOwner, Observer {
+            if(it)
+                favourites_progress_bar.visibility = View.VISIBLE
+            else
+                favourites_progress_bar.visibility = View.GONE
+        })
 
         favourites_recycler_view.apply {
             layoutManager = LinearLayoutManager(context)

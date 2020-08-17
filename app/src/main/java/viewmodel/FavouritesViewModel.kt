@@ -16,13 +16,16 @@ import org.koin.core.inject
 class FavouritesViewModel() : ViewModel(), KoinComponent{
 
     var favourites = MutableLiveData<List<CompanyData>>()
+    var favouritesProgressBar = MutableLiveData<Boolean>()
     val getCompaniesForFavourites: GetCompaniesForFavouritesUseCase by inject()
     val deleteCompanyFromFavourites: DeleteCompanyFromFavouritesUseCase by inject()
 
     fun getCompanyDataForFavourites(){
+        favouritesProgressBar.postValue(true)
         viewModelScope.launch {
             withContext(Dispatchers.IO){
                 val data = getCompaniesForFavourites.invoke()
+                favouritesProgressBar.postValue(false)
                 data.collect { favourites.postValue(it) }
             }
         }
