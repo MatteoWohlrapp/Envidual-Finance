@@ -9,6 +9,7 @@ import android.view.*
 import android.widget.SearchView
 import androidx.core.view.MenuItemCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +24,8 @@ class SearchesFragment : Fragment(){
     lateinit var searchesViewModel : SearchesViewModel
 
     lateinit var searchesAdapter: SearchesAdapter
+
+    private val onCheckboxClick = MutableLiveData<CheckBoxCompany>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -46,7 +49,16 @@ class SearchesFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        searchesAdapter= SearchesAdapter()
+        searchesAdapter= SearchesAdapter(onCheckboxClick)
+        onCheckboxClick.observe( viewLifecycleOwner,
+            Observer {
+                if(it.boolean){
+                    searchesViewModel.addCompanyToFavourites(it.companyData)
+                } else{
+                    searchesViewModel.removeCompanyFromFavourites(it.companyData)
+                }
+            }
+        )
         searchesViewModel.searches.observe(viewLifecycleOwner, Observer { searchesAdapter.submitList(it)})
 
         searches_recycler_view.apply {
@@ -59,6 +71,7 @@ class SearchesFragment : Fragment(){
         setHasOptionsMenu(true)
 
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
 
@@ -99,3 +112,5 @@ class SearchesFragment : Fragment(){
     }
 
 }
+
+data class CheckBoxCompany(var boolean: Boolean, var companyData: CompanyData)

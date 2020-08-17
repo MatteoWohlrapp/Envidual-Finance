@@ -1,9 +1,7 @@
 package koin
 
 import co.example.envidual.finance.touchlab.db.EnvidualFinanceDatabase
-import domain.use_cases.GetCompaniesForFavouritesUseCase
-import domain.use_cases.GetCompaniesForSearchesUseCase
-import domain.use_cases.GetCompanyByTickerUseCase
+import domain.use_cases.*
 import kotlinx.coroutines.Dispatchers
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
@@ -57,6 +55,12 @@ private val coreModule = module {
     }
     single {
         GetCompaniesForSearchesUseCase()
+    }
+    single {
+        AddCompanyToFavouritesUseCase()
+    }
+    single {
+        RemoveCompanyFromFavouritesUseCase()
     }
 
 }

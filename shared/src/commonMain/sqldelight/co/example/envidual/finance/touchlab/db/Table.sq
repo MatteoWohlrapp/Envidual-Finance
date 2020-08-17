@@ -41,6 +41,9 @@ insertFavouriteCompanyFromFavourites:
 INSERT OR REPLACE INTO favourites(country, currency, finnhubIndustry, ipo, logo, marketCapitalization, name, ticker)
 VALUES (?,?,?,?,?,?,?, ?);
 
+deleteCompanyFromFavourites:
+DELETE FROM favourites WHERE name = ?;
+
 deleteAllFromFavourites:
 DELETE FROM favourites;
 

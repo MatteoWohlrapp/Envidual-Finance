@@ -73,4 +73,10 @@ class FavouritesDatabaseHelper(
             dbReference.tableQueries.deleteAllFromFavourites()
         }
     }
+
+    suspend fun deleteCompanyFromFavourites(company:String) {
+        dbReference.transactionWithContext(backgroundDispatcher) {
+            dbReference.tableQueries.deleteCompanyFromFavourites(company)
+        }
+    }
 }
