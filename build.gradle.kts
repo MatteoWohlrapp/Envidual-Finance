@@ -17,6 +17,8 @@ buildscript {
         classpath(kotlin("gradle-plugin", com.example.buildsrc.Versions.kotlin))
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build gradle files
+        val nav_version = "2.3.0"
+        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version")
     }
 }
 

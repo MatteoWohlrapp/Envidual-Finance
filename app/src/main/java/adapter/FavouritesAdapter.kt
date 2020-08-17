@@ -2,9 +2,13 @@ package adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.ListAdapter
+import com.example.envidual.finance.touchlab.R
 import com.example.envidual.finance.touchlab.databinding.FavouritesCardviewBinding
 import domain.data.CompanyData
+import fragments.FavouritesFragment
+import fragments.FavouritesFragmentDirections
 
 class FavouritesAdapter : ListAdapter<CompanyData, FavouritesViewHolder>(
     CompanyDiffCallback()
@@ -19,7 +23,22 @@ class FavouritesAdapter : ListAdapter<CompanyData, FavouritesViewHolder>(
     }
 
     override fun onBindViewHolder(holder: FavouritesViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        with(holder){
+            bind(getItem(position))
+            itemView.setOnClickListener {
+                val action = FavouritesFragmentDirections.actionFavouritesToCompanyDetailedFragment(
+                    getItem(position).country!!,
+                    getItem(position).currency!!,
+                    getItem(position).finnhubIndustry!!,
+                    getItem(position).ipo!!,
+                    getItem(position).logo!!,
+                    getItem(position).marketCapitalization.toString()!!,
+                    getItem(position).name!!,
+                    getItem(position).ticker!!
+                    )
+                val navController = Navigation.findNavController(itemView).navigate(action)
+            }
+        }
     }
 
 }

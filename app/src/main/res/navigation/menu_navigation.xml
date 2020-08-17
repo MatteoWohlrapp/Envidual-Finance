@@ -9,9 +9,44 @@
     <fragment
         android:id="@+id/favourites"
         android:name="fragments.FavouritesFragment"
-        android:label="FavouritesFragment" />
+        android:label="FavouritesFragment" >
+        <action
+            android:id="@+id/action_favourites_to_companyDetailedFragment"
+            app:destination="@id/companyDetailedFragment" />
+    </fragment>
     <fragment
         android:id="@+id/search"
         android:name="fragments.SearchesFragment"
         android:label="SearchesFragment" />
+    <fragment
+        android:id="@+id/companyDetailedFragment"
+        android:name="fragments.CompanyDetailedFragment"
+        android:label="CompanyDetailedFragment" >
+        <action
+            android:id="@+id/action_companyDetailedFragment_to_favourites"
+            app:destination="@id/favourites" />
+        <argument
+            android:name="country"
+            app:argType="string" />
+        <argument
+            android:name="currency"
+            app:argType="string" />
+        <argument
+            android:name="industry"
+            app:argType="string" />
+        <argument
+            android:name="ipo"
+            app:argType="string" />
+        <argument android:name="logo"
+            app:argType="string" />
+        <argument
+            android:name="marketCapitalization"
+            app:argType="string" />
+        <argument
+            android:name="name"
+            app:argType="string" />
+        <argument
+            android:name="ticker"
+            app:argType="string" />
+    </fragment>
 </navigation>

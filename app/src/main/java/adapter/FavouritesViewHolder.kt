@@ -11,6 +11,6 @@ class FavouritesViewHolder constructor(
     fun bind(companyData: CompanyData) {
         binding.companyName.text =  companyData.name
         binding.companyTicker.text = companyData.ticker
-        binding.companyCapitalization.text = companyData.marketCapitalization.toString() + " $"
+        binding.companyCapitalization.text = companyData.marketCapitalization.toString() + " " + companyData.currency
     }
 }
