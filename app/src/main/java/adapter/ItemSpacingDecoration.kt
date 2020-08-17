@@ -13,8 +13,9 @@ class ItemSpacingDecoration: RecyclerView.ItemDecoration() {
         state: RecyclerView.State
     ) {
         super.getItemOffsets(outRect, view, parent, state)
-        outRect.top = 15
+        outRect.top = 10
         outRect.left = 15
         outRect.right = 15
+        outRect.bottom = 10
     }
 }

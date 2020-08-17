@@ -17,14 +17,24 @@ class SearchesViewModel : ViewModel(), KoinComponent {
 
 
     val getCompaniesForSearches : GetCompaniesForSearchesUseCase by inject()
+    val getCompanyByTickerUseCase : GetCompanyByTickerUseCase by inject()
     var searches = MutableLiveData<List<CompanyData>>()
 
 
-    fun getCompanyDataForSearches(ticker: String){
+    fun getCompanyDataForSearches(){
         viewModelScope.launch {
             withContext(Dispatchers.IO){
                 val data = getCompaniesForSearches.invoke()
                 data.collect { searches.postValue(it) }
+            }
+        }
+    }
+
+    fun getCompanyDataForSearchesWithTicker(ticker:String){
+        viewModelScope.launch {
+            withContext(Dispatchers.IO){
+                val data = getCompanyByTickerUseCase.invoke(ticker)
+                searches.postValue(listOf(data))
             }
         }
     }

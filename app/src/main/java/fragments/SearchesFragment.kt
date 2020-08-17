@@ -1,14 +1,37 @@
 package fragments
 
+import adapter.FavouritesAdapter
+import adapter.ItemSpacingDecoration
+import adapter.SearchesAdapter
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
+import android.widget.SearchView
+import androidx.core.view.MenuItemCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.envidual.finance.touchlab.R
+import domain.data.CompanyData
+import kotlinx.android.synthetic.main.search_fragment.*
+import viewmodel.SearchesViewModel
 
 
 class SearchesFragment : Fragment(){
+
+    lateinit var searchesViewModel : SearchesViewModel
+
+    lateinit var searchesAdapter: SearchesAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+
+        searchesViewModel = ViewModelProviders.of(this).get(SearchesViewModel::class.java)
+
+        super.onCreate(savedInstanceState)
+
+        searchesViewModel.getCompanyDataForSearches()
+    }
 
 
     override fun onCreateView(
@@ -18,4 +41,47 @@ class SearchesFragment : Fragment(){
     ): View? {
         return inflater.inflate(R.layout.search_fragment, container, false)
     }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        searchesAdapter= SearchesAdapter()
+        searchesViewModel.searches.observe(viewLifecycleOwner, Observer { searchesAdapter.submitList(it)})
+
+        searches_recycler_view.apply {
+            layoutManager = LinearLayoutManager(context)
+            addItemDecoration(ItemSpacingDecoration())
+            adapter = searchesAdapter
+        }
+
+        Log.d("Fragment", "Called on view created in search")
+        setHasOptionsMenu(true)
+
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+
+        inflater.inflate(R.menu.search_menu, menu)
+
+        val searchItem = menu.findItem(R.id.menu_search)
+        val searchView = MenuItemCompat.getActionView(searchItem) as SearchView
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                var data = CompanyData()
+                if(query != null) searchesViewModel.getCompanyDataForSearchesWithTicker(query!!)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?) = true
+        })
+
+        searchView.setOnCloseListener {
+            searchesViewModel.getCompanyDataForSearches()
+
+            true
+        }
+    }
+
 }

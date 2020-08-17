@@ -2,9 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/home"
-        android:icon="@drawable/explore_icon"
-        android:title="Home" />
+        android:id="@+id/favourites"
+        android:icon="@drawable/favourite_icon"
+        android:title="Favourites" />
 
     <item
         android:id="@+id/search"
