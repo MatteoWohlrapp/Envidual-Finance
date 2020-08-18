@@ -46,7 +46,7 @@ class FinanceRemote : RemoteFinanceInterface{
                     companyData("api/v1/stock/profile2?symbol=$ticker&token=bsp7bq7rh5r8ktikc24g")
                 }
             } catch(e: kotlinx.serialization.MissingFieldException){
-                return@network CompanyData()
+                throw NoCompanyFoundException("No company found.")
             }
         }
 

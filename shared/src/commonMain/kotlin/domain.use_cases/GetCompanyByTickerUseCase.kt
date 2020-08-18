@@ -16,17 +16,18 @@ class GetCompanyByTickerUseCase : KoinComponent {
     private val dbHelperSearches : SearchesDatabaseHelper by inject()
 
     suspend fun invoke(ticker: String) : CompanyData {
+        val upperCaseTicker = ticker.toUpperCase()
         var data: CompanyData
         println("About to access data")
-        val companiesByTickerFromFavourites = dbHelperFavourites.selectByTickerFromFavourites(ticker)
-        val companiesByTickerFromSearches = dbHelperSearches.selectByTickerFromSearches(ticker)
-        println("ticker is $ticker and the list from favourites contains $companiesByTickerFromFavourites")
-        println("ticker is $ticker and the list from searches contains $companiesByTickerFromSearches")
+        val companiesByTickerFromFavourites = dbHelperFavourites.selectByTickerFromFavourites(upperCaseTicker)
+        val companiesByTickerFromSearches = dbHelperSearches.selectByTickerFromSearches(upperCaseTicker)
+        println("ticker is $upperCaseTicker and the list from favourites contains $companiesByTickerFromFavourites")
+        println("ticker is $upperCaseTicker and the list from searches contains $companiesByTickerFromSearches")
 
         if (companiesByTickerFromFavourites.isEmpty() && companiesByTickerFromSearches.isEmpty()) {
             // the company was not found in the database, we need to fetch from remote
             println("found no data for the ticker in both tables")
-            data = remoteFinance.getCompanyData(ticker.toUpperCase())
+            data = remoteFinance.getCompanyData(upperCaseTicker)
             dbHelperSearches.insertSearches(listOf(data))
         } else if(companiesByTickerFromFavourites.isEmpty()) {
             println("found data for ticker in searches")

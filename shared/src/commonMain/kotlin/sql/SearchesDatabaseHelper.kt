@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import remote.NoCompanyFoundException
 
 class SearchesDatabaseHelper(
     private val backgroundDispatcher: CoroutineDispatcher
@@ -28,9 +29,14 @@ class SearchesDatabaseHelper(
 
     suspend fun insertSearches(companyData: List<CompanyData>) {
         dbReference.transactionWithContext(backgroundDispatcher) {
-            companyData.forEach { company ->
-                dbReference.tableQueries.insertSearchedCompany(company.country!!, company.currency!!, company.finnhubIndustry!!, company.ipo!!,
-                company.logo!!, company.marketCapitalization!!, company.name!!, company.ticker!!, company.checked)
+            try {
+                companyData.forEach { company ->
+                    dbReference.tableQueries.insertSearchedCompany(company.country!!, company.currency!!, company.finnhubIndustry!!, company.ipo!!,
+                        company.logo!!, company.marketCapitalization!!, company.name!!, company.ticker!!, company.checked)
+                }
+            }
+            catch(e: NullPointerException) {
+                throw NoCompanyFoundException("No company found.")
             }
         }
     }
