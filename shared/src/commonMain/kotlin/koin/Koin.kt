@@ -9,8 +9,7 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 import remote.FinanceRemote
 import remote.RemoteFinanceInterface
-import sql.FavouritesDatabaseHelper
-import sql.SearchesDatabaseHelper
+import sql.DatabaseHelper
 
 
 fun initKoin(appModule: Module): KoinApplication {
@@ -26,14 +25,9 @@ fun initKoin(appModule: Module): KoinApplication {
 }
 
 private val coreModule = module {
-    single {
-        FavouritesDatabaseHelper(
-            Dispatchers.Default
-        )
-    }
 
     single {
-        SearchesDatabaseHelper(
+        DatabaseHelper(
             Dispatchers.Default
         )
     }

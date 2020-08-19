@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.envidual.finance.touchlab.databinding.SearchesCardviewBinding
 import domain.data.CompanyData
-import domain.use_cases.AddCompanyToFavouritesUseCase
 import fragments.CheckBoxCompany
 
 class SearchesViewHolder constructor(
@@ -16,8 +15,8 @@ class SearchesViewHolder constructor(
     fun bind(companyData: CompanyData) {
         binding.companyName.text =  companyData.name
         binding.companyTicker.text = companyData.ticker
-        if(companyData.checked != null)
-            binding.favouritesCheckbox.isChecked = companyData.checked!!
+        if(companyData.isFavourite != null)
+            binding.favouritesCheckbox.isChecked = companyData.isFavourite!!
         binding.favouritesCheckbox.setOnClickListener {
             if(binding.favouritesCheckbox.isChecked){
                 onCheckboxClicked.postValue(CheckBoxCompany(true, companyData))

@@ -1,18 +1,7 @@
 import io.ktor.util.date.GMTDate;
 import java.util.Date;
 
-CREATE TABLE favourites(
-country TEXT NOT NULL,
-currency TEXT NOT NULL,
-finnhubIndustry TEXT NOT NULL,
-ipo TEXT NOT NULL,
-logo TEXT NOT NULL,
-marketCapitalization REAL AS Float,
-name TEXT NOT NULL,
-ticker TEXT NOT NULL
-);
-
-CREATE TABLE searches(
+CREATE TABLE companies(
 country TEXT NOT NULL,
 currency TEXT NOT NULL,
 finnhubIndustry TEXT NOT NULL,
@@ -21,65 +10,36 @@ logo TEXT NOT NULL,
 marketCapitalization REAL AS Float,
 name TEXT NOT NULL,
 ticker TEXT NOT NULL,
-checked INTEGER AS Boolean
+isFavourite INTEGER AS Boolean
 );
 
--- EXPLORE FRAME
 
-selectAllFromFavourites:
-SELECT * FROM favourites;
+selectAllFavourites:
+SELECT * FROM companies WHERE isFavourite = 1;
 
--- selectByIdFromFavourites:
--- SELECT * FROM favourites WHERE id = ?;
+selectByTicker:
+SELECT * FROM companies WHERE ticker = ?;
 
-selectByTickerFromFavourites:
-SELECT * FROM favourites WHERE ticker = ?;
+selectAll:
+SELECT * FROM companies;
 
-selectByIndustryFromFavourites:
-SELECT * FROM favourites WHERE finnhubIndustry = ?;
+insertCompany:
+INSERT OR REPLACE INTO companies(country, currency, finnhubIndustry, ipo, logo, marketCapitalization, name, ticker, isFavourite)
+VALUES (?,?,?,?,?,?,?,?,?);
 
-insertFavouriteCompanyFromFavourites:
-INSERT OR REPLACE INTO favourites(country, currency, finnhubIndustry, ipo, logo, marketCapitalization, name, ticker)
-VALUES (?,?,?,?,?,?,?, ?);
+changeIsFavouriteValue:
+UPDATE companies SET isFavourite = ? WHERE ticker = ?;
 
-deleteCompanyFromFavourites:
-DELETE FROM favourites WHERE name = ?;
+deleteCompany:
+DELETE FROM companies WHERE ticker = ?;
 
-deleteAllFromFavourites:
-DELETE FROM favourites;
+deleteAll:
+DELETE FROM companies;
 
--- SEARCH FRAME
+--selectByIndustry:
+--SELECT * FROM companies WHERE finnhubIndustry = ?;
 
-selectAllFromSearch:
-SELECT * FROM searches;
 
--- selectByIdFromSearch:
--- SELECT * FROM searches WHERE id = ?;
 
-selectByTickerFromSearch:
-SELECT * FROM searches WHERE ticker = ?;
 
-selectByIndustryFromSearch:
-SELECT * FROM searches WHERE finnhubIndustry = ?;
 
-insertSearchedCompany:
-INSERT OR REPLACE INTO searches(country, currency, finnhubIndustry, ipo, logo, marketCapitalization, name, ticker, checked)
-VALUES (?,?,?,?,?,?,?, ?,?);
-
-changeCheckedValue:
-UPDATE searches SET checked = ? WHERE name = ?;
-
-deleteCompanyFromSearches:
-DELETE FROM searches WHERE name = ?;
-
-deleteAllFromSearch:
-DELETE FROM searches;
-
--- data class CompanyData(val country: String? = null,
---                        val currency: String? = null,
---                        val finnhubIndustry: String? = null,
---                        val ipo: String? = null,
---                        val logo: String? = null,
---                        val marketCapitalization: Float? = null,
---                        val name: String? = null,
---                        val ticker: String? = null)
