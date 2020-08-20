@@ -43,7 +43,7 @@ class NativeViewModel(
         }
     }
 
-    fun startObservingFavorites() {
+    fun startObservingFavourites() {
         scope.launch {
             val companyData = getCompaniesForFavouritesUseCase.invoke()
             companyData.collect {
@@ -61,13 +61,13 @@ class NativeViewModel(
         }
     }
 
-    fun addFavorite(company: CompanyData) {
+    fun addFavourite(company: CompanyData) {
         scope.launch {
             addCompanyToFavouritesUseCase.invoke(company)
         }
     }
 
-    fun removeFavorite(company: CompanyData) {
+    fun removeFavourite(company: CompanyData) {
         scope.launch {
             deleteCompanyFromFavouritesUseCase.invoke(company)
         }
