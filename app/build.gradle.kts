@@ -34,10 +34,10 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
-//    lintOptions {
-//        isWarningsAsErrors = false
-//        isAbortOnError = false
-//    }
+   lintOptions {
+       isWarningsAsErrors = false
+       isAbortOnError = false
+   }
     viewBinding{
         isEnabled = true
     }

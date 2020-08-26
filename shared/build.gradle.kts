@@ -21,10 +21,10 @@ android {
         multiDexEnabled = true
     }
 
-//    lintOptions {
-//        isWarningsAsErrors = false
-//        isAbortOnError = false
-//    }
+    lintOptions {
+        isWarningsAsErrors = false
+        isAbortOnError = false
+    }
 }
 
 kotlin {
