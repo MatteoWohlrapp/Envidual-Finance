@@ -1,4 +1,5 @@
 import io.ktor.util.date.GMTDate;
+import java.lang.Double;
 import java.util.Date;
 
 CREATE TABLE companies(

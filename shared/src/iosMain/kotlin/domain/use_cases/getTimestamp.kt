@@ -6,5 +6,5 @@ import platform.Foundation.timeIntervalSince1970
 
 
 actual fun getTimestamp(): Long {
-    return NSDate.now.timeIntervalSince1970 as Long
+    return NSDate.now.timeIntervalSince1970.toLong()
 }
