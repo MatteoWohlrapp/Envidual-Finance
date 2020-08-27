@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import remote.NoCompanyFoundException
 import remote.RemoteFinanceInterface
 import sql.DatabaseHelper
 
@@ -18,11 +19,22 @@ class GetCompaniesForFavouritesUseCase : KoinComponent {
 
 
     suspend fun invoke(): Flow<List<CompanyData>> {
+        println("Invoke in favouritesUseCase called")
         val data = dbHelper.selectAllFavourites()
+        for(d in data)
+            println(d.toString())
         if(data.isEmpty()){
+            println("data was empty")
             val exploreList = mutableListOf<CompanyData>()
             for (ticker in defaultFavouriteCompaniesTicker) {
-                val data = remoteFinance.getCompanyData(ticker)
+                var data = CompanyData()
+                try {
+                    println("trying to access remote and searching ticker: $ticker")
+                    data = remoteFinance.getCompanyData(ticker)
+                    println("data successfully retrieved, name is ${data.name}")
+                } catch(e: NoCompanyFoundException){
+                    println(e.toString())
+                    }
                 if (data.name != null) {
                     data.isFavourite = true
                     exploreList.add(data)

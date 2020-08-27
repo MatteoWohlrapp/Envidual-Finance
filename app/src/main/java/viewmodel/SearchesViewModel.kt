@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import remote.NoCompanyFoundException
 
 class SearchesViewModel : ViewModel(), KoinComponent {
 
@@ -38,9 +39,16 @@ class SearchesViewModel : ViewModel(), KoinComponent {
     fun getCompanyDataForSearchesWithTicker(ticker:String){
         viewModelScope.launch {
             withContext(Dispatchers.IO){
-                val data = getCompanyByTicker.invoke(ticker)
-                Log.d("Searches", data.name)
-//                searches.postValue(listOf())
+                var data = CompanyData()
+                try {
+                    Log.d("Searches", ticker)
+                    data = getCompanyByTicker.invoke(ticker)
+                    Log.d("Searches", data.name)
+
+                } catch(e: NoCompanyFoundException){
+                    Log.d("Searches", "Company not found")
+                }
+
                 searches.postValue(listOf(data))
             }
         }

@@ -25,9 +25,4 @@ class SearchesViewHolder constructor(
             }
         }
     }
-
-
-    fun onBoxClicked(view: View){
-
-    }
 }

@@ -22,7 +22,7 @@ class GetCompanyByTickerUseCase : KoinComponent {
         if (companiesByTicker.isEmpty()) {
             // the company was not found in the database, we need to fetch from remote
             println("found no data for the ticker in the table")
-            data = remoteFinance.getCompanyData(upperCaseTicker)
+            data = remoteFinance.getCompanyData(ticker)
             dbHelper.insertCompany(listOf(data))
         }
         else {

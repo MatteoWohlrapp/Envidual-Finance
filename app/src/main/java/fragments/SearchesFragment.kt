@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.core.view.MenuItemCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
@@ -59,7 +60,12 @@ class SearchesFragment : Fragment(){
                 }
             }
         )
-        searchesViewModel.searches.observe(viewLifecycleOwner, Observer { searchesAdapter.submitList(it)})
+        searchesViewModel.searches.observe(viewLifecycleOwner, Observer {
+            if(it.first().name == null)
+                Toast.makeText(this.context, "Sorry, company not found", Toast.LENGTH_SHORT).show()
+            else
+                searchesAdapter.submitList(it)
+        })
 
         searches_recycler_view.apply {
             layoutManager = LinearLayoutManager(context)

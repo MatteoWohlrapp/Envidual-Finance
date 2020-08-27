@@ -3,12 +3,16 @@ package fragments
 import adapter.FavouritesAdapter
 import adapter.ItemSpacingDecoration
 import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.media.MediaRouter
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -27,6 +31,10 @@ class FavouritesFragment : Fragment(){
 
     lateinit var itemTouchHelperCallback: ItemTouchHelper.SimpleCallback
 
+    private var swipeBackground = ColorDrawable(Color.parseColor("#FF0000"))
+
+    private lateinit var deleteIcon : Drawable
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         favouritesViewModel = ViewModelProviders.of(this).get(FavouritesViewModel::class.java)
@@ -34,6 +42,7 @@ class FavouritesFragment : Fragment(){
         super.onCreate(savedInstanceState)
 
         favouritesViewModel.getCompanyDataForFavourites()
+        deleteIcon = ContextCompat.getDrawable(this.context!!, R.drawable.delete_icon)!!
 
 //        callback for the swipe gesture
         itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
@@ -62,6 +71,23 @@ class FavouritesFragment : Fragment(){
                 actionState: Int,
                 isCurrentlyActive: Boolean
             ) {
+                val itemView = viewHolder.itemView
+                val iconMargin = (itemView.height - deleteIcon.intrinsicHeight)/2
+                if(dX < 0){
+                    swipeBackground.bounds.left = itemView.right + dX.toInt()
+                    swipeBackground.bounds.top = itemView.top
+                    swipeBackground.bounds.right = itemView.right
+                    swipeBackground.bounds.bottom = itemView.bottom
+                    deleteIcon.bounds.left = itemView.right - iconMargin - deleteIcon.intrinsicHeight
+                    deleteIcon.bounds.top = itemView.top + iconMargin
+                    deleteIcon.bounds.right = itemView.right - iconMargin
+                    deleteIcon.bounds.bottom = itemView.bottom - iconMargin
+
+                }
+
+                swipeBackground.draw(c)
+                deleteIcon.draw(c)
+
                 super.onChildDraw(
                     c,
                     recyclerView,
