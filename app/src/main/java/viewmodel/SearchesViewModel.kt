@@ -25,18 +25,22 @@ class SearchesViewModel : ViewModel(), KoinComponent {
     private val addCompanyToFavourites: AddCompanyToFavouritesUseCase by inject()
     private val deleteCompanyFromFavourites: DeleteCompanyFromFavouritesUseCase by inject()
     var searches = MutableLiveData<List<CompanyData>>()
+    var searchesProgressBar = MutableLiveData<Boolean>()
 
 
     fun getCompanyDataForSearches(){
+        searchesProgressBar.postValue(true)
         viewModelScope.launch {
             withContext(Dispatchers.IO){
                 val data = getCompaniesForSearches.invoke()
+                searchesProgressBar.postValue(false)
                 data.collect { searches.postValue(it) }
             }
         }
     }
 
     fun getCompanyDataForSearchesWithTicker(ticker:String){
+        searchesProgressBar.postValue(true)
         viewModelScope.launch {
             withContext(Dispatchers.IO){
                 var data = CompanyData()
@@ -49,6 +53,7 @@ class SearchesViewModel : ViewModel(), KoinComponent {
                     Log.d("Searches", "Company not found")
                 }
 
+                searchesProgressBar.postValue(false)
                 searches.postValue(listOf(data))
             }
         }

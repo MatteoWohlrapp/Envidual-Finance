@@ -12,7 +12,7 @@ class GetCompaniesForSearchesUseCase: KoinComponent {
     private val dbHelper: DatabaseHelper by inject()
 
     suspend fun invoke(): Flow<List<CompanyData>> =
-         dbHelper.selectAllCompaniesAsFlow().map { it ->
+         dbHelper.selectAllSearchesAsFlow().map { it ->
             val companies = mutableListOf<CompanyData>()
 
             for(company in it){

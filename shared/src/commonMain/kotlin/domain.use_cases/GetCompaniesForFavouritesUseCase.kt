@@ -1,13 +1,17 @@
 package domain.use_cases
 
 import domain.data.CompanyData
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import org.koin.ext.scope
 import remote.NoCompanyFoundException
 import remote.RemoteFinanceInterface
 import sql.DatabaseHelper
+import kotlin.native.concurrent.ThreadLocal
 
 class GetCompaniesForFavouritesUseCase : KoinComponent {
 
@@ -40,7 +44,10 @@ class GetCompaniesForFavouritesUseCase : KoinComponent {
                     exploreList.add(data)
                 }
             }
-            dbHelper.insertCompany(exploreList)
+
+            val time = getTimestamp()
+            println("Timestamp is $time")
+            dbHelper.insertCompany(exploreList, time)
         }
         return dbHelper.selectAllFavouritesAsFlow().map { it ->
             val companies = mutableListOf<CompanyData>()
@@ -54,3 +61,5 @@ class GetCompaniesForFavouritesUseCase : KoinComponent {
         }
     }
 }
+
+expect fun getTimestamp(): Long

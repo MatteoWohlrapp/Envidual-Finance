@@ -17,19 +17,19 @@ class DatabaseHelper(
     private val dbReference: EnvidualFinanceDatabase by inject()
 
     // Favourite Screen
-    fun selectAllCompaniesAsFlow(): Flow<List<Companies>> =
+    fun selectAllSearchesAsFlow(): Flow<List<Companies>> =
         dbReference.tableQueries
             .selectAll()
             .asFlow()
             .mapToList()
             .flowOn(backgroundDispatcher)
 
-    suspend fun insertCompany(companyData: List<CompanyData>) {
+    suspend fun insertCompany(companyData: List<CompanyData>, time: Long) {
         dbReference.transactionWithContext(backgroundDispatcher) {
             try {
                 companyData.forEach { company ->
                     dbReference.tableQueries.insertCompany(company.country!!, company.currency!!, company.finnhubIndustry!!, company.ipo!!,
-                        company.logo!!, company.marketCapitalization!!, company.name!!, company.ticker!!, company.isFavourite)
+                        company.logo!!, company.marketCapitalization!!, company.name!!, company.ticker!!, company.isFavourite, true, time)
                 }
             }
             catch(e: NullPointerException) {
@@ -47,6 +47,13 @@ class DatabaseHelper(
         dbReference.transactionWithContext(backgroundDispatcher) {
             dbReference.tableQueries
                 .changeIsFavouriteValue(isFavourite, ticker)
+        }
+    }
+
+    suspend fun changeIsSearchedForTicker(isFavourite: Boolean, ticker: String) {
+        dbReference.transactionWithContext(backgroundDispatcher) {
+            dbReference.tableQueries
+                .changeIsChangedValue(isFavourite, ticker)
         }
     }
 
@@ -76,5 +83,10 @@ class DatabaseHelper(
     fun selectAllFavourites(): List<Companies> =
         dbReference.tableQueries
             .selectAllFavourites()
+            .executeAsList()
+
+    fun selectCompaniesToUpdate(time: Long): List<Companies> =
+        dbReference.tableQueries
+            .selectCompaniesToUpdate(time)
             .executeAsList()
 }

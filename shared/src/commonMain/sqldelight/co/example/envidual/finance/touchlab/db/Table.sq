@@ -9,8 +9,10 @@ ipo TEXT NOT NULL,
 logo TEXT NOT NULL,
 marketCapitalization REAL AS Float,
 name TEXT NOT NULL,
-ticker TEXT NOT NULL,
-isFavourite INTEGER AS Boolean
+ticker TEXT NOT NULL PRIMARY KEY,
+isFavourite INTEGER AS Boolean,
+isSearched INTEGER AS Boolean,
+lastSearched INTEGER
 );
 
 
@@ -24,11 +26,17 @@ selectAll:
 SELECT * FROM companies;
 
 insertCompany:
-INSERT OR REPLACE INTO companies(country, currency, finnhubIndustry, ipo, logo, marketCapitalization, name, ticker, isFavourite)
-VALUES (?,?,?,?,?,?,?,?,?);
+INSERT OR REPLACE INTO companies(country, currency, finnhubIndustry, ipo, logo, marketCapitalization, name, ticker, isFavourite, isSearched, lastSearched)
+VALUES (?,?,?,?,?,?,?,?,?,?,?);
 
 changeIsFavouriteValue:
 UPDATE companies SET isFavourite = ? WHERE ticker = ?;
+
+changeIsChangedValue:
+UPDATE companies SET isSearched = ? WHERE ticker = ?;
+
+selectCompaniesToUpdate:
+SELECT * FROM companies WHERE lastSearched < ?;
 
 deleteCompany:
 DELETE FROM companies WHERE ticker = ?;

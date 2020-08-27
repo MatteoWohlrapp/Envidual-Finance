@@ -26,13 +26,9 @@ import viewmodel.FavouritesViewModel
 class FavouritesFragment : Fragment(){
 
     lateinit var favouritesViewModel : FavouritesViewModel
-
     lateinit var favouritesAdapter: FavouritesAdapter
-
     lateinit var itemTouchHelperCallback: ItemTouchHelper.SimpleCallback
-
     private var swipeBackground = ColorDrawable(Color.parseColor("#FF0000"))
-
     private lateinit var deleteIcon : Drawable
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,8 +1,10 @@
 package fragments
 
-import adapter.FavouritesAdapter
 import adapter.ItemSpacingDecoration
 import adapter.SearchesAdapter
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -13,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.envidual.finance.touchlab.R
 import domain.data.CompanyData
@@ -23,10 +26,11 @@ import viewmodel.SearchesViewModel
 class SearchesFragment : Fragment(){
 
     lateinit var searchesViewModel : SearchesViewModel
-
     lateinit var searchesAdapter: SearchesAdapter
-
     private val onCheckboxClick = MutableLiveData<CheckBoxCompany>()
+    lateinit var itemTouchHelperCallback: ItemTouchHelper.SimpleCallback
+    private var swipeBackground = ColorDrawable(Color.parseColor("#FF0000"))
+    private lateinit var deleteIcon : Drawable
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -65,6 +69,13 @@ class SearchesFragment : Fragment(){
                 Toast.makeText(this.context, "Sorry, company not found", Toast.LENGTH_SHORT).show()
             else
                 searchesAdapter.submitList(it)
+        })
+
+        searchesViewModel.searchesProgressBar.observe(viewLifecycleOwner, Observer{
+            if(it)
+                searches_progress_bar.visibility = View.VISIBLE
+            else
+                searches_progress_bar.visibility = View.GONE
         })
 
         searches_recycler_view.apply {
