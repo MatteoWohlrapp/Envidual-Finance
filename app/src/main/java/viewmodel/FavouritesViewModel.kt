@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import domain.data.CompanyData
 import domain.use_cases.GetCompaniesForFavouritesUseCase
 import domain.use_cases.DeleteCompanyFromFavouritesUseCase
+import domain.use_cases.UpdateCompaniesUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -19,6 +20,7 @@ class FavouritesViewModel() : ViewModel(), KoinComponent{
     var favouritesProgressBar = MutableLiveData<Boolean>()
     val getCompaniesForFavourites: GetCompaniesForFavouritesUseCase by inject()
     val deleteCompanyFromFavourites: DeleteCompanyFromFavouritesUseCase by inject()
+    val updateCompanies: UpdateCompaniesUseCase by inject()
 
     fun getCompanyDataForFavourites(){
         favouritesProgressBar.postValue(true)
@@ -35,6 +37,14 @@ class FavouritesViewModel() : ViewModel(), KoinComponent{
         viewModelScope.launch {
             withContext(Dispatchers.IO){
                 deleteCompanyFromFavourites.invoke(companyData)
+            }
+        }
+    }
+
+    fun updateCompanies(){
+        viewModelScope.launch {
+            withContext(Dispatchers.IO){
+                updateCompanies.invoke()
             }
         }
     }

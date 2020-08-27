@@ -38,6 +38,7 @@ class FavouritesFragment : Fragment(){
         super.onCreate(savedInstanceState)
 
         favouritesViewModel.getCompanyDataForFavourites()
+
         deleteIcon = ContextCompat.getDrawable(this.context!!, R.drawable.delete_icon)!!
 
 //        callback for the swipe gesture
@@ -95,6 +96,8 @@ class FavouritesFragment : Fragment(){
                 )
             }
         }
+
+        favouritesViewModel.updateCompanies()
     }
 
 

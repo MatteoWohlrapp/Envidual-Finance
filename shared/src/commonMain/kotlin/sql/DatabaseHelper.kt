@@ -16,10 +16,10 @@ class DatabaseHelper(
 
     private val dbReference: EnvidualFinanceDatabase by inject()
 
-    // Favourite Screen
+    // Searches Screen
     fun selectAllSearchesAsFlow(): Flow<List<Companies>> =
         dbReference.tableQueries
-            .selectAll()
+            .selectAllSearches()
             .asFlow()
             .mapToList()
             .flowOn(backgroundDispatcher)
@@ -57,6 +57,13 @@ class DatabaseHelper(
         }
     }
 
+    suspend fun changeLastSearched(time: Long, ticker: String){
+        dbReference.transactionWithContext(backgroundDispatcher){
+            dbReference.tableQueries
+                .changeLastSearched(time, ticker)
+        }
+    }
+
     suspend fun deleteAll() {
         dbReference.transactionWithContext(backgroundDispatcher) {
             dbReference.tableQueries
@@ -89,4 +96,5 @@ class DatabaseHelper(
         dbReference.tableQueries
             .selectCompaniesToUpdate(time)
             .executeAsList()
+
 }

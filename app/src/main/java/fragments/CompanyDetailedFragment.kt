@@ -42,6 +42,7 @@ class CompanyDetailedFragment : Fragment() {
             binding.detailedName.text = args.name
             binding.detailedTicker.text = args.ticker
             binding.companyDetailedLogo.load(args.logo){
+                size(200)
             }
         }
 

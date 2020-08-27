@@ -25,10 +25,7 @@ class GetCompaniesForFavouritesUseCase : KoinComponent {
     suspend fun invoke(): Flow<List<CompanyData>> {
         println("Invoke in favouritesUseCase called")
         val data = dbHelper.selectAllFavourites()
-        for(d in data)
-            println(d.toString())
         if(data.isEmpty()){
-            println("data was empty")
             val exploreList = mutableListOf<CompanyData>()
             for (ticker in defaultFavouriteCompaniesTicker) {
                 var data = CompanyData()
@@ -49,6 +46,7 @@ class GetCompaniesForFavouritesUseCase : KoinComponent {
             println("Timestamp is $time")
             dbHelper.insertCompany(exploreList, time)
         }
+
         return dbHelper.selectAllFavouritesAsFlow().map { it ->
             val companies = mutableListOf<CompanyData>()
 

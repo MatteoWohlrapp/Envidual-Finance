@@ -4,12 +4,14 @@ import kotlinx.serialization.Serializable
 
 
 @Serializable
-data class CompanyData(val country: String? = null,
-                       val currency: String? = null,
-                       val finnhubIndustry: String? = null,
-                       val ipo: String? = null,
-                       val logo: String? = null,
-                       val marketCapitalization: Float? = null,
-                       val name: String? = null,
-                       val ticker: String? = null,
-                       var isFavourite: Boolean? = null)
+data class CompanyData( var country: String? = null,
+                        var currency: String? = null,
+                        var finnhubIndustry: String? = null,
+                        var ipo: String? = null,
+                        var logo: String? = null,
+                        var marketCapitalization: Float? = null,
+                        var name: String? = null,
+                        var ticker: String? = null,
+                        var isFavourite: Boolean? = null,
+                        var isSearched: Boolean? = null,
+                        var lastSearched: Long? = null)

@@ -56,6 +56,12 @@ private val coreModule = module {
     single {
         DeleteCompanyFromFavouritesUseCase()
     }
+    single {
+        DeleteCompanyFromSearchesUseCase()
+    }
+    single {
+        UpdateCompaniesUseCase()
+    }
 
 }
 
