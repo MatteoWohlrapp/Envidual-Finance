@@ -16,22 +16,12 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
 
 
-class FinanceRemote : RemoteFinanceInterface{
+class RemoteFinance : RemoteFinanceInterface{
 
     private val client = HttpClient {
         install(JsonFeature) {
             serializer = KotlinxSerializer(Json(JsonConfiguration(ignoreUnknownKeys = true)))
         }
-//        install(Logging) {
-//            logger = object : Logger {
-//                override fun log(message: String) {
-////                    log("").v("Network") { message }
-////                    log("")
-//                }
-//            }
-//
-//            level = LogLevel.INFO
-//        }
     }
 
     init {
@@ -57,5 +47,3 @@ class FinanceRemote : RemoteFinanceInterface{
         }
     }
 }
-
-//internal expect suspend fun <R> network(block: suspend () -> R): R

@@ -11,9 +11,6 @@ class AddCompanyToFavouritesUseCase : KoinComponent{
 
 
     suspend fun invoke(companyData: CompanyData){
-//        val data = dbHelper.selectByTicker(companyData.ticker!!).first()
-//        dbHelper.insertCompany(listOf(CompanyData(data.country, data.currency, data.finnhubIndustry, data.ipo, data.logo, data.marketCapitalization,
-//        data.name, data.ticker, true, data.isSearched, data.lastSearched)))
         companyData.isFavourite = true
         dbHelper.changeIsFavouriteForTicker(companyData.isFavourite!!, companyData.ticker!!)
     }

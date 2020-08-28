@@ -1,6 +1,6 @@
 package com.example.envidualfinancetouchlab
 
-import AppInfo
+import koin.AppInfo
 import com.example.envidual.finance.touchlab.BuildConfig
 import android.app.Application
 import android.content.Context

@@ -1,6 +1,5 @@
 package koin
 
-import AppInfo
 import co.example.envidual.finance.touchlab.db.EnvidualFinanceDatabase
 import co.touchlab.kermit.Kermit
 import co.touchlab.kermit.NSLogLogger

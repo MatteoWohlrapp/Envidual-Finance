@@ -29,14 +29,14 @@ SELECT * FROM companies WHERE ticker = ?;
 selectAll:
 SELECT * FROM companies;
 
-insertCompany:
+insertCompanies:
 INSERT OR REPLACE INTO companies(country, currency, finnhubIndustry, ipo, logo, marketCapitalization, name, ticker, isFavourite, isSearched, lastSearched)
 VALUES (?,?,?,?,?,?,?,?,?,?,?);
 
 changeIsFavouriteValue:
 UPDATE companies SET isFavourite = ? WHERE ticker = ?;
 
-changeIsChangedValue:
+changeIsSearchedValue:
 UPDATE companies SET isSearched = ? WHERE ticker = ?;
 
 changeLastSearched:

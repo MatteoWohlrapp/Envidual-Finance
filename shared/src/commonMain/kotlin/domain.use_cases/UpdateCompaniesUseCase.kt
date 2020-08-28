@@ -13,24 +13,20 @@ class UpdateCompaniesUseCase: KoinComponent {
 
     suspend fun invoke(){
         val companiesToUpdate = dbHelper.selectCompaniesToUpdate(getTimestamp()-86400)
-//        val companiesToUpdate = dbHelper.selectCompaniesToUpdate(getTimestamp()-10)
 
-        println("Updating data in UpdateCompaniesUseCase: ${companiesToUpdate.size}")
-        for(company in companiesToUpdate)
-            println(company.ticker)
-
-
-        val companiesCollectedForDatabase = mutableListOf<CompanyData>()
+        val updatedCompanies = mutableListOf<CompanyData>()
 
         for(company in companiesToUpdate){
             val time = getTimestamp()
-            val data = remoteFinance.getCompanyData(company.ticker)
-            companiesCollectedForDatabase.add(CompanyData(data.country, data.currency, data.finnhubIndustry, data.ipo,
-                data.logo, data.marketCapitalization, data.name, data.ticker, company.isFavourite, company.isSearched, time))
-//            dbHelper.insertCompany(listOf(CompanyData(data.country, data.currency, data.finnhubIndustry, data.ipo,
-//            data.logo, data.marketCapitalization, data.name, data.ticker, company.isFavourite, company.isSearched, time)), time)
+            val companyData = remoteFinance.getCompanyData(company.ticker!!)
+
+            companyData.lastSearched = time
+            companyData.isSearched = company.isSearched
+            companyData.isFavourite = company.isFavourite
+
+            updatedCompanies.add(companyData)
         }
-        dbHelper.insertCompany(companiesCollectedForDatabase)
+        dbHelper.insertCompanies(updatedCompanies)
     }
 }
 

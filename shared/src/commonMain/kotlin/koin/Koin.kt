@@ -7,7 +7,7 @@ import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.dsl.module
-import remote.FinanceRemote
+import remote.RemoteFinance
 import remote.RemoteFinanceInterface
 import sql.DatabaseHelper
 
@@ -37,7 +37,7 @@ private val coreModule = module {
     }
 
     single<RemoteFinanceInterface> {
-        FinanceRemote()
+        RemoteFinance()
     }
 
     single {

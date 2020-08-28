@@ -24,8 +24,6 @@ class CompanyDetailedFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-//        return super.onCreateView(inflater, container, savedInstanceState)
-
         binding = CompanydataDetailedBinding.inflate(inflater, container, false)
         return binding.root
     }
