@@ -34,7 +34,7 @@ class GetCompanyByTickerUseCase : KoinComponent {
             if (companiesByRemoteTicker.isEmpty()) {
                 val time = getTimestamp()
                 println("Timestamp is $time")
-                dbHelper.insertCompany(listOf(data), time)
+                dbHelper.insertCompany(listOf(data))
             } else {
                 val company = companiesByRemoteTicker.first()
 
@@ -51,9 +51,13 @@ class GetCompanyByTickerUseCase : KoinComponent {
 
                 val time = getTimestamp()
                 data.isSearched = true
+                data.lastSearched = time
                 dbHelper.changeIsSearchedForTicker(data.isSearched!!, data.ticker!!)
                 println("Timestamp is $time")
                 dbHelper.changeLastSearched(time, data.ticker!!)
+//                val dbData = dbHelper.selectByTicker(data.ticker!!).first()
+//                dbHelper.insertCompany(listOf(CompanyData(data.country, data.currency, data.finnhubIndustry, data.ipo, data.logo, data.marketCapitalization,
+//                    data.name, data.ticker, data.isFavourite, data.isSearched, data.lastSearched)))
             }
         } else {
             println("found data for ticker in the table")
@@ -72,9 +76,13 @@ class GetCompanyByTickerUseCase : KoinComponent {
 
             val time = getTimestamp()
             data.isSearched = true
+            data.lastSearched = time
             dbHelper.changeIsSearchedForTicker(data.isSearched!!, data.ticker!!)
             println("Timestamp is $time")
             dbHelper.changeLastSearched(time, data.ticker!!)
+//            val dbData = dbHelper.selectByTicker(data.ticker!!).first()
+//            dbHelper.insertCompany(listOf(CompanyData(data.country, data.currency, data.finnhubIndustry, data.ipo, data.logo, data.marketCapitalization,
+//                data.name, data.ticker, data.isFavourite, data.isSearched, data.lastSearched)))
         }
         println(data.toString())
         return data

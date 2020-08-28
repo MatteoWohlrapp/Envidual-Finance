@@ -44,7 +44,7 @@ class GetCompaniesForFavouritesUseCase : KoinComponent {
 
             val time = getTimestamp()
             println("Timestamp is $time")
-            dbHelper.insertCompany(exploreList, time)
+            dbHelper.insertCompany(exploreList)
         }
 
         return dbHelper.selectAllFavouritesAsFlow().map { it ->

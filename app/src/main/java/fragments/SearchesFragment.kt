@@ -128,6 +128,7 @@ class SearchesFragment : Fragment() {
         )
         searchesViewModel.searches.observe(viewLifecycleOwner, Observer {
             searchesAdapter.submitList(it)
+            searches_recycler_view.scrollToPosition(0)
         })
 
         searchesViewModel.searchesProgressBar.observe(viewLifecycleOwner, Observer {
@@ -138,7 +139,7 @@ class SearchesFragment : Fragment() {
         })
 
         searchesViewModel.companyNotFound.observe(viewLifecycleOwner, Observer {
-            if(!it)
+            if(it)
                 Toast.makeText(this.context, "Sorry wrong ticker, we could not find your company", Toast.LENGTH_SHORT).show()
         })
 

@@ -50,7 +50,7 @@ class SearchesViewModel : ViewModel(), KoinComponent {
 
                 } catch(e: NoCompanyFoundException){
                     Log.d("Searches", "Company not found")
-                    companyNotFound.postValue(false)
+                    companyNotFound.postValue(true)
                 } finally {
                     searchesProgressBar.postValue(false)
                 }

@@ -10,9 +10,11 @@ class DeleteCompanyFromSearchesUseCase: KoinComponent {
     private val dbHelper: DatabaseHelper by inject()
 
     suspend fun invoke(companyData: CompanyData){
+//        val data = dbHelper.selectByTicker(companyData.ticker!!).first()
+//        dbHelper.insertCompany(listOf(CompanyData(data.country, data.currency, data.finnhubIndustry, data.ipo, data.logo, data.marketCapitalization,
+//            data.name, data.ticker, data.isFavourite, false, data.lastSearched)))
         companyData.isSearched = false
         dbHelper.changeIsSearchedForTicker(companyData.isSearched!!, companyData.ticker!!)
-
     }
 
 }

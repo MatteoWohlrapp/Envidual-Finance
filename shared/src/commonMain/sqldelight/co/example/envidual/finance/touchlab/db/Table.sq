@@ -18,16 +18,16 @@ lastSearched INTEGER
 
 
 selectAllFavourites:
-SELECT * FROM companies WHERE isFavourite = 1 AND country != 1 ORDER BY lastSearched ASC;
+SELECT * FROM companies WHERE isFavourite = 1 ORDER BY ticker ASC;
 
 selectAllSearches:
-SELECT * FROM companies WHERE isSearched = 1 AND country != 1 ORDER BY lastSearched DESC;
+SELECT * FROM companies WHERE isSearched = 1 ORDER BY lastSearched DESC;
 
 selectByTicker:
-SELECT * FROM companies WHERE ticker = ? AND country != 1;
+SELECT * FROM companies WHERE ticker = ?;
 
 selectAll:
-SELECT * FROM companies WHERE country != 1;
+SELECT * FROM companies;
 
 insertCompany:
 INSERT OR REPLACE INTO companies(country, currency, finnhubIndustry, ipo, logo, marketCapitalization, name, ticker, isFavourite, isSearched, lastSearched)
@@ -43,7 +43,7 @@ changeLastSearched:
 UPDATE companies SET lastSearched = ? WHERE ticker = ?;
 
 selectCompaniesToUpdate:
-SELECT * FROM companies WHERE lastSearched < ? AND country != 1;
+SELECT * FROM companies WHERE lastSearched < ? ORDER BY lastSearched DESC;
 
 deleteCompany:
 DELETE FROM companies WHERE ticker = ?;

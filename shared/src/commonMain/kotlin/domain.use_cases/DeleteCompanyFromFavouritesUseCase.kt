@@ -10,6 +10,9 @@ class DeleteCompanyFromFavouritesUseCase: KoinComponent {
     private val dbHelper: DatabaseHelper by inject()
 
     suspend fun invoke(companyData: CompanyData){
+//        val data = dbHelper.selectByTicker(companyData.ticker!!).first()
+//        dbHelper.insertCompany(listOf(CompanyData(data.country, data.currency, data.finnhubIndustry, data.ipo, data.logo, data.marketCapitalization,
+//            data.name, data.ticker, false, data.isSearched, data.lastSearched)))
         companyData.isFavourite = false
         dbHelper.changeIsFavouriteForTicker(companyData.isFavourite!!, companyData.ticker!!)
     }

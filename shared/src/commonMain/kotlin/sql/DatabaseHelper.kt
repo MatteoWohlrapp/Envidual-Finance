@@ -24,12 +24,12 @@ class DatabaseHelper(
             .mapToList()
             .flowOn(backgroundDispatcher)
 
-    suspend fun insertCompany(companyData: List<CompanyData>, time: Long) {
+    suspend fun insertCompany(companyData: List<CompanyData>) {
         dbReference.transactionWithContext(backgroundDispatcher) {
             try {
                 companyData.forEach { company ->
                     dbReference.tableQueries.insertCompany(company.country!!, company.currency!!, company.finnhubIndustry!!, company.ipo!!,
-                        company.logo!!, company.marketCapitalization!!, company.name!!, company.ticker!!, company.isFavourite, true, time)
+                        company.logo!!, company.marketCapitalization!!, company.name!!, company.ticker!!, company.isFavourite, company.isSearched, company.lastSearched)
                 }
             }
             catch(e: NullPointerException) {
