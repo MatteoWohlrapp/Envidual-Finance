@@ -11,7 +11,7 @@ class DeleteCompanyFromFavouritesUseCase: KoinComponent {
 
     suspend fun invoke(companyData: CompanyData){
         companyData.isFavourite = false
-        dbHelper.changeIsFavouriteForTicker(companyData.isFavourite!!, companyData.ticker!!)
+        dbHelper.changeIsFavouriteByTickerInCompanies(companyData.isFavourite!!, companyData.ticker!!)
     }
 
 }

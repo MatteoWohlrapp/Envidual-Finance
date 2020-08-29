@@ -90,6 +90,7 @@ object Deps {
         val commonSerialization ="io.ktor:ktor-client-serialization:${Versions.ktor}"
         val androidSerialization ="io.ktor:ktor-client-serialization-jvm:${Versions.ktor}"
         val iosSerialization ="io.ktor:ktor-client-serialization-native:${Versions.ktor}"
+//        val commonSerialization ="io.ktor:ktor-client-gson:${Versions.ktor}"
 //        val androidSerialization ="io.ktor:ktor-client-gson:${Versions.ktor}"
 //        val iosSerialization ="io.ktor:ktor-client-gson:${Versions.ktor}"
     }

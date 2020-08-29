@@ -2,20 +2,27 @@ package sql
 
 import co.example.envidual.finance.touchlab.db.EnvidualFinanceDatabase
 import co.example.envidual.finance.touchlab.db.Companies
+import co.example.envidual.finance.touchlab.db.CompaniesNews
 import domain.data.CompanyData
+import domain.data.CompanyNews
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import remote.NoCompanyFoundException
 
 class DatabaseHelper(
     private val backgroundDispatcher: CoroutineDispatcher
 ) : KoinComponent {
 
     private val dbReference: EnvidualFinanceDatabase by inject()
+
+
+
+    /**
+     * Methods for the Companies table
+     * **/
 
     suspend fun insertCompanies(companyData: List<CompanyData>) {
         dbReference.transactionWithContext(backgroundDispatcher) {
@@ -31,71 +38,71 @@ class DatabaseHelper(
         }
     }
 
-    suspend fun changeIsFavouriteForTicker(isFavourite: Boolean, ticker: String) {
+    suspend fun changeIsFavouriteByTickerInCompanies(isFavourite: Boolean, ticker: String) {
         dbReference.transactionWithContext(backgroundDispatcher) {
             dbReference.tableQueries
-                .changeIsFavouriteValue(isFavourite, ticker)
+                .changeIsFavouriteValueInCompanies(isFavourite, ticker)
         }
     }
 
-    suspend fun changeIsSearchedForTicker(isSearched: Boolean,  ticker: String) {
+    suspend fun changeIsSearchedByTickerInCompanies(isSearched: Boolean, ticker: String) {
         dbReference.transactionWithContext(backgroundDispatcher) {
             dbReference.tableQueries
-                .changeIsSearchedValue(isSearched, ticker)
+                .changeIsSearchedValueInCompanies(isSearched, ticker)
         }
     }
 
-    suspend fun changeLastSearched(time: Long, ticker: String){
+    suspend fun changeLastSearchedInCompanies(time: Long, ticker: String){
         dbReference.transactionWithContext(backgroundDispatcher){
             dbReference.tableQueries
-                .changeLastSearched(time, ticker)
+                .changeLastSearchedInCompanies(time, ticker)
         }
     }
 
-    suspend fun selectByTicker(ticker: String) : List<CompanyData> =
+    fun selectByTickerFromCompanies(ticker: String) : List<CompanyData> =
         dbReference.tableQueries
-            .selectByTicker(ticker)
+            .selectByTickerFromCompanies(ticker)
             .executeAsList()
             .mapCompaniesToCompanyData()
 
-    fun selectAllFavourites(): List<CompanyData> =
+    fun selectAllFavouritesFromCompanies(): List<CompanyData> =
         dbReference.tableQueries
-            .selectAllFavourites()
+            .selectAllFavouritesFromCompanies()
             .executeAsList()
             .mapCompaniesToCompanyData()
 
-    fun selectCompaniesToUpdate(time: Long): List<CompanyData> =
+    fun selectCompaniesToUpdateFromCompanies(time: Long): List<CompanyData> =
         dbReference.tableQueries
-            .selectCompaniesToUpdate(time)
+            .selectCompaniesToUpdateFromCompanies(time)
             .executeAsList()
             .mapCompaniesToCompanyData()
 
     //Favourites Screens
-    fun selectAllFavouritesAsFlow(): Flow<List<CompanyData>> =
+    fun selectAllFavouritesAsFlowFromCompanies(): Flow<List<CompanyData>> =
         dbReference.tableQueries
-            .selectAllFavourites()
+            .selectAllFavouritesFromCompanies()
             .asFlow()
             .mapToList()
             .mapCompaniesToCompanyData()
             .flowOn(backgroundDispatcher)
 
     // Searches Screen
-    fun selectAllSearchesAsFlow(): Flow<List<CompanyData>> =
+    fun selectAllSearchesAsFlowFromCompanies(): Flow<List<CompanyData>> =
         dbReference.tableQueries
-            .selectAllSearches()
+            .selectAllSearchesFromCompanies()
             .asFlow()
             .mapToList()
             .mapCompaniesToCompanyData()
             .flowOn(backgroundDispatcher)
 
-    suspend fun deleteAll() {
+    suspend fun deleteAllFromCompanies() {
         dbReference.transactionWithContext(backgroundDispatcher) {
             dbReference.tableQueries
-                .deleteAll()
+                .deleteAllFromCompanies()
         }
     }
 
-    suspend fun deleteCompanyByTicker(ticker: String) {
+    suspend fun deleteCompanyByTickerFromCompanies(ticker: String) {
         dbReference.transactionWithContext(backgroundDispatcher) {
             dbReference.tableQueries.
             deleteCompany(ticker)
@@ -118,4 +125,78 @@ class DatabaseHelper(
         return@map listOfCompanyData
     }
 
+    /**
+     * Methods for the CompaniesNews table
+     * **/
+
+    suspend fun insertCompaniesNews(companiesNews: List<CompanyNews>) {
+        dbReference.transactionWithContext(backgroundDispatcher) {
+//            try {
+            companiesNews.forEach { company ->
+                dbReference.tableQueries.insertCompaniesNews(company.ticker!!, company.category!!, company.datetime!!, company.headline!!, company.id!!, company.image!!, company.related!!, company.source!!, company.summary!!, company.url!!)
+            }
+//            }
+//            catch(e: NullPointerException) {
+//                throw NoCompanyFoundException("No company found.")
+//            }
+        }
+    }
+
+    fun selectByTickerFromCompaniesNews(ticker: String) : List<CompanyNews> =
+        dbReference.tableQueries
+            .selectByTickerFromCompaniesNews(ticker)
+            .executeAsList()
+            .mapCompaniesNewsToCompanyNews()
+
+    fun selectByTickerFromCompaniesNewsAsFlow(ticker:String): Flow<List<CompanyNews>> =
+        dbReference.tableQueries
+            .selectByTickerFromCompaniesNews(ticker)
+            .asFlow()
+            .mapToList()
+            .mapCompaniesNewsToCompanyNews()
+            .flowOn(backgroundDispatcher)
+
+    // News Screen
+    fun selectAllCompaniesNewsAsFlow(): Flow<List<CompanyNews>> =
+        dbReference.tableQueries
+            .selectAllFromCompaniesNews()
+            .asFlow()
+            .mapToList()
+            .mapCompaniesNewsToCompanyNews()
+            .flowOn(backgroundDispatcher)
+
+    fun selectAllFromCompaniesNews(): List<CompanyNews> =
+        dbReference.tableQueries
+            .selectAllFromCompaniesNews()
+            .executeAsList()
+            .mapCompaniesNewsToCompanyNews()
+
+    suspend fun deleteAllFromCompanyNews() {
+        dbReference.transactionWithContext(backgroundDispatcher) {
+            dbReference.tableQueries
+                .deleteAllFromCompaniesNews()
+        }
+    }
+
+    suspend fun deleteCompanyNewsByTicker(ticker: String) {
+        dbReference.transactionWithContext(backgroundDispatcher) {
+            dbReference.tableQueries.
+            deleteCompanyNews(ticker)
+        }
+    }
+
+    //    helper Functions for mapping flows of companiesNews to companyNews
+    fun List<CompaniesNews>.mapCompaniesNewsToCompanyNews() : List<domain.data.CompanyNews>{
+        val listOfCompanyData = mutableListOf<domain.data.CompanyNews>()
+        for (company in this)
+            listOfCompanyData.add(CompanyNews(company.ticker, company.category, company.datetime, company.headline, company.id, company.image, company.related, company.source, company.summary, company.url))
+        return listOfCompanyData
+    }
+
+    fun Flow<List<CompaniesNews>>.mapCompaniesNewsToCompanyNews() : Flow<List<domain.data.CompanyNews>> = map {
+        val listOfCompanyData = mutableListOf<domain.data.CompanyNews>()
+        for (company in it)
+            listOfCompanyData.add(CompanyNews(company.ticker, company.category, company.datetime, company.headline, company.id, company.image, company.related, company.source, company.summary, company.url))
+        return@map listOfCompanyData
+    }
 }

@@ -20,7 +20,7 @@
         android:label="SearchesFragment" />
     <fragment
         android:id="@+id/companyDetailedFragment"
-        android:name="fragments.CompanyDetailedFragment"
+        android:name="fragments.CompanyDataDetailedFragment"
         android:label="CompanyDetailedFragment" >
         <action
             android:id="@+id/action_companyDetailedFragment_to_favourites"
@@ -47,6 +47,36 @@
             app:argType="string" />
         <argument
             android:name="ticker"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_companyDetailedFragment_to_companyNewsDetailedFragment"
+            app:destination="@id/companyNewsDetailedFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/companyNewsDetailedFragment"
+        android:name="fragments.CompanyNewsDetailedFragment"
+        android:label="CompanyNewsDetailedFragment" >
+        <action
+            android:id="@+id/action_companyNewsDetailedFragment_to_companyDetailedFragment"
+            app:destination="@id/companyDetailedFragment"
+            app:popUpTo="@id/companyDetailedFragment" />
+        <argument
+            android:name="image"
+            app:argType="string" />
+        <argument
+            android:name="headline"
+            app:argType="string" />
+        <argument
+            android:name="summary"
+            app:argType="string" />
+        <argument
+            android:name="datetime"
+            app:argType="string" />
+        <argument
+            android:name="source"
+            app:argType="string" />
+        <argument
+            android:name="url"
             app:argType="string" />
     </fragment>
 </navigation>

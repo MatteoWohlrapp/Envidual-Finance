@@ -1,22 +1,16 @@
 package adapter
 
-import android.graphics.Canvas
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.Navigation
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
-import com.example.envidual.finance.touchlab.R
 import com.example.envidual.finance.touchlab.databinding.FavouritesCardviewBinding
 import domain.data.CompanyData
-import fragments.FavouritesFragment
 import fragments.FavouritesFragmentDirections
-import kotlinx.android.synthetic.main.favourites_fragment.*
 
 class FavouritesAdapter : ListAdapter<CompanyData, FavouritesViewHolder>(
-    CompanyDiffCallback()
+    CompanyDataDiffCallback()
 ){
 
     private lateinit var binding : FavouritesCardviewBinding

@@ -8,7 +8,7 @@ import com.example.envidual.finance.touchlab.databinding.SearchesCardviewBinding
 import domain.data.CompanyData
 
 class SearchesAdapter(val onCheckboxClicked: MutableLiveData<CompanyData>) : ListAdapter<CompanyData, SearchesViewHolder>(
-    CompanyDiffCallback()
+    CompanyDataDiffCallback()
 ){
 
     private lateinit var binding : SearchesCardviewBinding

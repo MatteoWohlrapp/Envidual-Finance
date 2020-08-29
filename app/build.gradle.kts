@@ -69,4 +69,6 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.1.0")
     implementation("io.coil-kt:coil:0.11.0")
     testImplementation(Deps.junit)
+    implementation("com.google.code.gson:gson:2.8.6")
+
 }

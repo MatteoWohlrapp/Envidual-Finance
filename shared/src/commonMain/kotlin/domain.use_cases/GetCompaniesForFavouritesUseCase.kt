@@ -2,10 +2,9 @@ package domain.use_cases
 
 import domain.data.CompanyData
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import remote.NoCompanyFoundException
+import remote.CompanyNotFoundException
 import remote.RemoteFinanceInterface
 import sql.DatabaseHelper
 
@@ -19,14 +18,14 @@ class GetCompaniesForFavouritesUseCase : KoinComponent {
 
 
     suspend fun invoke(): Flow<List<CompanyData>> {
-        val data = dbHelper.selectAllFavourites()
+        val data = dbHelper.selectAllFavouritesFromCompanies()
         if(data.isEmpty()){
             val companiesFromRemote = mutableListOf<CompanyData>()
             for (ticker in defaultFavouriteCompaniesTicker) {
                 var company = CompanyData()
                 try {
                     company = remoteFinance.getCompanyData(ticker)
-                } catch(e: NoCompanyFoundException){
+                } catch(e: CompanyNotFoundException){
                     println(e.toString())
                     }
                 if (company.name != null) {
@@ -39,7 +38,7 @@ class GetCompaniesForFavouritesUseCase : KoinComponent {
             dbHelper.insertCompanies(companiesFromRemote)
         }
 
-        return dbHelper.selectAllFavouritesAsFlow()
+        return dbHelper.selectAllFavouritesAsFlowFromCompanies()
     }
 }
 

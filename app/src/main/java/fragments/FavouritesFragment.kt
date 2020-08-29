@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.envidual.finance.touchlab.R
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.favourites_fragment.*
 import viewmodel.FavouritesViewModel
 
@@ -56,6 +57,8 @@ class FavouritesFragment : Fragment(){
         super.onViewCreated(view, savedInstanceState)
 
         favouritesAdapter= FavouritesAdapter()
+
+
 
         favouritesViewModel.favourites.observe(viewLifecycleOwner, Observer { favouritesAdapter.submitList(it)})
 

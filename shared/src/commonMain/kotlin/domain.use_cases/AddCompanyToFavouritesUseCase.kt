@@ -12,6 +12,6 @@ class AddCompanyToFavouritesUseCase : KoinComponent{
 
     suspend fun invoke(companyData: CompanyData){
         companyData.isFavourite = true
-        dbHelper.changeIsFavouriteForTicker(companyData.isFavourite!!, companyData.ticker!!)
+        dbHelper.changeIsFavouriteByTickerInCompanies(companyData.isFavourite!!, companyData.ticker!!)
     }
 }

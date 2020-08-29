@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import remote.NoCompanyFoundException
+import remote.CompanyNotFoundException
 
 class SearchesViewModel : ViewModel(), KoinComponent {
 
@@ -45,7 +45,7 @@ class SearchesViewModel : ViewModel(), KoinComponent {
             withContext(Dispatchers.IO){
                 try {
                     getCompanyByTicker.invoke(ticker)
-                } catch(e: NoCompanyFoundException){
+                } catch(e: CompanyNotFoundException){
                     Log.d("Searches", "Company not found")
                     companyNotFound.postValue(true)
                 } finally {

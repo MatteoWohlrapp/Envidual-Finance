@@ -17,45 +17,70 @@ lastSearched INTEGER
 );
 
 
-selectAllFavourites:
-SELECT * FROM companies WHERE isFavourite = 1 ORDER BY ticker ASC;
+selectAllFavouritesFromCompanies:
+SELECT * FROM companies WHERE isFavourite = 1 ORDER BY name ASC;
 
-selectAllSearches:
+selectAllSearchesFromCompanies:
 SELECT * FROM companies WHERE isSearched = 1 ORDER BY lastSearched DESC;
 
-selectByTicker:
+selectByTickerFromCompanies:
 SELECT * FROM companies WHERE ticker = ?;
 
-selectAll:
+selectAllFromCompanies:
 SELECT * FROM companies;
 
 insertCompanies:
 INSERT OR REPLACE INTO companies(country, currency, finnhubIndustry, ipo, logo, marketCapitalization, name, ticker, isFavourite, isSearched, lastSearched)
 VALUES (?,?,?,?,?,?,?,?,?,?,?);
 
-changeIsFavouriteValue:
+changeIsFavouriteValueInCompanies:
 UPDATE companies SET isFavourite = ? WHERE ticker = ?;
 
-changeIsSearchedValue:
+changeIsSearchedValueInCompanies:
 UPDATE companies SET isSearched = ? WHERE ticker = ?;
 
-changeLastSearched:
+changeLastSearchedInCompanies:
 UPDATE companies SET lastSearched = ? WHERE ticker = ?;
 
-selectCompaniesToUpdate:
+selectCompaniesToUpdateFromCompanies:
 SELECT * FROM companies WHERE lastSearched < ? ORDER BY lastSearched DESC;
 
 deleteCompany:
 DELETE FROM companies WHERE ticker = ?;
 
-deleteAll:
+deleteAllFromCompanies:
 DELETE FROM companies;
 
 
---selectByIndustry:
---SELECT * FROM companies WHERE finnhubIndustry = ?;
 
+CREATE TABLE companiesNews(
+ticker TEXT NOT NULL,
+category TEXT NOT NULL,
+datetime INTEGER,
+headline TEXT NOT NULL PRIMARY KEY,
+id INTEGER,
+image TEXT NOT NULL,
+related TEXT NOT NULL,
+source TEXT NOT NULL,
+summary TEXT NOT NULL,
+url TEXT NOT NULL
+);
 
+selectByTickerFromCompaniesNews:
+SELECT * FROM companiesNews WHERE ticker = ? ORDER BY datetime DESC;
+
+selectAllFromCompaniesNews:
+SELECT * FROM companiesNews;
+
+insertCompaniesNews:
+INSERT OR REPLACE INTO companiesNews(ticker, category, datetime, headline, id, image, related, source, summary, url)
+VALUES (?,?,?,?,?,?,?,?,?,?);
+
+deleteCompanyNews:
+DELETE FROM companiesNews WHERE ticker = ?;
+
+deleteAllFromCompaniesNews:
+DELETE FROM companiesNews;
 
 
 

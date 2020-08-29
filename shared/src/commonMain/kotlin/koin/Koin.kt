@@ -62,6 +62,9 @@ private val coreModule = module {
     single {
         UpdateCompaniesUseCase()
     }
+    single {
+        GetCompanyNewsByTickerUseCase()
+    }
 
 }
 

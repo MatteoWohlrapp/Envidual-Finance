@@ -12,7 +12,7 @@ class UpdateCompaniesUseCase: KoinComponent {
     private val remoteFinance: RemoteFinanceInterface by inject()
 
     suspend fun invoke(){
-        val companiesToUpdate = dbHelper.selectCompaniesToUpdate(getTimestamp()-86400)
+        val companiesToUpdate = dbHelper.selectCompaniesToUpdateFromCompanies(getTimestamp()-86400)
 
         val updatedCompanies = mutableListOf<CompanyData>()
 

@@ -11,7 +11,7 @@ class DeleteCompanyFromSearchesUseCase: KoinComponent {
 
     suspend fun invoke(companyData: CompanyData){
         companyData.isSearched = false
-        dbHelper.changeIsSearchedForTicker(companyData.isSearched!!, companyData.ticker!!)
+        dbHelper.changeIsSearchedByTickerInCompanies(companyData.isSearched!!, companyData.ticker!!)
     }
 
 }
