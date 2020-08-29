@@ -47,7 +47,7 @@ class CompanyDataDetailedFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         if (arguments != null) {
-            val args = CompanyDataDetailedFragmentArgs.fromBundle(arguments!!)
+            val args = CompanyDataDetailedFragmentArgs.fromBundle(requireArguments())
 
             binding.detailedIndustryData.text = args.industry
             binding.detailedCountryData.text = args.country
@@ -55,6 +55,7 @@ class CompanyDataDetailedFragment : Fragment() {
             binding.detailedMarketCapitalizationData.text =
                 args.marketCapitalization + " " + args.currency
             binding.detailedName.text = args.name
+            binding.detailedShareOutstandingData.text = args.shareOutstanding + " " + args.currency
             binding.detailedTicker.text = args.ticker
             binding.companyDetailedLogo.load(args.logo){
                 size(200)

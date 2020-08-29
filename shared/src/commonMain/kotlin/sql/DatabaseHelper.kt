@@ -29,7 +29,7 @@ class DatabaseHelper(
 //            try {
                 companyData.forEach { company ->
                     dbReference.tableQueries.insertCompanies(company.country!!, company.currency!!, company.finnhubIndustry!!, company.ipo!!,
-                        company.logo!!, company.marketCapitalization!!, company.name!!, company.ticker!!, company.isFavourite, company.isSearched, company.lastSearched)
+                        company.logo!!, company.marketCapitalization!!, company.name!!, company.shareOutstanding!!, company.ticker!!, company.isFavourite, company.isSearched, company.lastSearched)
                 }
 //            }
 //            catch(e: NullPointerException) {
@@ -114,14 +114,14 @@ class DatabaseHelper(
     fun List<Companies>.mapCompaniesToCompanyData() : List<domain.data.CompanyData>{
         val listOfCompanyData = mutableListOf<domain.data.CompanyData>()
         for (company in this)
-            listOfCompanyData.add(CompanyData(company.country, company.currency, company.finnhubIndustry, company.ipo, company.logo, company.marketCapitalization, company.name, company.ticker, company.isFavourite, company.isSearched, company.lastSearched))
+            listOfCompanyData.add(CompanyData(company.country, company.currency, company.finnhubIndustry, company.ipo, company.logo, company.marketCapitalization, company.name, company.shareOutstanding, company.ticker, company.isFavourite, company.isSearched, company.lastSearched))
         return listOfCompanyData
     }
 
     fun Flow<List<Companies>>.mapCompaniesToCompanyData() : Flow<List<domain.data.CompanyData>> = map {
         val listOfCompanyData = mutableListOf<domain.data.CompanyData>()
         for (company in it)
-            listOfCompanyData.add(CompanyData(company.country, company.currency, company.finnhubIndustry, company.ipo, company.logo, company.marketCapitalization, company.name, company.ticker, company.isFavourite, company.isSearched, company.lastSearched))
+            listOfCompanyData.add(CompanyData(company.country, company.currency, company.finnhubIndustry, company.ipo, company.logo, company.marketCapitalization, company.name, company.shareOutstanding, company.ticker, company.isFavourite, company.isSearched, company.lastSearched))
         return@map listOfCompanyData
     }
 

@@ -42,7 +42,7 @@ class CompanyNewsDetailedFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         if (arguments != null) {
-            val args = CompanyNewsDetailedFragmentArgs.fromBundle(arguments!!)
+            val args = CompanyNewsDetailedFragmentArgs.fromBundle(requireArguments())
 
             binding.companyNewsHeadline.text = args.headline
             binding.companyNewsSummary.text = args.summary

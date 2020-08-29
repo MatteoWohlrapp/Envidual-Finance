@@ -35,6 +35,7 @@ class FavouritesAdapter : ListAdapter<CompanyData, FavouritesViewHolder>(
                     getItem(adapterPosition).logo!!,
                     getItem(adapterPosition).marketCapitalization.toString()!!,
                     getItem(adapterPosition).name!!,
+                    getItem(adapterPosition).shareOutstanding.toString()!!,
                     getItem(adapterPosition).ticker!!
                     )
                 val navController = Navigation.findNavController(itemView).navigate(action)

@@ -38,12 +38,12 @@ class RemoteFinance : RemoteFinanceInterface{
             }
         }
 
-    override suspend fun getCompanyNews(ticker: String): List<CompanyNews> =
+    override suspend fun getCompanyNews(ticker: String, from: String, to: String): List<CompanyNews> =
         network {
             try {
                 val arrayOfCompanyNews = mutableListOf<CompanyNews>()
                 val jsonString = client.get<String> {
-                    finnhubData("api/v1/company-news?symbol=$ticker&from=2020-08-28&to=2020-08-28&token=bsp7bq7rh5r8ktikc24g")
+                    finnhubData("api/v1/company-news?symbol=$ticker&from=$from&to=$to&token=bsp7bq7rh5r8ktikc24g")
                 }
                 println("ticker is: $ticker")
                 val jsonArray = Json.parseJson(jsonString).jsonArray

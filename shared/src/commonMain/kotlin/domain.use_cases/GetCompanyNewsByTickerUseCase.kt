@@ -15,14 +15,15 @@ class GetCompanyNewsByTickerUseCase: KoinComponent {
     val remoteFinance:RemoteFinanceInterface by inject()
 
     suspend fun invoke(ticker: String): Flow<List<CompanyNews>> = flow{
-
         val data = dbHelper.selectByTickerFromCompaniesNews(ticker)
         if(data.size <= 10)
             emit(data)
         else
             emit(data.subList(0, 10))
 
-        val companyNews = remoteFinance.getCompanyNews(ticker)
+//        val date = getTodaysDate()
+//        val companyNews = remoteFinance.getCompanyNews(ticker, date, date)
+        val companyNews = remoteFinance.getCompanyNews(ticker, "2020-08-29", "2020-08-29")
         dbHelper.insertCompaniesNews(companyNews)
 
         dbHelper.selectByTickerFromCompaniesNewsAsFlow(ticker).collect {
@@ -31,4 +32,6 @@ class GetCompanyNewsByTickerUseCase: KoinComponent {
             else
                 emit(it.subList(0, 10)) }
     }
+
 }
+expect fun getTodaysDate() : String

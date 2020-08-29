@@ -61,7 +61,6 @@ kotlin {
         implementation(Deps.koinCore)
         implementation(Deps.Ktor.commonSerialization)
         api(Deps.kermit)
-        implementation("com.google.code.gson:gson:2.8.0")
     }
 
     sourceSets["commonTest"].dependencies {
@@ -71,8 +70,6 @@ kotlin {
         implementation(Deps.koinTest)
         // Karmok is an experimental library which helps with mocking interfaces
         implementation(Deps.karmok)
-        implementation("com.google.code.gson:gson:2.8.0")
-
     }
 
     sourceSets["androidMain"].dependencies {
@@ -85,8 +82,6 @@ kotlin {
         implementation(Deps.Coroutines.android)
         implementation(Deps.Ktor.androidSerialization)
         implementation(Deps.Ktor.androidCore)
-        implementation("com.google.code.gson:gson:2.8.0")
-
     }
 
     sourceSets["androidTest"].dependencies {
@@ -98,8 +93,6 @@ kotlin {
         implementation(Deps.AndroidXTest.rules)
         implementation(Deps.Coroutines.test)
         implementation(Deps.robolectric)
-        implementation("com.google.code.gson:gson:2.8.0")
-
     }
 
     sourceSets["iosMain"].dependencies {
@@ -115,8 +108,6 @@ kotlin {
         }
         implementation(Deps.Ktor.iosSerialization)
         implementation(Deps.koinCore)
-        implementation("com.google.code.gson:gson:2.8.0")
-
     }
 
     cocoapodsext {
@@ -134,8 +125,4 @@ sqldelight {
     database("EnvidualFinanceDatabase") {
         packageName = "co.example.envidual.finance.touchlab.db"
     }
-}
-
-dependencies {
-    implementation("com.google.code.gson:gson:2.8.6")
 }

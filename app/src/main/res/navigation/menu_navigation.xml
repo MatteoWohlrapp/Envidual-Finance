@@ -46,6 +46,9 @@
             android:name="name"
             app:argType="string" />
         <argument
+            android:name="shareOutstanding"
+            app:argType="string" />
+        <argument
             android:name="ticker"
             app:argType="string" />
         <action

@@ -90,7 +90,7 @@
                 android:text="1 * 10^10"
                 android:textColor="#7CE331"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/detailed_ipo_data" />
+                app:layout_constraintTop_toBottomOf="@+id/detailed_share_outstanding_data" />
 
             <TextView
                 android:id="@+id/detailed_industry"
@@ -134,7 +134,7 @@
                 android:text="Market capitalization:"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/detailed_ipo" />
+                app:layout_constraintTop_toBottomOf="@+id/detailed_share_outstanding" />
 
             <Button
                 android:id="@+id/detailed_company_back"
@@ -186,13 +186,34 @@
                 android:background="#E8E8E8"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="News:"
+                android:text="News of the day:"
                 android:textAlignment="center"
                 android:textSize="18dp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/detailed_market_capitalization" />
+
+            <TextView
+                android:id="@+id/detailed_share_outstanding"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="24dp"
+                android:text="Stock:"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/detailed_ipo" />
+
+            <TextView
+                android:id="@+id/detailed_share_outstanding_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="32dp"
+                android:text="1234"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/detailed_ipo_data" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
