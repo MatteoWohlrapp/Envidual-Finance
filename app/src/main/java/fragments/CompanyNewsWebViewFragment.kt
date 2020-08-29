@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -20,15 +21,18 @@ import coil.transform.CircleCropTransformation
 import com.example.envidual.finance.touchlab.R
 import com.example.envidual.finance.touchlab.databinding.CompanyDataDetailedBinding
 import com.example.envidual.finance.touchlab.databinding.CompanyNewsDetailedBinding
+import com.example.envidual.finance.touchlab.databinding.CompanyNewsWebViewBinding
 import domain.data.CompanyNews
 import domain.use_cases.GetCompanyNewsByTickerUseCase
 import kotlinx.android.synthetic.main.company_data_detailed.*
+import kotlinx.android.synthetic.main.company_news_web_view.*
 import kotlinx.coroutines.withContext
 import viewmodel.CompanyDetailedViewModel
 
-class CompanyNewsDetailedFragment : Fragment() {
+class CompanyNewsWebViewFragment : Fragment() {
 
-    private lateinit var binding: CompanyNewsDetailedBinding
+    private lateinit var binding: CompanyNewsWebViewBinding
+    private var url = "https://google.com"
 
 
     override fun onCreateView(
@@ -36,31 +40,15 @@ class CompanyNewsDetailedFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = CompanyNewsDetailedBinding.inflate(inflater, container, false)
+
+        binding = CompanyNewsWebViewBinding.inflate(inflater, container, false)
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        if (arguments != null) {
-            val args = CompanyNewsDetailedFragmentArgs.fromBundle(arguments!!)
-
-            binding.companyNewsHeadline.text = args.headline
-            binding.companyNewsSummary.text = args.summary
-            binding.companyNewsDatetime.text = args.datetime
-            binding.companyNewsSource.text = args.source
-            binding.companyNewsUrl.text = args.url
-            binding.companyNewsImage.load(args.image){
-                size(1200)
-            }
-        }
-        val navController = Navigation.findNavController(view)
-
-        binding.companyNewsBack.setOnClickListener {
-            navController.popBackStack()
-        }
-        binding.companyNewsUrl.setOnClickListener {
-            val action = CompanyNewsDetailedFragmentDirections.actionCompanyNewsDetailedFragmentToCompanyNewsWebViewFragment(binding.companyNewsUrl.text.toString())
-            navController.navigate(action)
-        }
+        url = CompanyNewsWebViewFragmentArgs.fromBundle(arguments!!).url
+        binding.companyNewsWebView.webViewClient = WebViewClient()
+        binding.companyNewsWebView.loadUrl(url)
     }
 }
