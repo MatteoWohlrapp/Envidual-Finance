@@ -16,11 +16,12 @@ class NativeViewModel(
 ) : KoinComponent {
 
     private val scope = MainScope(Dispatchers.Main)
-    private var getCompanyByTickerUseCase: GetCompanyByTickerUseCase
-    private var getCompaniesForFavouritesUseCase: GetCompaniesForFavouritesUseCase
-    private var getCompaniesForSearchesUseCase: GetCompaniesForSearchesUseCase
-    private var addCompanyToFavouritesUseCase : AddCompanyToFavouritesUseCase
-    private var deleteCompanyFromFavouritesUseCase : DeleteCompanyFromFavouritesUseCase
+    private val getCompanyByTickerUseCase: GetCompanyByTickerUseCase
+    private val getCompaniesForFavouritesUseCase: GetCompaniesForFavouritesUseCase
+    private val getCompaniesForSearchesUseCase: GetCompaniesForSearchesUseCase
+    private val addCompanyToFavouritesUseCase : AddCompanyToFavouritesUseCase
+    private val deleteCompanyFromFavouritesUseCase : DeleteCompanyFromFavouritesUseCase
+    private val deleteCompanyFromSearchesUseCase: DeleteCompanyFromSearchesUseCase
 
 
     init {
@@ -30,6 +31,7 @@ class NativeViewModel(
         getCompaniesForSearchesUseCase = GetCompaniesForSearchesUseCase()
         addCompanyToFavouritesUseCase = AddCompanyToFavouritesUseCase()
         deleteCompanyFromFavouritesUseCase = DeleteCompanyFromFavouritesUseCase()
+        deleteCompanyFromSearchesUseCase = DeleteCompanyFromSearchesUseCase()
     }
 
     fun getCompanyByTicker(ticker:String) {
@@ -70,6 +72,12 @@ class NativeViewModel(
     fun removeFavourite(company: CompanyData) {
         scope.launch {
             deleteCompanyFromFavouritesUseCase.invoke(company)
+        }
+    }
+
+    fun removeCompanyFromSearches(company: CompanyData) {
+        scope.launch {
+            deleteCompanyFromSearchesUseCase.invoke(company)
         }
     }
 
