@@ -24,10 +24,10 @@ class CompanyDetailedViewModel : ViewModel(), KoinComponent{
         viewModelScope.launch {
             withContext(Dispatchers.IO){
                 try{
-                    val companyNewsAsFlow = getCompanyNewsByTicker.invoke(ticker)
-                    companyNewsAsFlow.collect {
-                        companyNewsProgressBar.postValue(false)
-                        companyNews.postValue(it) }
+//                    val companyNewsAsFlow = getCompanyNewsByTicker.invoke(ticker)
+//                    companyNewsAsFlow.collect {
+//                        companyNewsProgressBar.postValue(false)
+//                        companyNews.postValue(it) }
                 } catch(e: CompanyNotFoundException){
                     companyNewsNotFound.postValue(true)
                 } finally {

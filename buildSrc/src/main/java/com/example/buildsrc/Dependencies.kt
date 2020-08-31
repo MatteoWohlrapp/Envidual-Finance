@@ -5,14 +5,14 @@ object Versions {
     val target_sdk = 29
     val compile_sdk = 29
 
-    val kotlin = "1.3.72"
+    val kotlin = "1.4.0"
     val androidx_test = "1.2.0"
     val androidx_test_ext = "1.1.1"
     val android_gradle_plugin = "4.0.1"
     val buildToolsVersion = "29.0.0"
     val junit = "4.13"
     val sqlDelight = "1.3.0"
-    val ktor = "1.3.2"
+    val ktor = "1.4.0"
     val stately = "1.0.2"
     val multiplatformSettings = "0.6"
     val coroutines = "1.3.5-native-mt"
@@ -90,8 +90,6 @@ object Deps {
         val commonSerialization ="io.ktor:ktor-client-serialization:${Versions.ktor}"
         val androidSerialization ="io.ktor:ktor-client-serialization-jvm:${Versions.ktor}"
         val iosSerialization ="io.ktor:ktor-client-serialization-native:${Versions.ktor}"
-//        val commonSerialization ="io.ktor:ktor-client-gson:${Versions.ktor}"
-//        val androidSerialization ="io.ktor:ktor-client-gson:${Versions.ktor}"
-//        val iosSerialization ="io.ktor:ktor-client-gson:${Versions.ktor}"
+//        val commonSerialization ="io.ktor:ktor-gson:${Versions.ktor}"
     }
 }

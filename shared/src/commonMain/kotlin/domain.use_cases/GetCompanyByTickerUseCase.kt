@@ -1,6 +1,7 @@
 package domain.use_cases
 
 import cache.CompanyDataCacheInterface
+import co.touchlab.stately.freeze
 import domain.data.CompanyData
 import remote.RemoteFinanceInterface
 import org.koin.core.KoinComponent
