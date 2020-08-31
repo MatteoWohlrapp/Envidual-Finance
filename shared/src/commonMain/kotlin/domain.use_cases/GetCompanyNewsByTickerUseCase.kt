@@ -29,7 +29,14 @@ class GetCompanyNewsByTickerUseCase: KoinComponent {
 //        val date = getTodaysDate()
 //        val companyNews = remoteFinance.getCompanyNews(ticker, date, date)
         val companyNews = remoteFinance.getCompanyNews(ticker, "2020-08-30", "2020-08-30")
-        companyNewsCache.insert(companyNews)
+        for(news in companyNews)
+            news.ticker = ticker
+        println(companyNews.toString())
+        try {
+            companyNewsCache.insert(companyNews)
+        } catch(e: NullPointerException){
+            println("Insertion of company news failed!")
+        }
 
         companyNewsCache.selectByTickerAsFlow(ticker).collect {
             if(it.size <= 10)

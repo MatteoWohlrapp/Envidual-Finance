@@ -42,17 +42,6 @@ class RemoteFinance : RemoteFinanceInterface{
                 client.get<List<CompanyNews>> {
                     finnhubData("api/v1/company-news?symbol=$ticker&from=$from&to=$to&token=bsp7bq7rh5r8ktikc24g")
                 }
-
-//                println("ticker is: $ticker")
-//                val jsonArray = Json.parseJson(jsonString).jsonArray
-//                for(jsonObj in jsonArray){
-//                    val news = Json.parse(CompanyNews.serializer(), jsonObj.toString())
-//                    println(news.headline)
-//                    news.ticker = ticker
-//                    arrayOfCompanyNews
-//                    arrayOfCompanyNews.add(news)
-//                }
-//                arrayOfCompanyNews
         }
 
 
