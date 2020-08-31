@@ -21,10 +21,10 @@ android {
         multiDexEnabled = true
     }
 
-    lintOptions {
-        isWarningsAsErrors = false
-        isAbortOnError = false
-    }
+//    lintOptions {
+//        isWarningsAsErrors = false
+//        isAbortOnError = false
+//    }
 }
 
 kotlin {
@@ -36,14 +36,15 @@ kotlin {
     } else {
         iosX64("ios")
     }
-    targets.getByName<KotlinNativeTarget>("ios").compilations["main"].kotlinOptions.freeCompilerArgs +=
-        listOf("-Xobjc-generics", "-Xg0")
+//    targets.getByName<KotlinNativeTarget>("ios").compilations["main"].kotlinOptions.freeCompilerArgs +=
+//        listOf("-Xobjc-generics", "-Xg0")
 
     version = "1.1"
 
     sourceSets {
         all {
             languageSettings.apply {
+                useExperimentalAnnotation("kotlin.RequiresOptIn")
                 useExperimentalAnnotation("kotlinx.coroutines.ExperimentalCoroutinesApi")
             }
         }
@@ -79,7 +80,6 @@ kotlin {
         implementation(Deps.Ktor.jvmJson)
         implementation(Deps.Ktor.jvmLogging)
         implementation(Deps.Coroutines.jdk)
-        implementation(Deps.Coroutines.android)
         implementation(Deps.Ktor.androidSerialization)
         implementation(Deps.Ktor.androidCore)
     }
@@ -98,15 +98,15 @@ kotlin {
     sourceSets["iosMain"].dependencies {
         implementation(Deps.SqlDelight.driverIos)
         implementation(Deps.Ktor.ios)
-        implementation(Deps.Ktor.iosCore)
-        implementation(Deps.Ktor.iosJson)
-        implementation(Deps.Ktor.iosLogging)
-        implementation(Deps.Coroutines.native) {
+//        implementation(Deps.Ktor.iosCore)
+//        implementation(Deps.Ktor.iosJson)
+//        implementation(Deps.Ktor.iosLogging)
+        implementation(Deps.Coroutines.common) {
             version {
-                strictly("1.3.5-native-mt")
+                strictly(com.example.buildsrc.Versions.coroutines)
             }
         }
-        implementation(Deps.Ktor.iosSerialization)
+//        implementation(Deps.Ktor.iosSerialization)
         implementation(Deps.koinCore)
     }
 
@@ -119,7 +119,10 @@ kotlin {
             transitiveExport = true
         }
     }
+
 }
+
+
 
 sqldelight {
     database("EnvidualFinanceDatabase") {

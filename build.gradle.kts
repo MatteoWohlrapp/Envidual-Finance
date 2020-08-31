@@ -2,7 +2,6 @@
 import com.example.buildsrc.Deps
 
 buildscript {
-    val kotlin_version by extra("1.4.0")
     repositories {
         google()
         mavenCentral()
@@ -32,10 +31,12 @@ allprojects {
         google()
         jcenter()
         maven(url = "https://kotlin.bintray.com/kotlinx")
-        maven(url = "https://dl.bintray.com/ekito/koin")
+//        maven(url = "https://dl.bintray.com/ekito/koin")
         maven(url = "https://oss.sonatype.org/content/repositories/snapshots/")
+        maven(url = "https://dl.bintray.com/touchlabpublic/kotlin")
     }
 }
+
 
 subprojects {
 //    apply(plugin = "org.jlleitschuh.gradle.ktlint")
