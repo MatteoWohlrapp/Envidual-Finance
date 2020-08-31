@@ -1,62 +1,45 @@
 package domain.use_cases
 
+import cache.CompanyDataCacheInterface
 import domain.data.CompanyData
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.withContext
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import org.koin.ext.scope
-import remote.NoCompanyFoundException
+import remote.CompanyNotFoundException
 import remote.RemoteFinanceInterface
-import sql.DatabaseHelper
-import kotlin.native.concurrent.ThreadLocal
+import cache.DatabaseHelper
 
 class GetCompaniesForFavouritesUseCase : KoinComponent {
 
-    private val dbHelper: DatabaseHelper by inject()
+    private val companyDataCache : CompanyDataCacheInterface by inject()
     private val remoteFinance: RemoteFinanceInterface by inject()
 
     private val defaultFavouriteCompaniesTicker =
-        mutableListOf("MSFT", "AAPL", "AMZN", "FB", "GOOGL", "IBM", "BRK.B")
+        mutableListOf("MSFT", "AAPL", "AMZN", "FB", "GOOGL", "IBM")
 
 
     suspend fun invoke(): Flow<List<CompanyData>> {
-        println("Invoke in favouritesUseCase called")
-        val data = dbHelper.selectAllFavourites()
+        val data = companyDataCache.selectAllFavourites()
         if(data.isEmpty()){
-            val exploreList = mutableListOf<CompanyData>()
+            val companiesFromRemote = mutableListOf<CompanyData>()
             for (ticker in defaultFavouriteCompaniesTicker) {
-                var data = CompanyData()
+                var company = CompanyData()
                 try {
-                    println("trying to access remote and searching ticker: $ticker")
-                    data = remoteFinance.getCompanyData(ticker)
-                    println("data successfully retrieved, name is ${data.name}")
-                } catch(e: NoCompanyFoundException){
+                    company = remoteFinance.getCompanyData(ticker)
+                } catch(e: CompanyNotFoundException){
                     println(e.toString())
                     }
-                if (data.name != null) {
-                    data.isFavourite = true
-                    exploreList.add(data)
+                if (company.name != null) {
+                    company.isFavourite = true
+                    company.lastSearched = getTimestamp()
+                    companiesFromRemote.add(company)
                 }
             }
 
-            val time = getTimestamp()
-            println("Timestamp is $time")
-            dbHelper.insertCompany(exploreList, time)
+            companyDataCache.insert(companiesFromRemote)
         }
 
-        return dbHelper.selectAllFavouritesAsFlow().map { it ->
-            val companies = mutableListOf<CompanyData>()
-
-            for(company in it){
-                companies.add(CompanyData(company.country, company.currency, company.finnhubIndustry, company.ipo,
-                    company.logo, company.marketCapitalization, company.name, company.ticker, company.isFavourite))
-            }
-
-            companies
-        }
+        return companyDataCache.selectAllFavouritesAsFlow()
     }
 }
 

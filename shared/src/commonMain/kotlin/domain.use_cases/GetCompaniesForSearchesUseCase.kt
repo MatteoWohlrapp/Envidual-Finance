@@ -1,26 +1,16 @@
 package domain.use_cases
 
+import cache.CompanyDataCacheInterface
 import domain.data.CompanyData
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import sql.DatabaseHelper
+import cache.DatabaseHelper
 
 class GetCompaniesForSearchesUseCase: KoinComponent {
 
-    private val dbHelper: DatabaseHelper by inject()
+    private val companyDataCache : CompanyDataCacheInterface by inject()
 
-    suspend fun invoke(): Flow<List<CompanyData>> =
-         dbHelper.selectAllSearchesAsFlow().map { it ->
-            val companies = mutableListOf<CompanyData>()
-
-            for(company in it){
-                companies.add(CompanyData(company.country, company.currency, company.finnhubIndustry, company.ipo,
-                company.logo, company.marketCapitalization, company.name, company.ticker, company.isFavourite))
-            }
-
-            companies
-        }
-
+    fun invoke(): Flow<List<CompanyData>> =
+         companyDataCache.selectAllSearchesAsFlow()
 }

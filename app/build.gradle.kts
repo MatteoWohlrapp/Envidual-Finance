@@ -47,7 +47,7 @@ android {
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk7", KotlinCompilerVersion.VERSION))
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.0")
     implementation(project(":shared"))
     implementation(Deps.recyclerView)
     implementation(Deps.material_x)
@@ -65,8 +65,8 @@ dependencies {
     implementation(Deps.lifecycle_viewmodel_extensions)
     implementation(Deps.lifecycle_livedata)
     implementation(Deps.lifecycle_extension)
-    implementation("androidx.navigation:navigation-fragment-ktx:2.1.0")
-    implementation("androidx.navigation:navigation-ui-ktx:2.1.0")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.3.0")
+    implementation("androidx.navigation:navigation-ui-ktx:2.3.0")
     implementation("io.coil-kt:coil:0.11.0")
     testImplementation(Deps.junit)
 }

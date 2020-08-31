@@ -1,82 +1,67 @@
 package domain.use_cases
 
-import co.example.envidual.finance.touchlab.db.Companies
+import cache.CompanyDataCacheInterface
 import domain.data.CompanyData
 import remote.RemoteFinanceInterface
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import remote.NoCompanyFoundException
-import sql.DatabaseHelper
+import remote.CompanyNotFoundException
 
 
 class GetCompanyByTickerUseCase : KoinComponent {
 
     private val remoteFinance: RemoteFinanceInterface by inject()
-    private val dbHelper: DatabaseHelper by inject()
+    private val companyDataCache : CompanyDataCacheInterface by inject()
 
-    suspend fun invoke(ticker: String): CompanyData {
+    suspend fun invoke(ticker: String){
         val upperCaseTicker = ticker.toUpperCase()
-        var data: CompanyData
-        println("About to access data")
-        val companiesByGivenTicker = dbHelper.selectByTicker(upperCaseTicker)
-        println("ticker is $upperCaseTicker and the list from the database contains $companiesByGivenTicker")
 
-        if (companiesByGivenTicker.isEmpty()) {
+        println("About to access data")
+        val companyByGivenTicker = companyDataCache.selectByTicker(upperCaseTicker)
+        println("ticker is $upperCaseTicker and the list from the database contains $companyByGivenTicker")
+
+        if (companyByGivenTicker.isEmpty()) {
             // the company was not found in the database, we need to fetch from remote
-            println("found no data for the ticker in the table")
-            data = remoteFinance.getCompanyData(upperCaseTicker)
-            var companiesByRemoteTicker = listOf<Companies>()
-            if(data.name != null)
-                companiesByRemoteTicker = dbHelper.selectByTicker(data.ticker!!)
+            println("found no data for the given ticker in the table")
+            val companyDataFromRemote = remoteFinance.getCompanyData(upperCaseTicker)
+
+            var companiesByRemoteTicker: List<CompanyData>
+
+//            checking if company was found
+            if(companyDataFromRemote.name != null)
+                companiesByRemoteTicker = companyDataCache.selectByTicker(companyDataFromRemote.ticker!!)
             else
-                throw NoCompanyFoundException("No company found.")
+                throw CompanyNotFoundException("No company found.")
 
             if (companiesByRemoteTicker.isEmpty()) {
+                println("found no data for the remote ticker in the table")
                 val time = getTimestamp()
-                println("Timestamp is $time")
-                dbHelper.insertCompany(listOf(data), time)
+                companyDataFromRemote.lastSearched = time
+                companyDataFromRemote.isSearched = true
+
+                companyDataCache.insert(listOf(companyDataFromRemote))
             } else {
-                val company = companiesByRemoteTicker.first()
-
-                data = CompanyData(
-                    company.country,
-                    company.currency,
-                    company.finnhubIndustry,
-                    company.ipo,
-                    company.logo,
-                    company.marketCapitalization!!.toFloat(),
-                    company.name,
-                    company.ticker
-                )
+                println("found data for the remote ticker in the table")
+                val companyDataFromDatabaseByRemoteTicker = companiesByRemoteTicker.first()
 
                 val time = getTimestamp()
-                data.isSearched = true
-                dbHelper.changeIsSearchedForTicker(data.isSearched!!, data.ticker!!)
-                println("Timestamp is $time")
-                dbHelper.changeLastSearched(time, data.ticker!!)
+                companyDataFromDatabaseByRemoteTicker.isSearched = true
+                companyDataFromDatabaseByRemoteTicker.lastSearched = time
+
+                companyDataCache.updateIsSearchedByTicker(companyDataFromDatabaseByRemoteTicker.isSearched!!, companyDataFromDatabaseByRemoteTicker.ticker!!)
+                companyDataCache.updateLastSearchedByTicker(companyDataFromDatabaseByRemoteTicker.lastSearched!!, companyDataFromDatabaseByRemoteTicker.ticker!!)
             }
         } else {
             println("found data for ticker in the table")
-            val company = companiesByGivenTicker.first()
+            val companyDataFromDatabaseByGivenTicker = companyByGivenTicker.first()
 
-            data = CompanyData(
-                company.country,
-                company.currency,
-                company.finnhubIndustry,
-                company.ipo,
-                company.logo,
-                company.marketCapitalization!!.toFloat(),
-                company.name,
-                company.ticker
-            )
 
             val time = getTimestamp()
-            data.isSearched = true
-            dbHelper.changeIsSearchedForTicker(data.isSearched!!, data.ticker!!)
-            println("Timestamp is $time")
-            dbHelper.changeLastSearched(time, data.ticker!!)
+            companyDataFromDatabaseByGivenTicker.isSearched = true
+            companyDataFromDatabaseByGivenTicker.lastSearched = time
+
+            companyDataCache.updateIsSearchedByTicker(companyDataFromDatabaseByGivenTicker.isSearched!!, companyDataFromDatabaseByGivenTicker.ticker!!)
+            companyDataCache.updateLastSearchedByTicker(companyDataFromDatabaseByGivenTicker.lastSearched!!, companyDataFromDatabaseByGivenTicker.ticker!!)
         }
-        println(data.toString())
-        return data
     }
 }

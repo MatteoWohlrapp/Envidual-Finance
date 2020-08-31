@@ -38,7 +38,47 @@ class FavouritesFragment : Fragment(){
         super.onCreate(savedInstanceState)
 
         favouritesViewModel.getCompanyDataForFavourites()
+        favouritesViewModel.updateCompanies()
 
+        setupRecyclerViewSwipeGestures()
+    }
+
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.favourites_fragment, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        favouritesAdapter= FavouritesAdapter()
+
+
+
+        favouritesViewModel.favourites.observe(viewLifecycleOwner, Observer { favouritesAdapter.submitList(it)})
+
+        favouritesViewModel.favouritesProgressBar.observe(viewLifecycleOwner, Observer {
+            if(it)
+                favourites_progress_bar.visibility = View.VISIBLE
+            else
+                favourites_progress_bar.visibility = View.GONE
+        })
+
+        favourites_recycler_view.apply {
+            layoutManager = LinearLayoutManager(context)
+            addItemDecoration(ItemSpacingDecoration())
+            adapter = favouritesAdapter
+        }
+
+        val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
+        itemTouchHelper.attachToRecyclerView(favourites_recycler_view)
+    }
+
+    fun setupRecyclerViewSwipeGestures(){
         deleteIcon = ContextCompat.getDrawable(this.context!!, R.drawable.delete_icon)!!
 
 //        callback for the swipe gesture
@@ -97,37 +137,5 @@ class FavouritesFragment : Fragment(){
             }
         }
 
-        favouritesViewModel.updateCompanies()
-    }
-
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.favourites_fragment, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        favouritesAdapter= FavouritesAdapter()
-        favouritesViewModel.favourites.observe(viewLifecycleOwner, Observer { favouritesAdapter.submitList(it)})
-        favouritesViewModel.favouritesProgressBar.observe(viewLifecycleOwner, Observer {
-            if(it)
-                favourites_progress_bar.visibility = View.VISIBLE
-            else
-                favourites_progress_bar.visibility = View.GONE
-        })
-
-        favourites_recycler_view.apply {
-            layoutManager = LinearLayoutManager(context)
-            addItemDecoration(ItemSpacingDecoration())
-            adapter = favouritesAdapter
-        }
-
-        val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
-        itemTouchHelper.attachToRecyclerView(favourites_recycler_view)
     }
 }

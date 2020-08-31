@@ -7,7 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
-import remote.NoCompanyFoundException
+import remote.CompanyNotFoundException
 
 
 class NativeViewModel(
@@ -39,7 +39,7 @@ class NativeViewModel(
             try {
                 getCompanyByTickerUseCase.invoke(ticker)
             }
-            catch(e: NoCompanyFoundException) {
+            catch(e: CompanyNotFoundException) {
                 errorUpdate(e.message!!)
             }
         }

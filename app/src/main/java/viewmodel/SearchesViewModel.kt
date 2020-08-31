@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import remote.NoCompanyFoundException
+import remote.CompanyNotFoundException
 
 class SearchesViewModel : ViewModel(), KoinComponent {
 
@@ -22,6 +22,7 @@ class SearchesViewModel : ViewModel(), KoinComponent {
     private val addCompanyToFavourites: AddCompanyToFavouritesUseCase by inject()
     private val deleteCompanyFromSearches: DeleteCompanyFromSearchesUseCase by inject()
     private val deleteCompanyFromFavourites: DeleteCompanyFromFavouritesUseCase by inject()
+
     var searches = MutableLiveData<List<CompanyData>>()
     var searchesProgressBar = MutableLiveData<Boolean>()
     var companyNotFound = MutableLiveData<Boolean>()
@@ -42,15 +43,11 @@ class SearchesViewModel : ViewModel(), KoinComponent {
         searchesProgressBar.postValue(true)
         viewModelScope.launch {
             withContext(Dispatchers.IO){
-                var data = CompanyData()
                 try {
-                    Log.d("Searches", ticker)
-                    data = getCompanyByTicker.invoke(ticker)
-                    Log.d("Searches", data.name)
-
-                } catch(e: NoCompanyFoundException){
+                    getCompanyByTicker.invoke(ticker)
+                } catch(e: CompanyNotFoundException){
                     Log.d("Searches", "Company not found")
-                    companyNotFound.postValue(false)
+                    companyNotFound.postValue(true)
                 } finally {
                     searchesProgressBar.postValue(false)
                 }
