@@ -11,8 +11,7 @@ class DeleteCompanyFromFavouritesUseCase: KoinComponent {
     private val companyDataCache : CompanyDataCacheInterface by inject()
 
     suspend fun invoke(companyData: CompanyData){
-        companyData.isFavourite = false
-        companyDataCache.updateIsFavouriteByTicker(companyData.isFavourite!!, companyData.ticker!!)
+        companyDataCache.updateIsFavouriteByTicker(false, companyData.ticker!!)
     }
 
 }

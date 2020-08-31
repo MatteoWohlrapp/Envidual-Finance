@@ -11,8 +11,7 @@ class DeleteCompanyFromSearchesUseCase: KoinComponent {
     private val companyDataCache : CompanyDataCacheInterface by inject()
 
     suspend fun invoke(companyData: CompanyData){
-        companyData.isSearched = false
-        companyDataCache.updateIsSearchedByTicker(companyData.isSearched!!, companyData.ticker!!)
+        companyDataCache.updateIsSearchedByTicker(false, companyData.ticker!!)
     }
 
 }

@@ -11,7 +11,6 @@ class AddCompanyToFavouritesUseCase : KoinComponent{
     private val companyDataCache : CompanyDataCacheInterface by inject()
 
     suspend fun invoke(companyData: CompanyData){
-        companyData.isFavourite = true
-        companyDataCache.updateIsFavouriteByTicker(companyData.isFavourite!!, companyData.ticker!!)
+        companyDataCache.updateIsFavouriteByTicker(true, companyData.ticker!!)
     }
 }

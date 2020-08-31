@@ -30,12 +30,9 @@ class GetCompaniesForFavouritesUseCase : KoinComponent {
                     println(e.toString())
                     }
                 if (company.name != null) {
-                    company.isFavourite = true
-                    company.lastSearched = getTimestamp()
-                    companiesFromRemote.add(company)
+                    companiesFromRemote.add(company.copy(isFavourite = true, lastSearched = getTimestamp()))
                 }
             }
-
             companyDataCache.insert(companiesFromRemote)
         }
 

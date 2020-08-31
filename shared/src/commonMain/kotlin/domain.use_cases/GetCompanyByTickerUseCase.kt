@@ -36,33 +36,24 @@ class GetCompanyByTickerUseCase : KoinComponent {
 
             if (companiesByRemoteTicker.isEmpty()) {
                 println("found no data for the remote ticker in the table")
-                val time = getTimestamp()
-                companyDataFromRemote.lastSearched = time
-                companyDataFromRemote.isSearched = true
-
-                companyDataCache.insert(listOf(companyDataFromRemote))
+                companyDataCache.insert(listOf(companyDataFromRemote.copy(isSearched = true, lastSearched = getTimestamp())))
             } else {
                 println("found data for the remote ticker in the table")
                 val companyDataFromDatabaseByRemoteTicker = companiesByRemoteTicker.first()
 
                 val time = getTimestamp()
-                companyDataFromDatabaseByRemoteTicker.isSearched = true
-                companyDataFromDatabaseByRemoteTicker.lastSearched = time
 
-                companyDataCache.updateIsSearchedByTicker(companyDataFromDatabaseByRemoteTicker.isSearched!!, companyDataFromDatabaseByRemoteTicker.ticker!!)
-                companyDataCache.updateLastSearchedByTicker(companyDataFromDatabaseByRemoteTicker.lastSearched!!, companyDataFromDatabaseByRemoteTicker.ticker!!)
+                companyDataCache.updateIsSearchedByTicker(true, companyDataFromDatabaseByRemoteTicker.ticker!!)
+                companyDataCache.updateLastSearchedByTicker(time, companyDataFromDatabaseByRemoteTicker.ticker!!)
             }
         } else {
             println("found data for ticker in the table")
             val companyDataFromDatabaseByGivenTicker = companyByGivenTicker.first()
 
-
             val time = getTimestamp()
-            companyDataFromDatabaseByGivenTicker.isSearched = true
-            companyDataFromDatabaseByGivenTicker.lastSearched = time
 
-            companyDataCache.updateIsSearchedByTicker(companyDataFromDatabaseByGivenTicker.isSearched!!, companyDataFromDatabaseByGivenTicker.ticker!!)
-            companyDataCache.updateLastSearchedByTicker(companyDataFromDatabaseByGivenTicker.lastSearched!!, companyDataFromDatabaseByGivenTicker.ticker!!)
+            companyDataCache.updateIsSearchedByTicker(true, companyDataFromDatabaseByGivenTicker.ticker!!)
+            companyDataCache.updateLastSearchedByTicker(time, companyDataFromDatabaseByGivenTicker.ticker!!)
         }
     }
 }
