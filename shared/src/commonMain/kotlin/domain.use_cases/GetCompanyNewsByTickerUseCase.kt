@@ -23,7 +23,7 @@ class GetCompanyNewsByTickerUseCase: KoinComponent {
 
 //        val date = getTodaysDate()
 //        val companyNews = remoteFinance.getCompanyNews(ticker, date, date)
-        val companyNews = remoteFinance.getCompanyNews(ticker, "2020-08-29", "2020-08-29")
+        val companyNews = remoteFinance.getCompanyNews(ticker, "2020-08-30", "2020-08-30")
         dbHelper.insertCompaniesNews(companyNews)
 
         dbHelper.selectByTickerFromCompaniesNewsAsFlow(ticker).collect {
