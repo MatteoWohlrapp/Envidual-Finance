@@ -1,16 +1,17 @@
 package domain.use_cases
 
+import cache.CompanyDataCacheInterface
 import domain.data.CompanyData
 import kotlinx.coroutines.flow.Flow
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import remote.CompanyNotFoundException
 import remote.RemoteFinanceInterface
-import sql.DatabaseHelper
+import cache.DatabaseHelper
 
 class GetCompaniesForFavouritesUseCase : KoinComponent {
 
-    private val dbHelper: DatabaseHelper by inject()
+    private val companyDataCache : CompanyDataCacheInterface by inject()
     private val remoteFinance: RemoteFinanceInterface by inject()
 
     private val defaultFavouriteCompaniesTicker =
@@ -18,7 +19,7 @@ class GetCompaniesForFavouritesUseCase : KoinComponent {
 
 
     suspend fun invoke(): Flow<List<CompanyData>> {
-        val data = dbHelper.selectAllFavouritesFromCompanies()
+        val data = companyDataCache.selectAllFavourites()
         if(data.isEmpty()){
             val companiesFromRemote = mutableListOf<CompanyData>()
             for (ticker in defaultFavouriteCompaniesTicker) {
@@ -35,10 +36,10 @@ class GetCompaniesForFavouritesUseCase : KoinComponent {
                 }
             }
 
-            dbHelper.insertCompanies(companiesFromRemote)
+            companyDataCache.insert(companiesFromRemote)
         }
 
-        return dbHelper.selectAllFavouritesAsFlowFromCompanies()
+        return companyDataCache.selectAllFavouritesAsFlow()
     }
 }
 

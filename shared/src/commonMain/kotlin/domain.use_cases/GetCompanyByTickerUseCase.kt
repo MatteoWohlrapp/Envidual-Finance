@@ -1,23 +1,23 @@
 package domain.use_cases
 
+import cache.CompanyDataCacheInterface
 import domain.data.CompanyData
 import remote.RemoteFinanceInterface
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import remote.CompanyNotFoundException
-import sql.DatabaseHelper
 
 
 class GetCompanyByTickerUseCase : KoinComponent {
 
     private val remoteFinance: RemoteFinanceInterface by inject()
-    private val dbHelper: DatabaseHelper by inject()
+    private val companyDataCache : CompanyDataCacheInterface by inject()
 
     suspend fun invoke(ticker: String){
         val upperCaseTicker = ticker.toUpperCase()
 
         println("About to access data")
-        val companyByGivenTicker = dbHelper.selectByTickerFromCompanies(upperCaseTicker)
+        val companyByGivenTicker = companyDataCache.selectByTicker(upperCaseTicker)
         println("ticker is $upperCaseTicker and the list from the database contains $companyByGivenTicker")
 
         if (companyByGivenTicker.isEmpty()) {
@@ -29,7 +29,7 @@ class GetCompanyByTickerUseCase : KoinComponent {
 
 //            checking if company was found
             if(companyDataFromRemote.name != null)
-                companiesByRemoteTicker = dbHelper.selectByTickerFromCompanies(companyDataFromRemote.ticker!!)
+                companiesByRemoteTicker = companyDataCache.selectByTicker(companyDataFromRemote.ticker!!)
             else
                 throw CompanyNotFoundException("No company found.")
 
@@ -39,7 +39,7 @@ class GetCompanyByTickerUseCase : KoinComponent {
                 companyDataFromRemote.lastSearched = time
                 companyDataFromRemote.isSearched = true
 
-                dbHelper.insertCompanies(listOf(companyDataFromRemote))
+                companyDataCache.insert(listOf(companyDataFromRemote))
             } else {
                 println("found data for the remote ticker in the table")
                 val companyDataFromDatabaseByRemoteTicker = companiesByRemoteTicker.first()
@@ -48,8 +48,8 @@ class GetCompanyByTickerUseCase : KoinComponent {
                 companyDataFromDatabaseByRemoteTicker.isSearched = true
                 companyDataFromDatabaseByRemoteTicker.lastSearched = time
 
-                dbHelper.changeIsSearchedByTickerInCompanies(companyDataFromDatabaseByRemoteTicker.isSearched!!, companyDataFromDatabaseByRemoteTicker.ticker!!)
-                dbHelper.changeLastSearchedInCompanies(companyDataFromDatabaseByRemoteTicker.lastSearched!!, companyDataFromDatabaseByRemoteTicker.ticker!!)
+                companyDataCache.updateIsSearchedByTicker(companyDataFromDatabaseByRemoteTicker.isSearched!!, companyDataFromDatabaseByRemoteTicker.ticker!!)
+                companyDataCache.updateLastSearchedByTicker(companyDataFromDatabaseByRemoteTicker.lastSearched!!, companyDataFromDatabaseByRemoteTicker.ticker!!)
             }
         } else {
             println("found data for ticker in the table")
@@ -60,8 +60,8 @@ class GetCompanyByTickerUseCase : KoinComponent {
             companyDataFromDatabaseByGivenTicker.isSearched = true
             companyDataFromDatabaseByGivenTicker.lastSearched = time
 
-            dbHelper.changeIsSearchedByTickerInCompanies(companyDataFromDatabaseByGivenTicker.isSearched!!, companyDataFromDatabaseByGivenTicker.ticker!!)
-            dbHelper.changeLastSearchedInCompanies(companyDataFromDatabaseByGivenTicker.lastSearched!!, companyDataFromDatabaseByGivenTicker.ticker!!)
+            companyDataCache.updateIsSearchedByTicker(companyDataFromDatabaseByGivenTicker.isSearched!!, companyDataFromDatabaseByGivenTicker.ticker!!)
+            companyDataCache.updateLastSearchedByTicker(companyDataFromDatabaseByGivenTicker.lastSearched!!, companyDataFromDatabaseByGivenTicker.ticker!!)
         }
     }
 }

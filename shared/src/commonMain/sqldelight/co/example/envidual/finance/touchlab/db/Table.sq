@@ -70,15 +70,15 @@ url TEXT NOT NULL
 selectByTickerFromCompaniesNews:
 SELECT * FROM companiesNews WHERE ticker = ? ORDER BY datetime DESC;
 
-selectAllFromCompaniesNews:
-SELECT * FROM companiesNews;
-
 insertCompaniesNews:
 INSERT OR REPLACE INTO companiesNews(ticker, category, datetime, headline, id, image, related, source, summary, url)
 VALUES (?,?,?,?,?,?,?,?,?,?);
 
-deleteCompanyNews:
+deleteCompanyNewsWithTicker:
 DELETE FROM companiesNews WHERE ticker = ?;
+
+deleteCompanyNewsWithTickerAndTimestamp:
+DELETE FROM companiesNews WHERE ticker = ? AND datetime < ?;
 
 deleteAllFromCompaniesNews:
 DELETE FROM companiesNews;
