@@ -53,35 +53,3 @@ deleteAllFromCompanies:
 DELETE FROM companies;
 
 
-
-CREATE TABLE companiesNews(
-ticker TEXT NOT NULL,
-category TEXT NOT NULL,
-datetime INTEGER,
-headline TEXT NOT NULL PRIMARY KEY,
-id INTEGER,
-image TEXT NOT NULL,
-related TEXT NOT NULL,
-source TEXT NOT NULL,
-summary TEXT NOT NULL,
-url TEXT NOT NULL
-);
-
-selectByTickerFromCompaniesNews:
-SELECT * FROM companiesNews WHERE ticker = ? ORDER BY datetime DESC;
-
-insertCompaniesNews:
-INSERT OR REPLACE INTO companiesNews(ticker, category, datetime, headline, id, image, related, source, summary, url)
-VALUES (?,?,?,?,?,?,?,?,?,?);
-
-deleteCompanyNewsWithTicker:
-DELETE FROM companiesNews WHERE ticker = ?;
-
-deleteCompanyNewsWithTickerAndTimestamp:
-DELETE FROM companiesNews WHERE ticker = ? AND datetime < ?;
-
-deleteAllFromCompaniesNews:
-DELETE FROM companiesNews;
-
-
-

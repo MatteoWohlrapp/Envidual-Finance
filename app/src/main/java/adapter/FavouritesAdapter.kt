@@ -33,12 +33,12 @@ class FavouritesAdapter : ListAdapter<CompanyData, FavouritesViewHolder>(
                     getItem(adapterPosition).finnhubIndustry!!,
                     getItem(adapterPosition).ipo!!,
                     getItem(adapterPosition).logo!!,
-                    getItem(adapterPosition).marketCapitalization.toString()!!,
+                    getItem(adapterPosition).marketCapitalization.toString(),
                     getItem(adapterPosition).name!!,
-                    getItem(adapterPosition).shareOutstanding.toString()!!,
+                    getItem(adapterPosition).shareOutstanding.toString(),
                     getItem(adapterPosition).ticker!!
                     )
-                val navController = Navigation.findNavController(itemView).navigate(action)
+                Navigation.findNavController(itemView).navigate(action)
             }
         }
     }

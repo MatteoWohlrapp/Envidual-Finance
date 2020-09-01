@@ -5,6 +5,7 @@ import domain.data.CompanyData
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import cache.DatabaseHelper
+import kotlinx.coroutines.withContext
 
 class AddCompanyToFavouritesUseCase : KoinComponent{
 

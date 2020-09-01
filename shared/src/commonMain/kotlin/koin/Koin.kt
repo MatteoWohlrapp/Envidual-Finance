@@ -17,8 +17,8 @@ fun initKoin(appModule: Module): KoinApplication {
         modules(appModule, platformModule, coreModule)
     }
 
-    // Dummy initialization logic, making use of appModule declarations for demonstration purposes.
-    val koin = koinApplication.koin
+//    // Dummy initialization logic, making use of appModule declarations for demonstration purposes.
+//    val koin = koinApplication.koin
 
 
     return koinApplication

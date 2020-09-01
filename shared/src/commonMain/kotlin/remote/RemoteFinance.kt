@@ -38,7 +38,6 @@ class RemoteFinance : RemoteFinanceInterface{
 
     override suspend fun getCompanyNews(ticker: String, from: String, to: String): List<CompanyNews> =
         network {
-                val arrayOfCompanyNews = mutableListOf<CompanyNews>()
                 client.get<List<CompanyNews>> {
                     finnhubData("api/v1/company-news?symbol=$ticker&from=$from&to=$to&token=bsp7bq7rh5r8ktikc24g")
                 }

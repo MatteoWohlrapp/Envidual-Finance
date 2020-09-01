@@ -84,12 +84,13 @@ class SearchesFragment : Fragment() {
         inflater.inflate(R.menu.search_menu, menu)
 
         val searchItem = menu.findItem(R.id.menu_search)
-        val searchView = MenuItemCompat.getActionView(searchItem) as SearchView
+        val searchView = searchItem.actionView as SearchView
+
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null) {
-                    searchesViewModel.getCompanyDataForSearchesWithTicker(query!!)
+                    searchesViewModel.getCompanyDataForSearchesWithTicker(query)
                 }
                 Log.d("Searches", "onQueryTextSubmit: $query")
                 return true
@@ -99,8 +100,6 @@ class SearchesFragment : Fragment() {
                 return true
             }
         })
-
-        searchView
     }
 
     fun setupObservers(){
@@ -140,7 +139,7 @@ class SearchesFragment : Fragment() {
     }
 
     fun setupRecyclerViewSwipeGestures(){
-        deleteIcon = ContextCompat.getDrawable(this.context!!, R.drawable.delete_icon)!!
+        deleteIcon = ContextCompat.getDrawable(this.requireContext(), R.drawable.delete_icon)!!
         //        callback for the swipe gesture
         itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             override fun onMove(

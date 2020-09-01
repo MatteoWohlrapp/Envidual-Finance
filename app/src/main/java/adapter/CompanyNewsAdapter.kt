@@ -34,7 +34,7 @@ class CompanyNewsAdapter : ListAdapter<CompanyNews, CompanyNewsViewHolder>(Compa
                     getItem(adapterPosition).source!!,
                     getItem(adapterPosition).url!!
                 )
-                val navController = Navigation.findNavController(itemView).navigate(action)
+                Navigation.findNavController(itemView).navigate(action)
             }
         }
     }

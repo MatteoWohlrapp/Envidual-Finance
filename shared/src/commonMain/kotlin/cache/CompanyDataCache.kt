@@ -1,6 +1,7 @@
 package cache
 
 import co.example.envidual.finance.touchlab.db.Companies
+import co.touchlab.stately.freeze
 import domain.data.CompanyData
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -35,18 +36,21 @@ class CompanyDataCache(
         return dbHelper.selectByTickerFromCompanies(ticker)
             .executeAsList()
             .mapCompaniesToCompanyData()
+            .freeze()
     }
 
     override fun selectCompaniesToUpdate(lastSearched: Long) : List<CompanyData> {
         return dbHelper.selectCompaniesToUpdateFromCompanies(lastSearched)
             .executeAsList()
             .mapCompaniesToCompanyData()
+            .freeze()
     }
 
     override fun selectAllFavourites(): List<CompanyData> {
         return dbHelper.selectAllFavouritesFromCompanies()
             .executeAsList()
             .mapCompaniesToCompanyData()
+            .freeze()
     }
 
     override fun selectAllFavouritesAsFlow(): Flow<List<CompanyData>> {
@@ -55,6 +59,7 @@ class CompanyDataCache(
             .mapToList()
             .flowOn(backgroundDispatcher)
             .mapCompaniesToCompanyData()
+            .freeze()
     }
 
     override fun selectAllSearchesAsFlow(): Flow<List<CompanyData>> {
@@ -63,6 +68,7 @@ class CompanyDataCache(
             .mapToList()
             .flowOn(backgroundDispatcher)
             .mapCompaniesToCompanyData()
+            .freeze()
     }
 
     override suspend fun deleteAll() {
