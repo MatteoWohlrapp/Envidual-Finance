@@ -9,6 +9,14 @@ import java.time.format.DateTimeFormatter
 @RequiresApi(Build.VERSION_CODES.O)
 actual fun getTodaysDate(): String {
     val date = LocalDate.now()
-    val formatter = DateTimeFormatter.ofPattern("YYYY-MM-DD")
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     return date.format(formatter)
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+actual fun getYesterdaysDate(): String {
+    val today = LocalDate.now()
+    val yesterday = today.minusDays(1)
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    return yesterday.format(formatter)
 }

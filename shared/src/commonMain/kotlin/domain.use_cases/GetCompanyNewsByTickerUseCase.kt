@@ -24,14 +24,10 @@ class GetCompanyNewsByTickerUseCase : KoinComponent {
             emit(data.subList(0, 10))
         }
 
-//        val date = getTodaysDate()
-//        val companyNews = remoteFinance.getCompanyNews(ticker, date, date)
-        val companyNews = remoteFinance.getCompanyNews(ticker, "2020-08-30", "2020-08-31")
+        val companyNews = remoteFinance.getCompanyNews(ticker, getYesterdaysDate(), getTodaysDate())
         val companyNewsWithCorrectTicker = mutableListOf<CompanyNews>()
         for (news in companyNews)
             companyNewsWithCorrectTicker.add(news.copy(ticker = ticker))
-
-        println(companyNews.toString())
 
         companyNewsCache.insert(companyNewsWithCorrectTicker)
 
@@ -49,3 +45,5 @@ class GetCompanyNewsByTickerUseCase : KoinComponent {
 }
 
 expect fun getTodaysDate(): String
+
+expect fun getYesterdaysDate(): String

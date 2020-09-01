@@ -15,7 +15,7 @@ object Versions {
     val ktor = "1.4.0"
     val stately = "1.1.0"
     val multiplatformSettings = "0.6.1"
-    val coroutines = "1.3.9"
+    val coroutines = "1.3.9-native-mt"
     val koin = "3.0.1-alpha-2"
     val serialization = "1.0.0-RC"
     val cocoapodsext = "0.11"

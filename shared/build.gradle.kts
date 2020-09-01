@@ -79,7 +79,6 @@ kotlin {
         implementation(Deps.Ktor.jvmCore)
         implementation(Deps.Ktor.jvmJson)
         implementation(Deps.Ktor.jvmLogging)
-        implementation(Deps.Coroutines.jdk)
         implementation(Deps.Ktor.androidSerialization)
         implementation(Deps.Ktor.androidCore)
     }
