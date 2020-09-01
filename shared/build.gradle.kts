@@ -56,7 +56,7 @@ kotlin {
         implementation(Deps.Ktor.commonCore)
         implementation(Deps.Ktor.commonJson)
         implementation(Deps.Ktor.commonLogging)
-        implementation(Deps.Coroutines.common)
+        implementation(Deps.Coroutines.jdk)
         implementation(Deps.stately)
         implementation(Deps.multiplatformSettings)
         implementation(Deps.koinCore)
@@ -101,7 +101,7 @@ kotlin {
 //        implementation(Deps.Ktor.iosCore)
 //        implementation(Deps.Ktor.iosJson)
 //        implementation(Deps.Ktor.iosLogging)
-        implementation(Deps.Coroutines.common) {
+        implementation(Deps.Coroutines.jdk) {
             version {
                 strictly(com.example.buildsrc.Versions.coroutines)
             }

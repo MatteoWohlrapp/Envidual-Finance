@@ -23,6 +23,7 @@ class FavouritesViewModel() : ViewModel(), KoinComponent{
     val updateCompanies: UpdateCompaniesUseCase by inject()
 
     fun getCompanyDataForFavourites(){
+        
         favouritesProgressBar.postValue(true)
         viewModelScope.launch {
             withContext(Dispatchers.IO){
