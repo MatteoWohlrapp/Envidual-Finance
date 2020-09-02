@@ -25,6 +25,7 @@ class NativeViewModel(
     private val deleteCompanyFromFavouritesUseCase = DeleteCompanyFromFavouritesUseCase()
     private val deleteCompanyFromSearchesUseCase = DeleteCompanyFromSearchesUseCase()
     private val getCompanyNewsByTickerUseCase = GetCompanyNewsByTickerUseCase()
+    private val updateCompaniesUseCase = UpdateCompaniesUseCase()
 
 
     init {
@@ -84,6 +85,12 @@ class NativeViewModel(
             news.collect {
                 newsUpdate(it)
             }
+        }
+    }
+
+    fun updateCompanies() {
+        scope.launch {
+            updateCompaniesUseCase.invoke()
         }
     }
 

@@ -21,12 +21,9 @@ class UpdateCompaniesUseCase: KoinComponent {
         for(company in companiesToUpdate){
             val time = getTimestamp()
             val companyData = remoteFinance.getCompanyData(company.ticker!!)
-
-            companyData.lastSearched = time
-            companyData.isSearched = company.isSearched
-            companyData.isFavourite = company.isFavourite
-
-            updatedCompanies.add(companyData)
+            val modifiedCompanyData = companyData.copy(lastSearched = time, isSearched = company.isSearched,
+            isFavourite = company.isFavourite)
+            updatedCompanies.add(modifiedCompanyData)
         }
         companyDataCache.insert(updatedCompanies)
     }
