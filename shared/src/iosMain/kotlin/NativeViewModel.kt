@@ -2,6 +2,7 @@ package co.touchlab.kampkit
 
 import co.touchlab.stately.ensureNeverFrozen
 import domain.data.CompanyData
+import domain.data.CompanyNews
 import domain.use_cases.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -12,26 +13,22 @@ import remote.CompanyNotFoundException
 
 class NativeViewModel(
     private val viewUpdate: (List<CompanyData>) -> Unit,
+    private val newsUpdate: (List<CompanyNews>) -> Unit,
     private val errorUpdate: (String) -> Unit
 ) : KoinComponent {
 
     private val scope = MainScope(Dispatchers.Main)
-    private val getCompanyByTickerUseCase: GetCompanyByTickerUseCase
-    private val getCompaniesForFavouritesUseCase: GetCompaniesForFavouritesUseCase
-    private val getCompaniesForSearchesUseCase: GetCompaniesForSearchesUseCase
-    private val addCompanyToFavouritesUseCase : AddCompanyToFavouritesUseCase
-    private val deleteCompanyFromFavouritesUseCase : DeleteCompanyFromFavouritesUseCase
-    private val deleteCompanyFromSearchesUseCase: DeleteCompanyFromSearchesUseCase
+    private val getCompanyByTickerUseCase = GetCompanyByTickerUseCase()
+    private val getCompaniesForFavouritesUseCase = GetCompaniesForFavouritesUseCase()
+    private val getCompaniesForSearchesUseCase = GetCompaniesForSearchesUseCase()
+    private val addCompanyToFavouritesUseCase = AddCompanyToFavouritesUseCase()
+    private val deleteCompanyFromFavouritesUseCase = DeleteCompanyFromFavouritesUseCase()
+    private val deleteCompanyFromSearchesUseCase = DeleteCompanyFromSearchesUseCase()
+    private val getCompanyNewsByTickerUseCase = GetCompanyNewsByTickerUseCase()
 
 
     init {
         ensureNeverFrozen()
-        getCompanyByTickerUseCase = GetCompanyByTickerUseCase()
-        getCompaniesForFavouritesUseCase = GetCompaniesForFavouritesUseCase()
-        getCompaniesForSearchesUseCase = GetCompaniesForSearchesUseCase()
-        addCompanyToFavouritesUseCase = AddCompanyToFavouritesUseCase()
-        deleteCompanyFromFavouritesUseCase = DeleteCompanyFromFavouritesUseCase()
-        deleteCompanyFromSearchesUseCase = DeleteCompanyFromSearchesUseCase()
     }
 
     fun getCompanyByTicker(ticker:String) {
@@ -78,6 +75,15 @@ class NativeViewModel(
     fun removeCompanyFromSearches(company: CompanyData) {
         scope.launch {
             deleteCompanyFromSearchesUseCase.invoke(company)
+        }
+    }
+
+    fun startObservingNewsFor(ticker: String) {
+        scope.launch {
+            val news = getCompanyNewsByTickerUseCase.invoke(ticker)
+            news.collect {
+                newsUpdate(it)
+            }
         }
     }
 
