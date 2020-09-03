@@ -104,7 +104,7 @@ suspend fun Transacter.transactionWithContext(
 
 suspend fun Transacter.transactionWithContextAndReturn(
     context: CoroutineContext,
-    noEnclosing: Boolean,
+    noEnclosing: Boolean = false,
     body: TransactionWithReturn<Query<Companies>>.() -> Query<Companies>
 ) : Query<Companies>{
     return withContext(context){

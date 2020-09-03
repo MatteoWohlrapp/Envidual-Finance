@@ -11,6 +11,6 @@ class GetCompaniesForSearchesUseCase: KoinComponent {
 
     private val companyDataCache : CompanyDataCacheInterface by inject()
 
-    fun invoke(): Flow<List<CompanyData>> =
+    suspend fun invoke(): Flow<List<CompanyData>> =
          companyDataCache.selectAllSearchesAsFlow()
 }

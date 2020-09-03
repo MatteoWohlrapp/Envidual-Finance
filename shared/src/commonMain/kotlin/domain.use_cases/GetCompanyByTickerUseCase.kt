@@ -33,14 +33,7 @@ class GetCompanyByTickerUseCase : KoinComponent {
                 // the company was not found in the database, we need to fetch from remote
                 println("found no data for the given ticker in the table")
 
-//                val companyDataFromRemote = remoteFinance.getCompanyData(upperCaseTicker)
-                val companyDataFromRemote = CompanyData()
-
-                println("Quick restart works perfectly!")
-
-                val test = remoteFinance.getCompanyData("AAPL")
-                println(test.name)
-
+                val companyDataFromRemote = remoteFinance.getCompanyData(upperCaseTicker)
 
                 var companiesByRemoteTicker: List<CompanyData> = listOf()
 

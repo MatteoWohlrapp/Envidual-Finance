@@ -48,31 +48,6 @@ class DatabaseHelper(
         }
     }
 
-    suspend fun insertCompanyDataDebug(companyData: List<CompanyData>) {
-//        println("DatabaseHelper.insertCompanyDataDebug: Outside of withContext(Dispatchers.Main). I am in main thread: ${getThread()}")
-//        withContext(Dispatchers.Main){
-//            println("DatabaseHelper.insertCompanyDataDebug: Inside of withContext(Dispatchers.Main). I am in main thread: ${getThread()}")
-        dbReference.transactionWithContext(backgroundDispatcher) {
-            companyData.forEach { company ->
-                dbReference.companyDataTableQueries.insertCompanies(
-                    company.country!!,
-                    company.currency!!,
-                    company.finnhubIndustry!!,
-                    company.ipo!!,
-                    company.logo!!,
-                    company.marketCapitalization!!,
-                    company.name!!,
-                    company.shareOutstanding!!,
-                    company.ticker!!,
-                    company.isFavourite,
-                    company.isSearched,
-                    company.lastSearched
-                )
-            }
-//            }
-        }
-    }
-
     suspend fun changeIsFavouriteByTickerInCompanies(isFavourite: Boolean, ticker: String) {
         dbReference.transactionWithContext(backgroundDispatcher) {
             dbReference.companyDataTableQueries
@@ -95,29 +70,27 @@ class DatabaseHelper(
     }
 
     suspend fun selectByTickerFromCompanies(ticker: String): Query<Companies> =
-        dbReference.transactionWithContextAndReturn(backgroundDispatcher, false) {
+        dbReference.transactionWithContextAndReturn(backgroundDispatcher) {
             dbReference.companyDataTableQueries.selectByTickerFromCompanies(ticker)
         }
 
+    suspend fun selectAllSearchesFromCompanies(): Query<Companies> =
+        dbReference.transactionWithContextAndReturn(backgroundDispatcher) {
+            dbReference.companyDataTableQueries
+                .selectAllSearchesFromCompanies()
+        }
 
     suspend fun selectAllFavouritesFromCompanies(): Query<Companies> =
-        dbReference.companyDataTableQueries
-            .selectAllFavouritesFromCompanies()
+        dbReference.transactionWithContextAndReturn(backgroundDispatcher) {
+            dbReference.companyDataTableQueries
+                .selectAllFavouritesFromCompanies()
+        }
 
-    fun selectCompaniesToUpdateFromCompanies(time: Long): Query<Companies> =
-        dbReference.companyDataTableQueries
-            .selectCompaniesToUpdateFromCompanies(time)
-
-    //Favourites Screens
-    fun selectAllFavouritesAsFlowFromCompanies(): Query<Companies> =
-        dbReference.companyDataTableQueries
-            .selectAllFavouritesFromCompanies()
-
-
-    // Searches Screen
-    fun selectAllSearchesAsFlowFromCompanies(): Query<Companies> =
-        dbReference.companyDataTableQueries
-            .selectAllSearchesFromCompanies()
+    suspend fun selectCompaniesToUpdateFromCompanies(time: Long): Query<Companies> =
+        dbReference.transactionWithContextAndReturn(backgroundDispatcher) {
+            dbReference.companyDataTableQueries
+                .selectCompaniesToUpdateFromCompanies(time)
+        }
 
 
     suspend fun deleteAllFromCompanies() {
