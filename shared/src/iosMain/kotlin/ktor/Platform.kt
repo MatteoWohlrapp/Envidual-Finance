@@ -1,12 +1,7 @@
 package co.touchlab.kampkit.ktor
 
 import co.touchlab.stately.concurrency.GuardedStableRef
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.InternalCoroutinesApi
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import platform.Foundation.NSThread
 import kotlin.coroutines.CoroutineContext
 
@@ -43,3 +38,9 @@ internal fun CoroutineScope.childContext(): CoroutineContext {
 
 internal val isMainThread: Boolean
     get() = NSThread.isMainThread
+
+//internal actual suspend fun <R> network(block: suspend () -> R): R = withContext(Dispatchers.Main) {
+//        println("Inside of withContext: Am I on Main Thread? ${isMainThread}")
+//
+//        block()
+//}

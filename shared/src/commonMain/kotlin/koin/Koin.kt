@@ -28,7 +28,6 @@ private val coreModule = module {
 
     single {
         DatabaseHelper(
-            Dispatchers.Default
         )
     }
 

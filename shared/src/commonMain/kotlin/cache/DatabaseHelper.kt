@@ -7,19 +7,20 @@ import co.touchlab.stately.freeze
 import com.squareup.sqldelight.Query
 import domain.data.CompanyData
 import domain.data.CompanyNews
-import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import org.koin.ext.scope
+import kotlin.coroutines.coroutineContext
 
 class DatabaseHelper(
-    private val backgroundDispatcher: CoroutineDispatcher
 ) : KoinComponent {
 
+    private val backgroundDispatcher = Dispatchers.Default
     private val dbReference: EnvidualFinanceDatabase by inject()
-
 
 
     /**
@@ -28,10 +29,47 @@ class DatabaseHelper(
 
     suspend fun insertCompanyData(companyData: List<CompanyData>) {
         dbReference.transactionWithContext(backgroundDispatcher) {
-                companyData.forEach { company ->
-                    dbReference.companyDataTableQueries.insertCompanies(company.country!!, company.currency!!, company.finnhubIndustry!!, company.ipo!!,
-                        company.logo!!, company.marketCapitalization!!, company.name!!, company.shareOutstanding!!, company.ticker!!, company.isFavourite, company.isSearched, company.lastSearched)
-                }
+            companyData.forEach { company ->
+                dbReference.companyDataTableQueries.insertCompanies(
+                    company.country!!,
+                    company.currency!!,
+                    company.finnhubIndustry!!,
+                    company.ipo!!,
+                    company.logo!!,
+                    company.marketCapitalization!!,
+                    company.name!!,
+                    company.shareOutstanding!!,
+                    company.ticker!!,
+                    company.isFavourite,
+                    company.isSearched,
+                    company.lastSearched
+                )
+            }
+        }
+    }
+
+    suspend fun insertCompanyDataDebug(companyData: List<CompanyData>) {
+//        println("DatabaseHelper.insertCompanyDataDebug: Outside of withContext(Dispatchers.Main). I am in main thread: ${getThread()}")
+//        withContext(Dispatchers.Main){
+//            println("DatabaseHelper.insertCompanyDataDebug: Inside of withContext(Dispatchers.Main). I am in main thread: ${getThread()}")
+        dbReference.transactionWithContext(backgroundDispatcher) {
+            companyData.forEach { company ->
+                dbReference.companyDataTableQueries.insertCompanies(
+                    company.country!!,
+                    company.currency!!,
+                    company.finnhubIndustry!!,
+                    company.ipo!!,
+                    company.logo!!,
+                    company.marketCapitalization!!,
+                    company.name!!,
+                    company.shareOutstanding!!,
+                    company.ticker!!,
+                    company.isFavourite,
+                    company.isSearched,
+                    company.lastSearched
+                )
+            }
+//            }
         }
     }
 
@@ -49,18 +87,20 @@ class DatabaseHelper(
         }
     }
 
-    suspend fun changeLastSearchedInCompanies(time: Long, ticker: String){
-        dbReference.transactionWithContext(backgroundDispatcher){
+    suspend fun changeLastSearchedInCompanies(time: Long, ticker: String) {
+        dbReference.transactionWithContext(backgroundDispatcher) {
             dbReference.companyDataTableQueries
                 .changeLastSearchedInCompanies(time, ticker)
         }
     }
 
-    fun selectByTickerFromCompanies(ticker: String) : Query<Companies> =
-        dbReference.companyDataTableQueries
-            .selectByTickerFromCompanies(ticker)
+    suspend fun selectByTickerFromCompanies(ticker: String): Query<Companies> =
+        dbReference.transactionWithContextAndReturn(backgroundDispatcher, false) {
+            dbReference.companyDataTableQueries.selectByTickerFromCompanies(ticker)
+        }
 
-    fun selectAllFavouritesFromCompanies(): Query<Companies> =
+
+    suspend fun selectAllFavouritesFromCompanies(): Query<Companies> =
         dbReference.companyDataTableQueries
             .selectAllFavouritesFromCompanies()
 
@@ -69,7 +109,7 @@ class DatabaseHelper(
             .selectCompaniesToUpdateFromCompanies(time)
 
     //Favourites Screens
-    fun selectAllFavouritesAsFlowFromCompanies():Query<Companies> =
+    fun selectAllFavouritesAsFlowFromCompanies(): Query<Companies> =
         dbReference.companyDataTableQueries
             .selectAllFavouritesFromCompanies()
 
@@ -102,16 +142,27 @@ class DatabaseHelper(
     suspend fun insertCompaniesNews(companiesNews: List<CompanyNews>) {
         dbReference.transactionWithContext(backgroundDispatcher) {
             companiesNews.forEach { company ->
-                dbReference.companyNewsTableQueries.insertCompaniesNews(company.ticker!!, company.category!!, company.datetime!!, company.headline!!, company.id!!, company.image!!, company.related!!, company.source!!, company.summary!!, company.url!!)
+                dbReference.companyNewsTableQueries.insertCompaniesNews(
+                    company.ticker!!,
+                    company.category!!,
+                    company.datetime!!,
+                    company.headline!!,
+                    company.id!!,
+                    company.image!!,
+                    company.related!!,
+                    company.source!!,
+                    company.summary!!,
+                    company.url!!
+                )
             }
         }
     }
 
-    fun selectByTickerFromCompaniesNews(ticker: String) : Query<CompaniesNews> =
+    fun selectByTickerFromCompaniesNews(ticker: String): Query<CompaniesNews> =
         dbReference.companyNewsTableQueries
             .selectByTickerFromCompaniesNews(ticker)
 
-    fun selectByTickerFromCompaniesNewsAsFlow(ticker:String): Query<CompaniesNews> =
+    fun selectByTickerFromCompaniesNewsAsFlow(ticker: String): Query<CompaniesNews> =
         dbReference.companyNewsTableQueries
             .selectByTickerFromCompaniesNews(ticker)
 

@@ -1,8 +1,10 @@
 package cache
 
+import co.example.envidual.finance.touchlab.db.Companies
 import co.touchlab.stately.freeze
 import com.squareup.sqldelight.Query
 import com.squareup.sqldelight.Transacter
+import com.squareup.sqldelight.TransactionWithReturn
 import com.squareup.sqldelight.TransactionWithoutReturn
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -97,5 +99,15 @@ suspend fun Transacter.transactionWithContext(
 ) {
     withContext(coroutineContext) {
         this@transactionWithContext.transaction(noEnclosing) { body() }
+    }
+}
+
+suspend fun Transacter.transactionWithContextAndReturn(
+    context: CoroutineContext,
+    noEnclosing: Boolean,
+    body: TransactionWithReturn<Query<Companies>>.() -> Query<Companies>
+) : Query<Companies>{
+    return withContext(context){
+        transactionWithResult(noEnclosing) { body() }
     }
 }
