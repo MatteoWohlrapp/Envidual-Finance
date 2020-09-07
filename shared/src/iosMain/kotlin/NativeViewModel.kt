@@ -8,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
+import org.koin.core.inject
 import remote.CompanyNotFoundException
 
 
@@ -18,14 +19,14 @@ class NativeViewModel(
 ) : KoinComponent {
 
     private val scope = MainScope(Dispatchers.Main)
-    private val getCompanyByTickerUseCase = GetCompanyByTickerUseCase()
-    private val getCompaniesForFavouritesUseCase = GetCompaniesForFavouritesUseCase()
-    private val getCompaniesForSearchesUseCase = GetCompaniesForSearchesUseCase()
-    private val addCompanyToFavouritesUseCase = AddCompanyToFavouritesUseCase()
-    private val deleteCompanyFromFavouritesUseCase = DeleteCompanyFromFavouritesUseCase()
-    private val deleteCompanyFromSearchesUseCase = DeleteCompanyFromSearchesUseCase()
-    private val getCompanyNewsByTickerUseCase = GetCompanyNewsByTickerUseCase()
-    private val updateCompaniesUseCase = UpdateCompaniesUseCase()
+    private val getCompanyByTickerUseCase: GetCompanyByTickerUseCase by inject()
+    private val getCompaniesForFavouritesUseCase: GetCompaniesForFavouritesUseCase by inject()
+    private val getCompaniesForSearchesUseCase: GetCompaniesForSearchesUseCase by inject()
+    private val addCompanyToFavouritesUseCase: AddCompanyToFavouritesUseCase by inject()
+    private val deleteCompanyFromFavouritesUseCase: DeleteCompanyFromFavouritesUseCase by inject()
+    private val deleteCompanyFromSearchesUseCase: DeleteCompanyFromSearchesUseCase by inject()
+    private val getCompanyNewsByTickerUseCase: GetCompanyNewsByTickerUseCase by inject()
+    private val updateCompaniesUseCase: UpdateCompaniesUseCase by inject()
 
 
     init {

@@ -3,7 +3,11 @@ package koin
 import cache.*
 import co.example.envidual.finance.touchlab.db.EnvidualFinanceDatabase
 import domain.use_cases.*
+import io.ktor.client.*
+import io.ktor.client.features.json.*
+import io.ktor.client.features.json.serializer.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.serialization.json.Json
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
@@ -16,11 +20,6 @@ fun initKoin(appModule: Module): KoinApplication {
     val koinApplication = startKoin {
         modules(appModule, platformModule, coreModule)
     }
-
-//    // Dummy initialization logic, making use of appModule declarations for demonstration purposes.
-//    val koin = koinApplication.koin
-
-
     return koinApplication
 }
 
@@ -28,6 +27,8 @@ private val coreModule = module {
 
     single {
         DatabaseHelper(
+            Dispatchers.Default,
+            get()
         )
     }
 
@@ -36,42 +37,53 @@ private val coreModule = module {
     }
 
     single<RemoteFinanceInterface> {
-        RemoteFinance()
+        RemoteFinance(
+        HttpClient {
+            install(JsonFeature) {
+                serializer = KotlinxSerializer(kotlinx.serialization.json.Json {
+                    ignoreUnknownKeys = true
+                })
+            }
+        })
     }
     single<CompanyDataCacheInterface> {
-        CompanyDataCache()
+        CompanyDataCache(
+            Dispatchers.Default,
+             get()
+        )
     }
 
     single<CompanyNewsCacheInterface>{
         CompanyNewsCache(
-            Dispatchers.Default
+            Dispatchers.Default,
+            get()
         )
     }
 
     single {
-        GetCompanyByTickerUseCase()
+        GetCompanyByTickerUseCase(get(), get())
     }
 
     single {
-        GetCompaniesForFavouritesUseCase()
+        GetCompaniesForFavouritesUseCase(get(), get())
     }
     single {
-        GetCompaniesForSearchesUseCase()
+        GetCompaniesForSearchesUseCase(get())
     }
     single {
-        AddCompanyToFavouritesUseCase()
+        AddCompanyToFavouritesUseCase(get())
     }
     single {
-        DeleteCompanyFromFavouritesUseCase()
+        DeleteCompanyFromFavouritesUseCase(get())
     }
     single {
-        DeleteCompanyFromSearchesUseCase()
+        DeleteCompanyFromSearchesUseCase(get())
     }
     single {
-        UpdateCompaniesUseCase()
+        UpdateCompaniesUseCase(get(), get())
     }
     single {
-        GetCompanyNewsByTickerUseCase()
+        GetCompanyNewsByTickerUseCase(get(), get())
     }
 
 }

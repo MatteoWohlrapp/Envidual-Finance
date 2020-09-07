@@ -7,9 +7,7 @@ import org.koin.core.inject
 import cache.DatabaseHelper
 import kotlinx.coroutines.withContext
 
-class AddCompanyToFavouritesUseCase : KoinComponent{
-
-    private val companyDataCache : CompanyDataCacheInterface by inject()
+class AddCompanyToFavouritesUseCase(private val companyDataCache : CompanyDataCacheInterface){
 
     suspend fun invoke(companyData: CompanyData){
         companyDataCache.updateIsFavouriteByTicker(true, companyData.ticker!!)

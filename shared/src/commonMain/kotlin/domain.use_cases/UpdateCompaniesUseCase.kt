@@ -8,10 +8,9 @@ import org.koin.core.inject
 import remote.RemoteFinanceInterface
 import cache.DatabaseHelper
 
-class UpdateCompaniesUseCase: KoinComponent {
+class UpdateCompaniesUseCase(private val companyDataCache : CompanyDataCacheInterface,
+                             private val remoteFinance: RemoteFinanceInterface){
 
-    private val companyDataCache : CompanyDataCacheInterface by inject()
-    private val remoteFinance: RemoteFinanceInterface by inject()
 
     suspend fun invoke(){
         val companiesToUpdate = companyDataCache.selectCompaniesToUpdate(getTimestamp()-86400)

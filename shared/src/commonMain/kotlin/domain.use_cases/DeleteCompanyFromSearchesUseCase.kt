@@ -6,9 +6,7 @@ import org.koin.core.KoinComponent
 import org.koin.core.inject
 import cache.DatabaseHelper
 
-class DeleteCompanyFromSearchesUseCase: KoinComponent {
-
-    private val companyDataCache : CompanyDataCacheInterface by inject()
+class DeleteCompanyFromSearchesUseCase(private val companyDataCache : CompanyDataCacheInterface){
 
     suspend fun invoke(companyData: CompanyData){
         companyDataCache.updateIsSearchedByTicker(false, companyData.ticker!!)

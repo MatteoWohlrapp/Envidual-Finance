@@ -9,10 +9,8 @@ import remote.CompanyNotFoundException
 import remote.RemoteFinanceInterface
 import cache.DatabaseHelper
 
-class GetCompaniesForFavouritesUseCase : KoinComponent {
-
-    private val companyDataCache : CompanyDataCacheInterface by inject()
-    private val remoteFinance: RemoteFinanceInterface by inject()
+class GetCompaniesForFavouritesUseCase(private val companyDataCache : CompanyDataCacheInterface,
+                                       private val remoteFinance: RemoteFinanceInterface){
 
     private val defaultFavouriteCompaniesTicker =
         mutableListOf("MSFT", "AAPL", "AMZN", "FB", "GOOGL", "IBM")

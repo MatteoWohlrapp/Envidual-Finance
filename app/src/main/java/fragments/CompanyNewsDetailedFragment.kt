@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import coil.api.load
 import coil.transform.CircleCropTransformation
 import com.example.envidual.finance.touchlab.R
-import com.example.envidual.finance.touchlab.databinding.CompanyDataDetailedBinding
 import com.example.envidual.finance.touchlab.databinding.CompanyNewsDetailedBinding
 import domain.data.CompanyNews
 import domain.use_cases.GetCompanyNewsByTickerUseCase

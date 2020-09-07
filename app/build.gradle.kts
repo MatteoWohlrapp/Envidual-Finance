@@ -38,8 +38,8 @@ android {
        isWarningsAsErrors = false
        isAbortOnError = false
    }
-    viewBinding{
-        isEnabled = true
+    buildFeatures{
+        viewBinding = true
     }
     kotlinOptions {
         jvmTarget = "1.8"

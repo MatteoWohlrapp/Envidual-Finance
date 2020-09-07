@@ -14,11 +14,10 @@ import org.koin.core.KoinComponent
 import org.koin.core.inject
 import kotlin.native.concurrent.ThreadLocal
 
-class CompanyDataCache : CompanyDataCacheInterface, KoinComponent {
-
-    val dbHelper: DatabaseHelper by inject()
-    private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.Default
-
+class CompanyDataCache(
+    private val backgroundDispatcher: CoroutineDispatcher,
+    private  val dbHelper: DatabaseHelper
+) : CompanyDataCacheInterface {
 
     override suspend fun insert(companyData: List<CompanyData>) {
         dbHelper.insertCompanyData(companyData)

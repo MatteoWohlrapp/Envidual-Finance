@@ -11,10 +11,9 @@ import org.koin.core.KoinComponent
 import org.koin.core.inject
 
 class CompanyNewsCache(
-    private val backgroundDispatcher: CoroutineDispatcher
-) : CompanyNewsCacheInterface, KoinComponent{
-
-    val dbHelper: DatabaseHelper by inject()
+    private val backgroundDispatcher: CoroutineDispatcher,
+    private val dbHelper: DatabaseHelper
+) : CompanyNewsCacheInterface{
 
     override suspend fun insert(companiesNews: List<CompanyNews>) {
         dbHelper.insertCompaniesNews(companiesNews)

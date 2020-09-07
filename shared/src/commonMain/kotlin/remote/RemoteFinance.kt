@@ -13,37 +13,22 @@ import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.get
 import io.ktor.http.takeFrom
+import kotlinx.atomicfu.AtomicBoolean
+import kotlinx.atomicfu.AtomicRef
+import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.internal.AtomicOp
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import kotlin.coroutines.coroutineContext
 import kotlin.native.concurrent.ThreadLocal
 
 
-class RemoteFinance : RemoteFinanceInterface {
+class RemoteFinance(private val client: HttpClient) : RemoteFinanceInterface {
 
-//    init {
-//        ensureNeverFrozen()
-//    }
-
-//    private val client = Atomic<HttpClient>(
-//        HttpClient {
-//            install(JsonFeature) {
-//                serializer = KotlinxSerializer(Json {
-//                    ignoreUnknownKeys = true
-//                })
-//            }
-//        }
-//    )
-
-    private val client =
-        HttpClient {
-            install(JsonFeature) {
-                serializer = KotlinxSerializer(Json {
-                    ignoreUnknownKeys = true
-                })
-            }
-        }
+    init {
+        ensureNeverFrozen()
+    }
 
     override suspend fun getCompanyData(ticker: String): CompanyData {
         println("Got to getCompanyData")

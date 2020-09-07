@@ -14,9 +14,7 @@ import org.koin.core.KoinComponent
 import org.koin.core.inject
 import remote.CompanyNotFoundException
 
-class SearchesViewModel : ViewModel(), KoinComponent {
-
-
+class SearchesViewModel() : ViewModel(), KoinComponent {
     private val getCompaniesForSearches : GetCompaniesForSearchesUseCase by inject()
     private val getCompanyByTicker : GetCompanyByTickerUseCase by inject()
     private val addCompanyToFavourites: AddCompanyToFavouritesUseCase by inject()

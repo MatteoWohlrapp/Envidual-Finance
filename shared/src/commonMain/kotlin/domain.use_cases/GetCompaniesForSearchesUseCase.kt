@@ -7,9 +7,7 @@ import org.koin.core.KoinComponent
 import org.koin.core.inject
 import cache.DatabaseHelper
 
-class GetCompaniesForSearchesUseCase: KoinComponent {
-
-    private val companyDataCache : CompanyDataCacheInterface by inject()
+class GetCompaniesForSearchesUseCase(private val companyDataCache : CompanyDataCacheInterface): KoinComponent {
 
     suspend fun invoke(): Flow<List<CompanyData>> =
          companyDataCache.selectAllSearchesAsFlow()

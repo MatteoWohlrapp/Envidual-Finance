@@ -16,12 +16,7 @@ import org.koin.core.inject
 import org.koin.ext.scope
 import kotlin.coroutines.coroutineContext
 
-class DatabaseHelper(
-) : KoinComponent {
-
-    private val backgroundDispatcher = Dispatchers.Default
-    private val dbReference: EnvidualFinanceDatabase by inject()
-
+class DatabaseHelper(private val backgroundDispatcher: CoroutineDispatcher,  private val dbReference: EnvidualFinanceDatabase) {
 
     /**
      * Methods for the Companies table

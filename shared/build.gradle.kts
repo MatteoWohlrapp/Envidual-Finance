@@ -62,6 +62,7 @@ kotlin {
         implementation(Deps.koinCore)
         implementation(Deps.Ktor.commonSerialization)
         api(Deps.kermit)
+        implementation("org.jetbrains.kotlinx:atomicfu:0.14.4")
     }
 
     sourceSets["commonTest"].dependencies {

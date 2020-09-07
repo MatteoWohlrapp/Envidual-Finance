@@ -9,10 +9,9 @@ import org.koin.core.KoinComponent
 import org.koin.core.inject
 import remote.RemoteFinanceInterface
 
-class GetCompanyNewsByTickerUseCase : KoinComponent {
+class GetCompanyNewsByTickerUseCase( private val companyNewsCache: CompanyNewsCacheInterface,
+                                     private val remoteFinance: RemoteFinanceInterface){
 
-    private val companyNewsCache: CompanyNewsCacheInterface by inject()
-    val remoteFinance: RemoteFinanceInterface by inject()
 
     suspend fun invoke(ticker: String): Flow<List<CompanyNews>> = flow {
         val data = companyNewsCache.selectByTicker(ticker)
