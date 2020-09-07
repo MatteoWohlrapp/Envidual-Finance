@@ -3,6 +3,8 @@ package remote
 import cache.getThread
 import co.touchlab.kampkit.ktor.network
 import co.touchlab.stately.ensureNeverFrozen
+import com.squareup.sqldelight.internal.Atomic
+import com.squareup.sqldelight.internal.getValue
 import domain.data.CompanyData
 import domain.data.CompanyNews
 import io.ktor.client.HttpClient
@@ -15,42 +17,41 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import kotlin.coroutines.coroutineContext
+import kotlin.native.concurrent.ThreadLocal
 
 
 class RemoteFinance : RemoteFinanceInterface {
 
-    private val client = HttpClient {
-        install(JsonFeature) {
-            serializer = KotlinxSerializer(Json {
-                ignoreUnknownKeys = true
-            })
+//    init {
+//        ensureNeverFrozen()
+//    }
+
+//    private val client = Atomic<HttpClient>(
+//        HttpClient {
+//            install(JsonFeature) {
+//                serializer = KotlinxSerializer(Json {
+//                    ignoreUnknownKeys = true
+//                })
+//            }
+//        }
+//    )
+
+    private val client =
+        HttpClient {
+            install(JsonFeature) {
+                serializer = KotlinxSerializer(Json {
+                    ignoreUnknownKeys = true
+                })
+            }
         }
-    }
 
-    init {
-        ensureNeverFrozen()
-    }
-
-
-    suspend fun getData() {
-        withContext(Dispatchers.Main) {
+    override suspend fun getCompanyData(ticker: String): CompanyData {
+        println("Got to getCompanyData")
+        return network {
+            client.get<CompanyData> {
+                finnhubData("api/v1/stock/profile2?symbol=$ticker&token=bsp7bq7rh5r8ktikc24g")
+            }
         }
-    }
-
-        override suspend fun getCompanyData(ticker: String): CompanyData =
-        network {
-                client.get<CompanyData> {
-                    finnhubData("api/v1/stock/profile2?symbol=$ticker&token=bsp7bq7rh5r8ktikc24g")
-                }
-        }
-    override suspend fun getCompanyDataDebug(ticker: String): CompanyData {
-        println("RemoteFinance.getCompanyData outside of Dispatchers.Main. I am in main thread: ${getThread()}")
-             return withContext(Dispatchers.Main){
-                 println("RemoteFinance.getCompanyData inside of Dispatchers.Main. I am in main thread: ${getThread()}")
-                 client.get {
-                     finnhubData("api/v1/stock/profile2?symbol=$ticker&token=bsp7bq7rh5r8ktikc24g")
-                 }
-             }
     }
 
     override suspend fun getCompanyNews(

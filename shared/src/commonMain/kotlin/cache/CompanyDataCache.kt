@@ -2,6 +2,7 @@ package cache
 
 import co.example.envidual.finance.touchlab.db.Companies
 import co.touchlab.stately.freeze
+import co.touchlab.stately.isFrozen
 import domain.data.CompanyData
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -11,12 +12,13 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import kotlin.native.concurrent.ThreadLocal
 
-class CompanyDataCache(
-    private val backgroundDispatcher: CoroutineDispatcher
-) : CompanyDataCacheInterface, KoinComponent {
+class CompanyDataCache : CompanyDataCacheInterface, KoinComponent {
 
     val dbHelper: DatabaseHelper by inject()
+    private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.Default
+
 
     override suspend fun insert(companyData: List<CompanyData>) {
         dbHelper.insertCompanyData(companyData)
@@ -35,12 +37,12 @@ class CompanyDataCache(
     }
 
     override suspend fun selectByTicker(ticker: String): List<CompanyData> {
-        return withContext(Dispatchers.Main) {
-            dbHelper.selectByTickerFromCompanies(ticker)
-                .executeAsList()
-                .mapCompaniesToCompanyData()
-                .freeze()
-        }
+        println("Got to the selectByTicker method in CompanyDataCache")
+        println(dbHelper.isFrozen)
+        return dbHelper.selectByTickerFromCompanies(ticker)
+            .executeAsList()
+            .mapCompaniesToCompanyData()
+            .freeze()
     }
 
     override suspend fun selectCompaniesToUpdate(lastSearched: Long): List<CompanyData> {

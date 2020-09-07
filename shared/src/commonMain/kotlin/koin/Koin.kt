@@ -39,9 +39,7 @@ private val coreModule = module {
         RemoteFinance()
     }
     single<CompanyDataCacheInterface> {
-        CompanyDataCache(
-            Dispatchers.Default
-        )
+        CompanyDataCache()
     }
 
     single<CompanyNewsCacheInterface>{
