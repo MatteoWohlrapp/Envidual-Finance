@@ -2,6 +2,7 @@ package domain.use_cases
 
 import cache.CompanyNewsCacheInterface
 import co.touchlab.stately.freeze
+import domain.data.CompanyData
 import domain.data.CompanyNews
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -18,9 +19,18 @@ class GetCompanyNewsByTickerUseCase( private val companyNewsCache: CompanyNewsCa
 
 
     suspend fun invoke(ticker: String): Flow<List<CompanyNews>> {
+        try {
+            remoteFinance.freeze()
+        } catch (e: Throwable) {
+            println(e.message)
+        }
+        println("I am in News by ticker")
             return withContext(backgroundDispatcher) {
+                println("I am in News by ticker inside of withContext")
+
                 return@withContext flow {
-                val data = companyNewsCache.selectByTicker(ticker)
+                    var data = listOf<CompanyNews>()
+                    data = companyNewsCache.selectByTicker(ticker)
                 if (data.size <= 10){
                     println("selected news from cache")
                     emit(data)

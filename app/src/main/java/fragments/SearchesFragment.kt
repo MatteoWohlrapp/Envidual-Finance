@@ -116,10 +116,12 @@ class SearchesFragment : Fragment() {
             searchesAdapter.submitList(it)
 
             Log.d("Scroll", "Number of searched Elements: $numberOfSearchedElements")
-            Log.d("Scroll", "Number of it Elements: ${it.size}")
+            Log.d("Scroll", "Number of submitted Elements: ${it.size}")
 
-            if(it.size > numberOfSearchedElements)
+            if(it.size > numberOfSearchedElements){
+                Log.d("Scroll", "Scrolled to top")
                 searches_recycler_view.scrollToPosition(0)
+            }
 
             numberOfSearchedElements = it.size
 

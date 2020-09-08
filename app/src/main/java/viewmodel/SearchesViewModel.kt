@@ -32,7 +32,8 @@ class SearchesViewModel() : ViewModel(), KoinComponent {
             withContext(Dispatchers.IO){
                 val data = getCompaniesForSearches.invoke()
                 searchesProgressBar.postValue(false)
-                data.collect { searches.postValue(it) }
+                data.collect { searches.postValue(it)
+                Log.d("Scroll", it.toString())}
             }
         }
     }
@@ -77,4 +78,8 @@ class SearchesViewModel() : ViewModel(), KoinComponent {
         }
     }
 
+}
+
+fun main(args: Array<String>) {
+    val compare = listOf("")
 }

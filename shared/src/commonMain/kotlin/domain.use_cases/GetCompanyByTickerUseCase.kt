@@ -13,6 +13,7 @@ import io.ktor.http.*
 import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import remote.CompanyNotFoundException
@@ -50,17 +51,15 @@ class GetCompanyByTickerUseCase(
             companyByGivenTicker = companyDataCache.selectByTicker(upperCaseTicker)
             println("companyByGivenTicker.isEmpty(): ${companyByGivenTicker.isEmpty()}")
 
-            var companyDataFromRemote = CompanyData()
-            var companiesByRemoteTicker = listOf<CompanyData>()
-
             if (companyByGivenTicker.isEmpty()) {
                 // the company was not found in the database, we need to fetch from remote
                 println("found no data for the given ticker in the table")
 
-                companyDataFromRemote = remoteFinance.getCompanyData(upperCaseTicker)
+                val companyDataFromRemote = remoteFinance.getCompanyData(upperCaseTicker)
 
                 println("Requested from remote: ${companyDataFromRemote.name}")
 
+                var companiesByRemoteTicker = listOf<CompanyData>()
 
 //            checking if company was found
                 if (companyDataFromRemote.name != null) {
