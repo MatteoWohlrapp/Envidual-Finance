@@ -11,6 +11,7 @@ import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.http.*
 import kotlinx.atomicfu.atomic
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
@@ -27,6 +28,7 @@ class GetCompanyByTickerUseCase(
 
 ) {
 
+    @Throws(Exception::class, CompanyNotFoundException::class)
     suspend fun invoke(ticker: String) {
 
         println("Use case: $isFrozen")
