@@ -6,9 +6,12 @@ import kotlinx.coroutines.flow.Flow
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import cache.DatabaseHelper
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-class GetCompaniesForSearchesUseCase(private val companyDataCache : CompanyDataCacheInterface): KoinComponent {
+class GetCompaniesForSearchesUseCase(private val companyDataCache : CompanyDataCacheInterface) {
 
-    suspend fun invoke(): Flow<List<CompanyData>> =
-         companyDataCache.selectAllSearchesAsFlow()
+    suspend fun invoke(): Flow<List<CompanyData>> = withContext(Dispatchers.Default){
+        companyDataCache.selectAllSearchesAsFlow()
+    }
 }

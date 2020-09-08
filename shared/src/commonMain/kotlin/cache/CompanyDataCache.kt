@@ -36,8 +36,6 @@ class CompanyDataCache(
     }
 
     override suspend fun selectByTicker(ticker: String): List<CompanyData> {
-        println("Got to the selectByTicker method in CompanyDataCache")
-        println(dbHelper.isFrozen)
         return dbHelper.selectByTickerFromCompanies(ticker)
             .executeAsList()
             .mapCompaniesToCompanyData()

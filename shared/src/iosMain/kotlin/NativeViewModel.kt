@@ -38,7 +38,8 @@ class NativeViewModel(
             try {
                 getCompanyByTickerUseCase.invoke(ticker)
             }
-            catch(e: CompanyNotFoundException) {
+            catch(e: Throwable) {
+                println(e.message)
                 errorUpdate(e.message!!)
             }
         }

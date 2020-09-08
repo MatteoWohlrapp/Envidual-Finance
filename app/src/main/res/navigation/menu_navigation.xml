@@ -61,8 +61,7 @@
         android:label="CompanyNewsDetailedFragment" >
         <action
             android:id="@+id/action_companyNewsDetailedFragment_to_companyDetailedFragment"
-            app:destination="@id/companyDetailedFragment"
-            app:popUpTo="@id/companyDetailedFragment" />
+            app:destination="@id/companyDetailedFragment" />
         <argument
             android:name="image"
             app:argType="string" />

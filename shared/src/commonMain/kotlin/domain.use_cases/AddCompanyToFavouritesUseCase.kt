@@ -5,11 +5,14 @@ import domain.data.CompanyData
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import cache.DatabaseHelper
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class AddCompanyToFavouritesUseCase(private val companyDataCache : CompanyDataCacheInterface){
+class AddCompanyToFavouritesUseCase(private val companyDataCache: CompanyDataCacheInterface) {
 
-    suspend fun invoke(companyData: CompanyData){
-        companyDataCache.updateIsFavouriteByTicker(true, companyData.ticker!!)
+    suspend fun invoke(companyData: CompanyData) {
+        withContext(Dispatchers.Default) {
+            companyDataCache.updateIsFavouriteByTicker(true, companyData.ticker!!)
+        }
     }
 }

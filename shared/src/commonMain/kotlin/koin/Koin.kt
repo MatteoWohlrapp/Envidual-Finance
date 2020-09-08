@@ -36,15 +36,17 @@ private val coreModule = module {
         EnvidualFinanceDatabase(get())
     }
 
-    single<RemoteFinanceInterface> {
-        RemoteFinance(
+    single {
         HttpClient {
             install(JsonFeature) {
                 serializer = KotlinxSerializer(kotlinx.serialization.json.Json {
                     ignoreUnknownKeys = true
                 })
             }
-        })
+        }
+    }
+    single<RemoteFinanceInterface> {
+        RemoteFinance(get())
     }
     single<CompanyDataCacheInterface> {
         CompanyDataCache(
