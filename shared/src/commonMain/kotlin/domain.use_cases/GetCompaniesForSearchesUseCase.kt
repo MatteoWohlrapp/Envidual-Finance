@@ -11,7 +11,7 @@ import kotlinx.coroutines.withContext
 
 class GetCompaniesForSearchesUseCase(private val companyDataCache : CompanyDataCacheInterface) {
 
-    suspend fun invoke(): Flow<List<CompanyData>> = withContext(Dispatchers.Default){
+    suspend fun invoke(): Flow<List<CompanyData>> = withContext(backgroundDispatcher){
         companyDataCache.selectAllSearchesAsFlow()
     }
 }

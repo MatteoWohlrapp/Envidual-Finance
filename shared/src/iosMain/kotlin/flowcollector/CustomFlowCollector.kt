@@ -1,8 +1,8 @@
-package collector
+package co.touchlab.kampkit.flowcollector
 
 import kotlinx.coroutines.flow.FlowCollector
 
-class IOSCollector<T>(
+class CustomFlowCollector<T>(
     private val viewUpdate: (List<T>) -> Unit
 ): FlowCollector<List<T>> {
 

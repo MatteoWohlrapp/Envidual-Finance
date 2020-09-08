@@ -7,6 +7,7 @@ import co.touchlab.stately.freeze
 import com.squareup.sqldelight.Query
 import domain.data.CompanyData
 import domain.data.CompanyNews
+import domain.use_cases.backgroundDispatcher
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -16,7 +17,7 @@ import org.koin.core.inject
 import org.koin.ext.scope
 import kotlin.coroutines.coroutineContext
 
-class DatabaseHelper(private val backgroundDispatcher: CoroutineDispatcher,  private val dbReference: EnvidualFinanceDatabase) {
+class DatabaseHelper(private val dbReference: EnvidualFinanceDatabase) {
 
     /**
      * Methods for the Companies table

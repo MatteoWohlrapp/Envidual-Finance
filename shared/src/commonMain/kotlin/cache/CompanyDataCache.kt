@@ -4,6 +4,7 @@ import co.example.envidual.finance.touchlab.db.Companies
 import co.touchlab.stately.freeze
 import co.touchlab.stately.isFrozen
 import domain.data.CompanyData
+import domain.use_cases.backgroundDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -15,7 +16,6 @@ import org.koin.core.inject
 import kotlin.native.concurrent.ThreadLocal
 
 class CompanyDataCache(
-    private val backgroundDispatcher: CoroutineDispatcher,
     private  val dbHelper: DatabaseHelper
 ) : CompanyDataCacheInterface {
 

@@ -11,7 +11,7 @@ import kotlinx.coroutines.withContext
 class AddCompanyToFavouritesUseCase(private val companyDataCache: CompanyDataCacheInterface) {
 
     suspend fun invoke(companyData: CompanyData) {
-        withContext(Dispatchers.Default) {
+        withContext(backgroundDispatcher) {
             companyDataCache.updateIsFavouriteByTicker(true, companyData.ticker!!)
         }
     }

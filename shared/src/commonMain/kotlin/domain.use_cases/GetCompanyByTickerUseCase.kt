@@ -1,6 +1,7 @@
 package domain.use_cases
 
 import cache.CompanyDataCacheInterface
+import cache.getThread
 import co.touchlab.stately.freeze
 import co.touchlab.stately.isFrozen
 import domain.data.CompanyData
@@ -27,42 +28,24 @@ class GetCompanyByTickerUseCase(
 ) {
 
     suspend fun invoke(ticker: String) {
-//        val tempCache = companyDataCache
-//        val tempRemote = remoteFinance
-//        println("Use case: $isFrozen")
-//        println("Cache: ${companyDataCache.isFrozen}")
-//        println("Remote: ${remoteFinance.isFrozen}")
-//        println("-----Outside of withContext-----")
-//        withContext(Dispatchers.Default) {
-//            println("-----Inside of withContext-----")
-//            companyDataCache.deleteByTicker("AAPL")
-////            withContext(Dispatchers.Main) {
-////                val company = remoteFinance.getCompanyData("AAPL")
-////                println(company.name)
-////            }
-//        }
-
-        val tempCompanyDataCache = companyDataCache
-        val tempRemoteFinance = remoteFinance
-//        necessary to run for the first time
-
-        try {
-            remoteFinance.freeze()
-        } catch(e: Throwable){
-            println(e.message)
-        }
 
         println("Use case: $isFrozen")
         println("Cache: ${companyDataCache.isFrozen}")
         println("Remote: ${remoteFinance.isFrozen}")
         println("http: ${remoteFinance.isClientFrozen()}")
+        //        necessary to run for the first time, remote Finance gets frozen, http client throws exception but its caught. No further freezing, because remote finance is frozen
+        try {
+            remoteFinance.freeze()
+        } catch (e: Throwable) {
+            println(e.message)
+        }
 
-        withContext(Dispatchers.Default) {
+        withContext(backgroundDispatcher) {
 
             val upperCaseTicker = ticker.toUpperCase()
             var companyByGivenTicker = listOf<CompanyData>()
             println("About to go into companyDataCache")
-            companyByGivenTicker = tempCompanyDataCache.selectByTicker(upperCaseTicker)
+            companyByGivenTicker = companyDataCache.selectByTicker(upperCaseTicker)
             println("companyByGivenTicker.isEmpty(): ${companyByGivenTicker.isEmpty()}")
 
             var companyDataFromRemote = CompanyData()
@@ -72,7 +55,7 @@ class GetCompanyByTickerUseCase(
                 // the company was not found in the database, we need to fetch from remote
                 println("found no data for the given ticker in the table")
 
-                companyDataFromRemote = fetchCompanyDataFromRemote(upperCaseTicker)
+                companyDataFromRemote = remoteFinance.getCompanyData(upperCaseTicker)
 
                 println("Requested from remote: ${companyDataFromRemote.name}")
 
@@ -80,13 +63,13 @@ class GetCompanyByTickerUseCase(
 //            checking if company was found
                 if (companyDataFromRemote.name != null) {
                     companiesByRemoteTicker =
-                        tempCompanyDataCache.selectByTicker(companyDataFromRemote.ticker!!)
+                        companyDataCache.selectByTicker(companyDataFromRemote.ticker!!)
                 } else
                     throw CompanyNotFoundException("No company found.")
 
                 if (companiesByRemoteTicker.isEmpty()) {
                     println("found no data for the remote ticker in the table")
-                    tempCompanyDataCache.insert(
+                    companyDataCache.insert(
                         listOf(
                             companyDataFromRemote.copy(
                                 isSearched = true,
@@ -100,11 +83,11 @@ class GetCompanyByTickerUseCase(
 
                     val time = getTimestamp()
 
-                    tempCompanyDataCache.updateIsSearchedByTicker(
+                    companyDataCache.updateIsSearchedByTicker(
                         true,
                         companyDataFromDatabaseByRemoteTicker.ticker!!
                     )
-                    tempCompanyDataCache.updateLastSearchedByTicker(
+                    companyDataCache.updateLastSearchedByTicker(
                         time,
                         companyDataFromDatabaseByRemoteTicker.ticker!!
                     )
@@ -115,21 +98,15 @@ class GetCompanyByTickerUseCase(
 
                 val time = getTimestamp()
 
-                tempCompanyDataCache.updateIsSearchedByTicker(
+                companyDataCache.updateIsSearchedByTicker(
                     true,
                     companyDataFromDatabaseByGivenTicker.ticker!!
                 )
-                tempCompanyDataCache.updateLastSearchedByTicker(
+                companyDataCache.updateLastSearchedByTicker(
                     time,
                     companyDataFromDatabaseByGivenTicker.ticker!!
                 )
             }
         }
     }
-
-    private suspend fun fetchCompanyDataFromRemote(upperCaseTicker: String) =
-        withContext(Dispatchers.Main) {
-            remoteFinance.getCompanyData(upperCaseTicker)
-        }
-
 }

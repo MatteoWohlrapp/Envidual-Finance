@@ -8,33 +8,56 @@ import org.koin.core.inject
 import remote.CompanyNotFoundException
 import remote.RemoteFinanceInterface
 import cache.DatabaseHelper
+import co.touchlab.stately.freeze
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.DisposableHandle
+import kotlinx.coroutines.withContext
 
-class GetCompaniesForFavouritesUseCase(private val companyDataCache : CompanyDataCacheInterface,
-                                       private val remoteFinance: RemoteFinanceInterface){
+class GetCompaniesForFavouritesUseCase(
+    private val companyDataCache: CompanyDataCacheInterface,
+    private val remoteFinance: RemoteFinanceInterface
+) {
 
     private val defaultFavouriteCompaniesTicker =
         mutableListOf("MSFT", "AAPL", "AMZN", "FB", "GOOGL", "IBM")
 
 
     suspend fun invoke(): Flow<List<CompanyData>> {
-        val data = companyDataCache.selectAllFavourites()
-        if(data.isEmpty()){
-            val companiesFromRemote = mutableListOf<CompanyData>()
-            for (ticker in defaultFavouriteCompaniesTicker) {
-                var company = CompanyData()
-                try {
-                    company = remoteFinance.getCompanyData(ticker)
-                } catch(e: CompanyNotFoundException){
-                    println(e.toString())
-                    }
-                if (company.name != null) {
-                    companiesFromRemote.add(company.copy(isFavourite = true, lastSearched = getTimestamp()))
-                }
-            }
-            companyDataCache.insert(companiesFromRemote)
+        try {
+            remoteFinance.freeze()
+        } catch (e: Throwable) {
+            println(e.message)
         }
+        return withContext(backgroundDispatcher) {
+            val data = companyDataCache.selectAllFavourites()
+            if (data.isEmpty()) {
+                val companiesFromRemote = mutableListOf<CompanyData>()
+                for (ticker in defaultFavouriteCompaniesTicker) {
+                    var company = CompanyData()
+                    try {
+                        try {
+                            remoteFinance.freeze()
+                        } catch (e: Throwable) {
+                            println(e.message)
+                        }
+                        company = remoteFinance.getCompanyData(ticker)
+                    } catch (e: CompanyNotFoundException) {
+                        println(e.toString())
+                    }
+                    if (company.name != null) {
+                        companiesFromRemote.add(
+                            company.copy(
+                                isFavourite = true,
+                                lastSearched = getTimestamp()
+                            )
+                        )
+                    }
+                }
+                companyDataCache.insert(companiesFromRemote)
+            }
 
-        return companyDataCache.selectAllFavouritesAsFlow()
+            return@withContext companyDataCache.selectAllFavouritesAsFlow()
+        }
     }
 }
 

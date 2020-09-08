@@ -6,6 +6,7 @@ import domain.use_cases.*
 import io.ktor.client.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
+import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.json.Json
 import org.koin.core.KoinApplication
@@ -27,7 +28,6 @@ private val coreModule = module {
 
     single {
         DatabaseHelper(
-            Dispatchers.Default,
             get()
         )
     }
@@ -50,14 +50,12 @@ private val coreModule = module {
     }
     single<CompanyDataCacheInterface> {
         CompanyDataCache(
-            Dispatchers.Default,
              get()
         )
     }
 
     single<CompanyNewsCacheInterface>{
         CompanyNewsCache(
-            Dispatchers.Default,
             get()
         )
     }

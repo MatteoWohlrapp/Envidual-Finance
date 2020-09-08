@@ -11,7 +11,7 @@ import kotlinx.coroutines.withContext
 class DeleteCompanyFromFavouritesUseCase(private val companyDataCache : CompanyDataCacheInterface) {
 
     suspend fun invoke(companyData: CompanyData){
-        withContext(Dispatchers.Default) {
+        withContext(backgroundDispatcher) {
             companyDataCache.updateIsFavouriteByTicker(false, companyData.ticker!!)
         }
     }

@@ -3,6 +3,7 @@ package cache
 import co.example.envidual.finance.touchlab.db.CompaniesNews
 import co.touchlab.stately.freeze
 import domain.data.CompanyNews
+import domain.use_cases.backgroundDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -11,7 +12,6 @@ import org.koin.core.KoinComponent
 import org.koin.core.inject
 
 class CompanyNewsCache(
-    private val backgroundDispatcher: CoroutineDispatcher,
     private val dbHelper: DatabaseHelper
 ) : CompanyNewsCacheInterface{
 

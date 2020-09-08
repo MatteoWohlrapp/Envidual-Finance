@@ -8,12 +8,15 @@ import com.squareup.sqldelight.internal.Atomic
 import com.squareup.sqldelight.internal.getValue
 import domain.data.CompanyData
 import domain.data.CompanyNews
+import domain.use_cases.mainDispatcher
 import io.ktor.client.HttpClient
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.get
 import io.ktor.http.takeFrom
+import io.ktor.utils.io.*
+import io.ktor.utils.io.core.internal.*
 import kotlinx.atomicfu.AtomicBoolean
 import kotlinx.atomicfu.AtomicRef
 import kotlinx.atomicfu.atomic
@@ -29,14 +32,10 @@ import kotlin.native.concurrent.ThreadLocal
 
 class RemoteFinance(private val client: HttpClient) : RemoteFinanceInterface {
 
-//    init {
-//        ensureNeverFrozen()
-//    }
-
     override suspend fun getCompanyData(ticker: String): CompanyData {
         println("Got to getCompanyData in RemoteFinance")
-        return withContext(Dispatchers.Main) {
-            client.get<CompanyData> {
+        return withContext(mainDispatcher) {
+            client.get {
                 finnhubData("api/v1/stock/profile2?symbol=$ticker&token=bsp7bq7rh5r8ktikc24g")
             }
         }
@@ -47,8 +46,8 @@ class RemoteFinance(private val client: HttpClient) : RemoteFinanceInterface {
         from: String,
         to: String
     ): List<CompanyNews> =
-        network {
-            client.get<List<CompanyNews>> {
+        withContext(mainDispatcher){
+            client.get {
                 finnhubData("api/v1/company-news?symbol=$ticker&from=$from&to=$to&token=bsp7bq7rh5r8ktikc24g")
             }
         }
