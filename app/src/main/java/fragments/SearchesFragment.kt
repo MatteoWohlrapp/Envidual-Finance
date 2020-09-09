@@ -33,13 +33,13 @@ class SearchesFragment : Fragment() {
     lateinit var searchesAdapter: SearchesAdapter
     private val onCheckboxClick = MutableLiveData<CompanyData>()
 
-//    needed for swipe gestures on Recycler view
+    //    needed for swipe gestures on Recycler view
     lateinit var itemTouchHelperCallback: ItemTouchHelper.SimpleCallback
     private var swipeBackground = ColorDrawable(Color.parseColor("#FF0000"))
     private lateinit var deleteIcon: Drawable
 
-//    variable to help scroll upwards only when new entry is made
-    private var numberOfSearchedElements = 0
+    //    variable to help scroll upwards only when new entry is made
+    private var needToScrollToTop = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         searchesViewModel = ViewModelProviders.of(this).get(SearchesViewModel::class.java)
@@ -92,7 +92,7 @@ class SearchesFragment : Fragment() {
                 if (query != null) {
                     searchesViewModel.getCompanyDataForSearchesWithTicker(query)
                 }
-                Log.d("Searches", "onQueryTextSubmit: $query")
+                needToScrollToTop = true
                 return true
             }
 
@@ -102,9 +102,10 @@ class SearchesFragment : Fragment() {
         })
     }
 
-    fun setupObservers(){
+    fun setupObservers() {
         onCheckboxClick.observe(viewLifecycleOwner,
             Observer {
+                needToScrollToTop = false
                 if (it.isFavourite!!) {
                     searchesViewModel.addCompanyToFavourites(it)
                 } else {
@@ -115,16 +116,8 @@ class SearchesFragment : Fragment() {
         searchesViewModel.searches.observe(viewLifecycleOwner, Observer {
             searchesAdapter.submitList(it)
 
-            Log.d("Scroll", "Number of searched Elements: $numberOfSearchedElements")
-            Log.d("Scroll", "Number of submitted Elements: ${it.size}")
-
-            if(it.size > numberOfSearchedElements){
-                Log.d("Scroll", "Scrolled to top")
+            if (needToScrollToTop)
                 searches_recycler_view.scrollToPosition(0)
-            }
-
-            numberOfSearchedElements = it.size
-
         })
 
         searchesViewModel.searchesProgressBar.observe(viewLifecycleOwner, Observer {
@@ -135,12 +128,16 @@ class SearchesFragment : Fragment() {
         })
 
         searchesViewModel.companyNotFound.observe(viewLifecycleOwner, Observer {
-            if(it)
-                Toast.makeText(this.context, "Sorry wrong ticker, we could not find your company", Toast.LENGTH_SHORT).show()
+            if (it)
+                Toast.makeText(
+                    this.context,
+                    "Sorry wrong ticker, we could not find your company",
+                    Toast.LENGTH_SHORT
+                ).show()
         })
     }
 
-    fun setupRecyclerViewSwipeGestures(){
+    fun setupRecyclerViewSwipeGestures() {
         deleteIcon = ContextCompat.getDrawable(this.requireContext(), R.drawable.delete_icon)!!
         //        callback for the swipe gesture
         itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
@@ -153,10 +150,9 @@ class SearchesFragment : Fragment() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                needToScrollToTop = false
                 val position = viewHolder.adapterPosition
                 val companyData = searchesAdapter.currentList[position]
-                Log.d("Swipe", "Swiped position: $position")
-                Log.d("Swipe", "Company name: ${companyData.name}")
                 searchesViewModel.deleteCompanyFromSearches(companyData)
             }
 

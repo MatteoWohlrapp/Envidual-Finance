@@ -33,7 +33,7 @@ class SearchesViewModel() : ViewModel(), KoinComponent {
                 val data = getCompaniesForSearches.invoke()
                 searchesProgressBar.postValue(false)
                 data.collect { searches.postValue(it)
-                Log.d("Scroll", it.toString())}
+                }
             }
         }
     }
@@ -45,7 +45,6 @@ class SearchesViewModel() : ViewModel(), KoinComponent {
                 try {
                     getCompanyByTicker.invoke(ticker)
                 } catch(e: CompanyNotFoundException){
-                    Log.d("Searches", "Company not found")
                     companyNotFound.postValue(true)
                 } finally {
                     searchesProgressBar.postValue(false)

@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.ListAdapter
 import com.example.envidual.finance.touchlab.databinding.SearchesCardviewBinding
 import domain.data.CompanyData
+import kotlinx.android.synthetic.main.search_fragment.*
 
 class SearchesAdapter(val onCheckboxClicked: MutableLiveData<CompanyData>) : ListAdapter<CompanyData, SearchesViewHolder>(
     CompanyDataDiffCallback()

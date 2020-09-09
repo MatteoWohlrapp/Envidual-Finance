@@ -4,17 +4,10 @@ import platform.Foundation.NSDate
 import platform.Foundation.addTimeInterval
 import platform.Foundation.now
 
-actual fun getTodaysDate(): String {
-    val date = NSDate.now
-    val string = date.toString()
-    val splitted = string.split(" ")
-    return splitted[0]
-}
-
-actual fun getYesterdaysDate(): String {
+actual fun getDayNumberOfDaysBefore(numberOfDays: Int): String {
     val today = NSDate.now
-    val yesterday = today.addTimeInterval(-86400.0)
-    val string = yesterday.toString()
-    val splitted = string.split(" ")
-    return splitted[0]
+    val dayBefore = today.addTimeInterval(numberOfDays*(-86400.00))
+    val dayString = dayBefore.toString()
+    val splittedDates = dayString.split(" ")
+    return splittedDates[0]
 }

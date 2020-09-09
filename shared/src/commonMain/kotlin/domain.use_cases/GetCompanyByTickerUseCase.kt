@@ -31,11 +31,6 @@ class GetCompanyByTickerUseCase(
 
     @Throws(Exception::class, CompanyNotFoundException::class)
     suspend fun invoke(ticker: String) {
-
-        println("Use case: $isFrozen")
-        println("Cache: ${companyDataCache.isFrozen}")
-        println("Remote: ${remoteFinance.isFrozen}")
-        println("http: ${remoteFinance.isClientFrozen()}")
         //        necessary to run for the first time, remote Finance gets frozen, http client throws exception but its caught. No further freezing, because remote finance is frozen
         try {
             remoteFinance.freeze()
@@ -54,6 +49,12 @@ class GetCompanyByTickerUseCase(
             if (companyByGivenTicker.isEmpty()) {
                 // the company was not found in the database, we need to fetch from remote
                 println("found no data for the given ticker in the table")
+
+                try {
+                    remoteFinance.freeze()
+                } catch (e: Throwable) {
+                    println(e.message)
+                }
 
                 val companyDataFromRemote = remoteFinance.getCompanyData(upperCaseTicker)
 

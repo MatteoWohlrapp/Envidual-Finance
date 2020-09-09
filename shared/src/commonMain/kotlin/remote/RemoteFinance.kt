@@ -35,8 +35,12 @@ class RemoteFinance(private val client: HttpClient) : RemoteFinanceInterface {
     override suspend fun getCompanyData(ticker: String): CompanyData {
         println("Got to getCompanyData in RemoteFinance")
         return withContext(mainDispatcher) {
-            client.get {
-                finnhubData("api/v1/stock/profile2?symbol=$ticker&token=bsp7bq7rh5r8ktikc24g")
+            try {
+                client.get {
+                    finnhubData("api/v1/stock/profile2?symbol=$ticker&token=bsp7bq7rh5r8ktikc24g")
+                }
+            } catch (e: NullPointerException) {
+                return@withContext CompanyData()
             }
         }
     }
@@ -46,9 +50,13 @@ class RemoteFinance(private val client: HttpClient) : RemoteFinanceInterface {
         from: String,
         to: String
     ): List<CompanyNews> =
-        withContext(mainDispatcher){
-            client.get {
-                finnhubData("api/v1/company-news?symbol=$ticker&from=$from&to=$to&token=bsp7bq7rh5r8ktikc24g")
+        withContext(mainDispatcher) {
+            try {
+                client.get {
+                    finnhubData("api/v1/company-news?symbol=$ticker&from=$from&to=$to&token=bsp7bq7rh5r8ktikc24g")
+                }
+            } catch (e: NullPointerException) {
+                return@withContext listOf()
             }
         }
 
