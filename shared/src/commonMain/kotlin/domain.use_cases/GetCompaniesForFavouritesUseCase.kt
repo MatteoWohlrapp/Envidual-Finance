@@ -3,14 +3,9 @@ package domain.use_cases
 import cache.CompanyDataCacheInterface
 import domain.data.CompanyData
 import kotlinx.coroutines.flow.Flow
-import org.koin.core.KoinComponent
-import org.koin.core.inject
-import remote.CompanyNotFoundException
+import remote.CompanyDataNotFoundException
 import remote.RemoteFinanceInterface
-import cache.DatabaseHelper
 import co.touchlab.stately.freeze
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.DisposableHandle
 import kotlinx.coroutines.withContext
 
 class GetCompaniesForFavouritesUseCase(
@@ -41,7 +36,7 @@ class GetCompaniesForFavouritesUseCase(
                             println(e.message)
                         }
                         company = remoteFinance.getCompanyData(ticker)
-                    } catch (e: CompanyNotFoundException) {
+                    } catch (e: CompanyDataNotFoundException) {
                         println(e.toString())
                     }
                     if (company.name != null) {

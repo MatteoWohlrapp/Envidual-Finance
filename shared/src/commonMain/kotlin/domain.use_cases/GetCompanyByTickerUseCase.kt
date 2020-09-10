@@ -1,25 +1,11 @@
 package domain.use_cases
 
 import cache.CompanyDataCacheInterface
-import cache.getThread
 import co.touchlab.stately.freeze
-import co.touchlab.stately.isFrozen
 import domain.data.CompanyData
-import io.ktor.client.*
-import io.ktor.client.features.DefaultRequest.Feature.install
-import io.ktor.client.features.json.*
-import io.ktor.client.features.json.serializer.*
-import io.ktor.http.*
-import kotlinx.atomicfu.atomic
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.json.Json
-import remote.CompanyNotFoundException
-import remote.RemoteFinance
+import remote.CompanyDataNotFoundException
 import remote.RemoteFinanceInterface
-import kotlin.native.concurrent.ThreadLocal
 
 
 class GetCompanyByTickerUseCase(
@@ -29,7 +15,7 @@ class GetCompanyByTickerUseCase(
 
 ) {
 
-    @Throws(Exception::class, CompanyNotFoundException::class)
+    @Throws(Exception::class, CompanyDataNotFoundException::class)
     suspend fun invoke(ticker: String) {
         //        necessary to run for the first time, remote Finance gets frozen, http client throws exception but its caught. No further freezing, because remote finance is frozen
         try {
@@ -67,7 +53,7 @@ class GetCompanyByTickerUseCase(
                     companiesByRemoteTicker =
                         companyDataCache.selectByTicker(companyDataFromRemote.ticker!!)
                 } else
-                    throw CompanyNotFoundException("No company found.")
+                    throw CompanyDataNotFoundException("No company found.")
 
                 if (companiesByRemoteTicker.isEmpty()) {
                     println("found no data for the remote ticker in the table")

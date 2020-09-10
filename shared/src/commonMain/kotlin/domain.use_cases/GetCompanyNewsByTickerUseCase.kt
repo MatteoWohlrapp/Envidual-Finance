@@ -13,6 +13,7 @@ import kotlinx.coroutines.withContext
 import org.koin.core.Koin
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import remote.CompanyNewsNotFoundException
 import remote.RemoteFinanceInterface
 
 class GetCompanyNewsByTickerUseCase(
@@ -21,39 +22,27 @@ class GetCompanyNewsByTickerUseCase(
 ) {
 
 
-    suspend fun invoke(ticker: String): Flow<List<CompanyNews>> {
+    suspend fun invoke(ticker: String): List<CompanyNews> {
         try {
             remoteFinance.freeze()
         } catch (e: Throwable) {
             println(e.message)
         }
         return withContext(backgroundDispatcher) {
+            var data: List<CompanyNews> = companyNewsCache.selectByTicker(ticker)
 
-            try {
-                remoteFinance.freeze()
-            } catch (e: Throwable) {
-                println(e.message)
-            }
-
-            return@withContext flow {
-
-                var data: List<CompanyNews> = companyNewsCache.selectByTicker(ticker)
-
-                if (data.isNotEmpty())
-                    emit(data)
-
-                if (data.isNotEmpty()) {
-                    if (data[0].lastRequested != null) {
-                        if (data[0].lastRequested!! > getTimestamp() - 300) {
-                            getNewsOfTheLastSevenDays(ticker)
-                            emit(companyNewsCache.selectByTicker(ticker))
-                        }
+            if (data.isEmpty()) {
+                getNewsOfTheLastSevenDays(ticker)
+            } else {
+                if(data[0].lastRequested != null){
+                    if(data[0].lastRequested!! > getTimestamp() - 300){
+                        getNewsOfTheLastSevenDays(ticker)
                     }
-                } else {
+                } else
                     getNewsOfTheLastSevenDays(ticker)
-                    emit(companyNewsCache.selectByTicker(ticker))
-                }
             }
+
+            return@withContext companyNewsCache.selectByTicker(ticker)
         }
     }
 
@@ -70,6 +59,9 @@ class GetCompanyNewsByTickerUseCase(
         val companyNewsFromRemote = remoteFinance.getCompanyNews(ticker, from, to)
 
         companyNewsCache.deleteByTicker(ticker)
+
+        if (companyNewsFromRemote.isEmpty())
+            throw CompanyNewsNotFoundException("No company news found for the last seven days.")
 
         val time = getTimestamp()
         companyNewsCache.insert(companyNewsFromRemote.map {

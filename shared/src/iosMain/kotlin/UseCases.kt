@@ -1,15 +1,9 @@
 package co.touchlab.kampkit
 
 import co.touchlab.stately.ensureNeverFrozen
-import domain.data.CompanyData
-import domain.data.CompanyNews
 import domain.use_cases.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import remote.CompanyNotFoundException
 
 
 class UseCases(): KoinComponent {

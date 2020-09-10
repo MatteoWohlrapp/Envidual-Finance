@@ -12,7 +12,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import remote.CompanyNotFoundException
+import remote.CompanyDataNotFoundException
+import remote.CompanyNewsNotFoundException
 
 class CompanyDetailedViewModel : ViewModel(), KoinComponent {
 
@@ -26,15 +27,10 @@ class CompanyDetailedViewModel : ViewModel(), KoinComponent {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 try {
-                    val companyNewsAsFlow = getCompanyNewsByTicker.invoke(ticker)
-                    companyNewsAsFlow.collect {
-                        companyNewsProgressBar.postValue(false)
-                        if (it.isEmpty())
-                            companyNewsNotFound.postValue(true)
-                        else
-                            companyNews.postValue(it)
-                    }
-                } catch (e: CompanyNotFoundException) {
+                    val companyNewsFromUseCase = getCompanyNewsByTicker.invoke(ticker)
+                    companyNewsProgressBar.postValue(false)
+                    companyNews.postValue(companyNewsFromUseCase)
+                } catch (e: CompanyNewsNotFoundException) {
                     companyNewsNotFound.postValue(true)
                 } catch (e: ClientRequestException){
                     toManyRequests.postValue(true)

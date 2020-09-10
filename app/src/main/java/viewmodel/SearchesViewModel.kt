@@ -1,6 +1,5 @@
 package viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,7 +11,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import remote.CompanyNotFoundException
+import remote.CompanyDataNotFoundException
 
 class SearchesViewModel() : ViewModel(), KoinComponent {
     private val getCompaniesForSearches : GetCompaniesForSearchesUseCase by inject()
@@ -44,7 +43,7 @@ class SearchesViewModel() : ViewModel(), KoinComponent {
             withContext(Dispatchers.IO){
                 try {
                     getCompanyByTicker.invoke(ticker)
-                } catch(e: CompanyNotFoundException){
+                } catch(e: CompanyDataNotFoundException){
                     companyNotFound.postValue(true)
                 } finally {
                     searchesProgressBar.postValue(false)
