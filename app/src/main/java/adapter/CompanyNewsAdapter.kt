@@ -25,17 +25,19 @@ class CompanyNewsAdapter : ListAdapter<CompanyNews, CompanyNewsViewHolder>(Compa
     override fun onBindViewHolder(holder: CompanyNewsViewHolder, position: Int) {
         with(holder){
             bind(getItem(adapterPosition))
-            itemView.setOnClickListener {
-                val action = CompanyDataDetailedFragmentDirections.actionCompanyDetailedFragmentToCompanyNewsDetailedFragment(
-                    getItem(adapterPosition).image!!,
-                    getItem(adapterPosition).headline!!,
-                    getItem(adapterPosition).summary!!,
-                    SimpleDateFormat("dd/MM/yyyy").format(Date(getItem(adapterPosition).datetime!!*1000)),
-                    getItem(adapterPosition).source!!,
-                    getItem(adapterPosition).url!!
-                )
-                Navigation.findNavController(itemView).navigate(action)
-            }
+            if(!getItem(adapterPosition).headline?.equals("No news found")!!){
+                itemView.setOnClickListener {
+                    val action =
+                        CompanyDataDetailedFragmentDirections.actionCompanyDetailedFragmentToCompanyNewsDetailedFragment(
+                            getItem(adapterPosition).image!!,
+                            getItem(adapterPosition).headline!!,
+                            getItem(adapterPosition).summary!!,
+                            SimpleDateFormat("dd/MM/yyyy").format(Date(getItem(adapterPosition).datetime!! * 1000)),
+                            getItem(adapterPosition).source!!,
+                            getItem(adapterPosition).url!!
+                        )
+                    Navigation.findNavController(itemView).navigate(action)
+                }}
         }
     }
 

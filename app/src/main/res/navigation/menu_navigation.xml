@@ -12,14 +12,14 @@
         android:label="FavouritesFragment" >
         <action
             android:id="@+id/action_favourites_to_companyDetailedFragment"
-            app:destination="@id/companyDetailedFragment" />
+            app:destination="@id/companyDataDetailedFragment" />
     </fragment>
     <fragment
         android:id="@+id/search"
         android:name="fragments.SearchesFragment"
         android:label="SearchesFragment" />
     <fragment
-        android:id="@+id/companyDetailedFragment"
+        android:id="@+id/companyDataDetailedFragment"
         android:name="fragments.CompanyDataDetailedFragment"
         android:label="CompanyDetailedFragment" >
         <action
@@ -61,7 +61,7 @@
         android:label="CompanyNewsDetailedFragment" >
         <action
             android:id="@+id/action_companyNewsDetailedFragment_to_companyDetailedFragment"
-            app:destination="@id/companyDetailedFragment" />
+            app:destination="@id/companyDataDetailedFragment" />
         <argument
             android:name="image"
             app:argType="string" />

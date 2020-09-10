@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.*
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuItemCompat
 import androidx.fragment.app.Fragment
@@ -45,16 +46,25 @@ class SearchesFragment : Fragment() {
         searchesViewModel = ViewModelProviders.of(this).get(SearchesViewModel::class.java)
         super.onCreate(savedInstanceState)
 
+        (activity as AppCompatActivity).supportActionBar?.title = "Search"
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+
         setupRecyclerViewSwipeGestures()
         searchesViewModel.getCompanyDataForSearches()
     }
 
+    override fun onStart() {
+        (activity as AppCompatActivity).supportActionBar?.title = "Search"
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        super.onStart()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         return inflater.inflate(R.layout.search_fragment, container, false)
     }
 

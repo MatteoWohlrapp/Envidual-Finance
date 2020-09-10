@@ -2,6 +2,8 @@ package fragments
 
 import adapter.FavouritesAdapter
 import adapter.ItemSpacingDecoration
+import android.annotation.SuppressLint
+import android.app.AppComponentFactory
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -12,6 +14,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -20,6 +24,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.envidual.finance.touchlab.R
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.favourites_fragment.*
 import viewmodel.FavouritesViewModel
 
@@ -40,7 +45,11 @@ class FavouritesFragment : Fragment(){
         favouritesViewModel.getCompanyDataForFavourites()
         favouritesViewModel.updateCompanies()
 
+        (activity as AppCompatActivity).supportActionBar?.title = "Favourites"
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+
         setupRecyclerViewSwipeGestures()
+
     }
 
 
@@ -79,7 +88,7 @@ class FavouritesFragment : Fragment(){
     }
 
     fun setupRecyclerViewSwipeGestures(){
-        deleteIcon = ContextCompat.getDrawable(this.context!!, R.drawable.delete_icon)!!
+        deleteIcon = ContextCompat.getDrawable(this.requireContext(), R.drawable.delete_icon)!!
 
 //        callback for the swipe gesture
         itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {

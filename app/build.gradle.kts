@@ -68,5 +68,7 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.3.0")
     implementation("androidx.navigation:navigation-ui-ktx:2.3.0")
     implementation("io.coil-kt:coil:0.11.0")
+    implementation("androidx.appcompat:appcompat:1.2.0")
     testImplementation(Deps.junit)
+    implementation("androidx.browser:browser:1.2.0")
 }

@@ -7,6 +7,18 @@
     android:background="#FFFFFF"
     tools:context="com.example.envidualfinancetouchlab.MainActivity">
 
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:textAlignment="center"
+        android:theme="@style/ToolbarTheme"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextColor="#FFFFFF" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
@@ -27,8 +39,9 @@
         app:defaultNavHost="true"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:navGraph="@navigation/menu_navigation" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,34 +1,31 @@
 package fragments
 
-import adapter.CompanyNewsAdapter
-import adapter.ItemSpacingDecoration
+import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
-import android.os.Parcel
-import android.os.Parcelable
-import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.navigation.fragment.findNavController
 import coil.api.load
-import coil.transform.CircleCropTransformation
 import com.example.envidual.finance.touchlab.R
 import com.example.envidual.finance.touchlab.databinding.CompanyNewsDetailedBinding
-import domain.data.CompanyNews
-import domain.use_cases.GetCompanyNewsByTickerUseCase
-import kotlinx.android.synthetic.main.company_data_detailed.*
-import kotlinx.coroutines.withContext
-import viewmodel.CompanyDetailedViewModel
 
 class CompanyNewsDetailedFragment : Fragment() {
 
     private lateinit var binding: CompanyNewsDetailedBinding
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        setHasOptionsMenu(true)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,17 +46,22 @@ class CompanyNewsDetailedFragment : Fragment() {
             binding.companyNewsSource.text = args.source
             binding.companyNewsUrl.text = args.url
             binding.companyNewsImage.load(args.image){
-                size(1200)
+//                size(1200)
             }
         }
-        val navController = Navigation.findNavController(view)
 
-        binding.companyNewsBack.setOnClickListener {
-            navController.popBackStack()
-        }
         binding.companyNewsUrl.setOnClickListener {
-            val action = CompanyNewsDetailedFragmentDirections.actionCompanyNewsDetailedFragmentToCompanyNewsWebViewFragment(binding.companyNewsUrl.text.toString())
-            navController.navigate(action)
+            val url  = binding.companyNewsUrl.text
+            val builder = CustomTabsIntent.Builder()
+            val colorInt: Int = Color.parseColor("#145373")
+            builder.setToolbarColor(colorInt)
+            val customTabsIntent = builder.build()
+            customTabsIntent.launchUrl(this.requireContext(), Uri.parse(url.toString()))
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        findNavController().popBackStack()
+        return super.onOptionsItemSelected(item)
     }
 }

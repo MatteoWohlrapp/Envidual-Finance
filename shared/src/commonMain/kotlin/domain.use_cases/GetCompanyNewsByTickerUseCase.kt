@@ -32,7 +32,8 @@ class GetCompanyNewsByTickerUseCase(
             return@withContext flow {
                 var data = listOf<CompanyNews>()
                 data = companyNewsCache.selectByTicker(ticker)
-                emit(data)
+                if (data.isNotEmpty())
+                    emit(data)
 
                 try {
                     remoteFinance.freeze()
@@ -49,28 +50,23 @@ class GetCompanyNewsByTickerUseCase(
                     ++numberOfDays
                     var to = getDayNumberOfDaysBefore(0)
                     var from = getDayNumberOfDaysBefore(numberOfDays)
+                    collectedCompanyNews = remoteFinance.getCompanyNews(ticker, from, to)
 
-                    println("Number of days is: $numberOfDays")
-
-                    try {
-                        collectedCompanyNews = remoteFinance.getCompanyNews(ticker, from, to)
-                    } catch(e: ClientRequestException){
-                        break
-                    }
                     println("collectedCompanyNews has ${collectedCompanyNews.size} elements")
 
                     companyNewsCache.insert(
                         collectedCompanyNews.map {
                             it.copy(ticker = ticker)
                         })
-                } while (companyNewsCache.selectByTicker(ticker).size <= 9 && numberOfDays < 32)
+                } while (companyNewsCache.selectByTicker(ticker).size <= 9 && numberOfDays < 7)
 
 
                 collectedCompanyNews = companyNewsCache.selectByTicker(ticker)
                 println("list from database has ${collectedCompanyNews.size} elements")
 
                 if (collectedCompanyNews.size <= 10) {
-                    emit(collectedCompanyNews)
+                    if (collectedCompanyNews.isNotEmpty())
+                        emit(collectedCompanyNews)
                 } else {
                     val lastEntry = collectedCompanyNews[9]
                     companyNewsCache.deleteByTickerAndDateTime(ticker, lastEntry.datetime!!)
@@ -78,19 +74,6 @@ class GetCompanyNewsByTickerUseCase(
                 }
             }
         }
-    }
-
-    private fun removeDuplicates(list: List<CompanyNews>): List<CompanyNews> {
-        val returnList = mutableListOf<CompanyNews>()
-        val stringList = mutableListOf<String>()
-
-        for (news in list) {
-            if (!stringList.contains(news.headline)) {
-                stringList.add(news.headline!!)
-                returnList.add(news)
-            }
-        }
-        return returnList
     }
 }
 

@@ -136,18 +136,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/detailed_share_outstanding" />
 
-            <Button
-                android:id="@+id/detailed_company_back"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginBottom="32dp"
-                android:text="Back"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/company_news_recycler_view" />
+            <!--            <Button-->
+            <!--                android:id="@+id/detailed_company_back"-->
+            <!--                style="@style/Widget.AppCompat.Button.Colored"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginStart="16dp"-->
+            <!--                android:layout_marginTop="32dp"-->
+            <!--                android:layout_marginBottom="32dp"-->
+            <!--                android:text="Back"-->
+            <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toBottomOf="@+id/company_news_recycler_view" />-->
 
             <ImageView
                 android:id="@+id/company_detailed_logo"
@@ -163,8 +163,11 @@
                 android:id="@+id/company_news_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:background="#E8E8E8"
+                android:minHeight="50dp"
                 android:paddingBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/news" />
 
@@ -186,7 +189,7 @@
                 android:background="#E8E8E8"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="News of the day:"
+                android:text="Last weeks news:"
                 android:textAlignment="center"
                 android:textSize="18dp"
                 android:textStyle="bold"

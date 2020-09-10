@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import domain.data.CompanyNews
 import domain.use_cases.GetCompanyNewsByTickerUseCase
+import io.ktor.client.features.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -13,23 +14,30 @@ import org.koin.core.KoinComponent
 import org.koin.core.inject
 import remote.CompanyNotFoundException
 
-class CompanyDetailedViewModel : ViewModel(), KoinComponent{
+class CompanyDetailedViewModel : ViewModel(), KoinComponent {
 
     var companyNews = MutableLiveData<List<CompanyNews>>()
     var companyNewsProgressBar = MutableLiveData<Boolean>()
     var companyNewsNotFound = MutableLiveData<Boolean>()
-    val getCompanyNewsByTicker : GetCompanyNewsByTickerUseCase by inject()
+    var toManyRequests = MutableLiveData<Boolean>()
+    private val getCompanyNewsByTicker: GetCompanyNewsByTickerUseCase by inject()
 
-    fun getCompanyNewsByTicker(ticker:String){
+    fun getCompanyNewsByTicker(ticker: String) {
         viewModelScope.launch {
-            withContext(Dispatchers.IO){
-                try{
+            withContext(Dispatchers.IO) {
+                try {
                     val companyNewsAsFlow = getCompanyNewsByTicker.invoke(ticker)
                     companyNewsAsFlow.collect {
                         companyNewsProgressBar.postValue(false)
-                        companyNews.postValue(it) }
-                } catch(e: CompanyNotFoundException){
+                        if (it.isEmpty())
+                            companyNewsNotFound.postValue(true)
+                        else
+                            companyNews.postValue(it)
+                    }
+                } catch (e: CompanyNotFoundException) {
                     companyNewsNotFound.postValue(true)
+                } catch (e: ClientRequestException){
+                    toManyRequests.postValue(true)
                 } finally {
                     companyNewsProgressBar.postValue(false)
                 }
