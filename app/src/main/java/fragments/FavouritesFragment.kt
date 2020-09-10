@@ -27,6 +27,7 @@ import com.example.envidual.finance.touchlab.R
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.favourites_fragment.*
 import viewmodel.FavouritesViewModel
+import io.ktor.client.request.HttpRequestPipeline
 
 class FavouritesFragment : Fragment(){
 

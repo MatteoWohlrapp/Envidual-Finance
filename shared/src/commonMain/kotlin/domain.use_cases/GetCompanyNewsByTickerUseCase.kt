@@ -23,12 +23,12 @@ class GetCompanyNewsByTickerUseCase(
 
 
     suspend fun invoke(ticker: String): List<CompanyNews> {
-        try {
-            remoteFinance.freeze()
-        } catch (e: Throwable) {
-            println(e.message)
-        }
-        return withContext(backgroundDispatcher) {
+//        try {
+//            remoteFinance.freeze()
+//        } catch (e: Throwable) {
+//            println(e.message)
+//        }
+        return withContext(mainDispatcher) {
             var data: List<CompanyNews> = companyNewsCache.selectByTicker(ticker)
 
             if (data.isEmpty()) {
@@ -51,11 +51,11 @@ class GetCompanyNewsByTickerUseCase(
         val to = getDayNumberOfDaysBefore(0)
         val from = getDayNumberOfDaysBefore(6)
 
-        try {
-            remoteFinance.freeze()
-        } catch (e: Throwable) {
-            println(e.message)
-        }
+//        try {
+//            remoteFinance.freeze()
+//        } catch (e: Throwable) {
+//            println(e.message)
+//        }
         val companyNewsFromRemote = remoteFinance.getCompanyNews(ticker, from, to)
 
         companyNewsCache.deleteByTicker(ticker)

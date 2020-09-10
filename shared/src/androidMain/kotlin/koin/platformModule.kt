@@ -4,6 +4,8 @@ import android.content.Context
 import co.example.envidual.finance.touchlab.db.EnvidualFinanceDatabase
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
+import io.ktor.client.*
+import io.ktor.client.engine.*
 import org.koin.core.module.Module
 import org.koin.dsl.module
 

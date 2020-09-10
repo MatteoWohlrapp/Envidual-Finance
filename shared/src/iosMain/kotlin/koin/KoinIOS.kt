@@ -7,6 +7,8 @@ import com.russhwolf.settings.AppleSettings
 import com.russhwolf.settings.Settings
 import com.squareup.sqldelight.db.SqlDriver
 import com.squareup.sqldelight.drivers.native.NativeSqliteDriver
+import io.ktor.client.engine.*
+import io.ktor.client.engine.ios.*
 import io.ktor.utils.io.core.internal.*
 import kotlinx.cinterop.ObjCClass
 import kotlinx.cinterop.getOriginalKotlinClass

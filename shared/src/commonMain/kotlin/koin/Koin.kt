@@ -4,6 +4,7 @@ import cache.*
 import co.example.envidual.finance.touchlab.db.EnvidualFinanceDatabase
 import domain.use_cases.*
 import io.ktor.client.*
+import io.ktor.client.engine.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.utils.io.core.internal.*
@@ -15,6 +16,7 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 import remote.RemoteFinance
 import remote.RemoteFinanceInterface
+import kotlin.native.concurrent.ThreadLocal
 
 
 fun initKoin(appModule: Module): KoinApplication {

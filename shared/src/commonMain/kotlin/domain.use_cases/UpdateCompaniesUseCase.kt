@@ -18,24 +18,24 @@ class UpdateCompaniesUseCase(
 
 
     suspend fun invoke() {
-        try {
-            remoteFinance.freeze()
-        } catch (e: Throwable) {
-            println(e.message)
-        }
+//        try {
+//            remoteFinance.freeze()
+//        } catch (e: Throwable) {
+//            println(e.message)
+//        }
 
-        withContext(backgroundDispatcher) {
+        withContext(mainDispatcher) {
             val companiesToUpdate = companyDataCache.selectCompaniesToUpdate(getTimestamp() - 86400)
 
             val updatedCompanies = mutableListOf<CompanyData>()
 
             for (company in companiesToUpdate) {
                 val time = getTimestamp()
-                try {
-                    remoteFinance.freeze()
-                } catch (e: Throwable) {
-                    println(e.message)
-                }
+//                try {
+//                    remoteFinance.freeze()
+//                } catch (e: Throwable) {
+//                    println(e.message)
+//                }
                 val companyData = remoteFinance.getCompanyData(company.ticker!!)
                 val modifiedCompanyData = companyData.copy(
                     lastSearched = time, isSearched = company.isSearched,

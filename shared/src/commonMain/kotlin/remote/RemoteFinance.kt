@@ -17,6 +17,7 @@ import io.ktor.client.request.get
 import io.ktor.http.takeFrom
 import io.ktor.utils.io.*
 import io.ktor.utils.io.core.internal.*
+import koin.httpEngine
 import kotlinx.atomicfu.AtomicBoolean
 import kotlinx.atomicfu.AtomicRef
 import kotlinx.atomicfu.atomic
@@ -35,6 +36,13 @@ class RemoteFinance(private val client: HttpClient) : RemoteFinanceInterface {
     override suspend fun getCompanyData(ticker: String): CompanyData {
         println("Got to getCompanyData in RemoteFinance")
         return withContext(mainDispatcher) {
+//            val client = HttpClient {
+//                install(JsonFeature) {
+//                    serializer = KotlinxSerializer(kotlinx.serialization.json.Json {
+//                        ignoreUnknownKeys = true
+//                    })
+//                }
+//            }
             try {
                 client.get {
                     finnhubData("api/v1/stock/profile2?symbol=$ticker&token=bsp7bq7rh5r8ktikc24g")
@@ -51,6 +59,13 @@ class RemoteFinance(private val client: HttpClient) : RemoteFinanceInterface {
         to: String
     ): List<CompanyNews> =
         withContext(mainDispatcher) {
+//            val client = HttpClient {
+//                install(JsonFeature) {
+//                    serializer = KotlinxSerializer(kotlinx.serialization.json.Json {
+//                        ignoreUnknownKeys = true
+//                    })
+//                }
+//            }
             try {
                 client.get {
                     finnhubData("api/v1/company-news?symbol=$ticker&from=$from&to=$to&token=bsp7bq7rh5r8ktikc24g")
@@ -62,6 +77,7 @@ class RemoteFinance(private val client: HttpClient) : RemoteFinanceInterface {
 
     override suspend fun isClientFrozen(): Boolean {
         return client.isFrozen
+//        return true
     }
 
     private fun HttpRequestBuilder.finnhubData(path: String) {
