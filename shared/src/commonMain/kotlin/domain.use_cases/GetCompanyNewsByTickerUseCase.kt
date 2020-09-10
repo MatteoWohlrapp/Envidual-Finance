@@ -29,51 +29,52 @@ class GetCompanyNewsByTickerUseCase(
         }
         return withContext(backgroundDispatcher) {
 
+            try {
+                remoteFinance.freeze()
+            } catch (e: Throwable) {
+                println(e.message)
+            }
+
             return@withContext flow {
-                var data = listOf<CompanyNews>()
-                data = companyNewsCache.selectByTicker(ticker)
+
+                var data: List<CompanyNews> = companyNewsCache.selectByTicker(ticker)
+
                 if (data.isNotEmpty())
                     emit(data)
 
-                try {
-                    remoteFinance.freeze()
-                } catch (e: Throwable) {
-                    println(e.message)
-                }
-                var numberOfDays = -1
-
-                var collectedCompanyNews = listOf<CompanyNews>()
-
-                companyNewsCache.deleteByTicker(ticker)
-
-                do {
-                    ++numberOfDays
-                    var to = getDayNumberOfDaysBefore(0)
-                    var from = getDayNumberOfDaysBefore(numberOfDays)
-                    collectedCompanyNews = remoteFinance.getCompanyNews(ticker, from, to)
-
-                    println("collectedCompanyNews has ${collectedCompanyNews.size} elements")
-
-                    companyNewsCache.insert(
-                        collectedCompanyNews.map {
-                            it.copy(ticker = ticker)
-                        })
-                } while (companyNewsCache.selectByTicker(ticker).size <= 9 && numberOfDays < 7)
-
-
-                collectedCompanyNews = companyNewsCache.selectByTicker(ticker)
-                println("list from database has ${collectedCompanyNews.size} elements")
-
-                if (collectedCompanyNews.size <= 10) {
-                    if (collectedCompanyNews.isNotEmpty())
-                        emit(collectedCompanyNews)
+                if (data.isNotEmpty()) {
+                    if (data[0].lastRequested != null) {
+                        if (data[0].lastRequested!! > getTimestamp() - 300) {
+                            getNewsOfTheLastSevenDays(ticker)
+                            emit(companyNewsCache.selectByTicker(ticker))
+                        }
+                    }
                 } else {
-                    val lastEntry = collectedCompanyNews[9]
-                    companyNewsCache.deleteByTickerAndDateTime(ticker, lastEntry.datetime!!)
-                    emit(collectedCompanyNews.subList(0, 10))
+                    getNewsOfTheLastSevenDays(ticker)
+                    emit(companyNewsCache.selectByTicker(ticker))
                 }
             }
         }
+    }
+
+    private suspend fun getNewsOfTheLastSevenDays(ticker: String) {
+
+        val to = getDayNumberOfDaysBefore(0)
+        val from = getDayNumberOfDaysBefore(6)
+
+        try {
+            remoteFinance.freeze()
+        } catch (e: Throwable) {
+            println(e.message)
+        }
+        val companyNewsFromRemote = remoteFinance.getCompanyNews(ticker, from, to)
+
+        companyNewsCache.deleteByTicker(ticker)
+
+        val time = getTimestamp()
+        companyNewsCache.insert(companyNewsFromRemote.map {
+            it.copy(ticker = ticker, lastRequested = time)
+        })
     }
 }
 

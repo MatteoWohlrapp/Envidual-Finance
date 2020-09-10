@@ -14,5 +14,6 @@ data class CompanyNews(
     var related: String? = null,
     var source: String? = null,
     var summary: String? = null,
-    var url: String? = null
+    var url: String? = null,
+    var lastRequested: Long? = null
 )

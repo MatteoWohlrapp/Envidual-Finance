@@ -72,7 +72,7 @@ class CompanyDataDetailedFragment : Fragment() {
             binding.detailedShareOutstandingData.text = args.shareOutstanding + " " + args.currency
             binding.detailedTicker.text = args.ticker
             binding.companyDetailedLogo.load(args.logo){
-                size(200)
+//                size(200)
             }
             companyDetailedViewModel.getCompanyNewsByTicker(args.ticker)
             (activity as AppCompatActivity).supportActionBar?.title = args.name

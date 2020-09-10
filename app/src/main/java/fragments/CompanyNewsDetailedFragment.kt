@@ -13,13 +13,23 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
+import cache.CompanyNewsCacheInterface
 import coil.api.load
 import com.example.envidual.finance.touchlab.R
 import com.example.envidual.finance.touchlab.databinding.CompanyNewsDetailedBinding
+import domain.data.CompanyNews
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.koin.core.KoinComponent
+import org.koin.core.inject
+import org.koin.ext.scope
 
-class CompanyNewsDetailedFragment : Fragment() {
+class CompanyNewsDetailedFragment : Fragment(), KoinComponent {
 
     private lateinit var binding: CompanyNewsDetailedBinding
+    private val companyNewsCache: CompanyNewsCacheInterface by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
@@ -45,7 +55,7 @@ class CompanyNewsDetailedFragment : Fragment() {
             binding.companyNewsDatetime.text = args.datetime
             binding.companyNewsSource.text = args.source
             binding.companyNewsUrl.text = args.url
-            binding.companyNewsImage.load(args.image){
+            binding.companyNewsImage.load(args.image) {
 //                size(1200)
             }
         }
