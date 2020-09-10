@@ -25,6 +25,7 @@ import com.example.envidual.finance.touchlab.R
 import domain.data.CompanyData
 import kotlinx.android.synthetic.main.favourites_fragment.*
 import kotlinx.android.synthetic.main.search_fragment.*
+import kotlinx.coroutines.delay
 import viewmodel.SearchesViewModel
 
 
@@ -51,12 +52,6 @@ class SearchesFragment : Fragment() {
 
         setupRecyclerViewSwipeGestures()
         searchesViewModel.getCompanyDataForSearches()
-    }
-
-    override fun onStart() {
-        (activity as AppCompatActivity).supportActionBar?.title = "Search"
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        super.onStart()
     }
 
     override fun onCreateView(
@@ -99,10 +94,10 @@ class SearchesFragment : Fragment() {
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
+                needToScrollToTop = true
                 if (query != null) {
                     searchesViewModel.getCompanyDataForSearchesWithTicker(query)
                 }
-                needToScrollToTop = true
                 return true
             }
 
@@ -124,10 +119,10 @@ class SearchesFragment : Fragment() {
             }
         )
         searchesViewModel.searches.observe(viewLifecycleOwner, Observer {
-            searchesAdapter.submitList(it)
-
             if (needToScrollToTop)
-                searches_recycler_view.scrollToPosition(0)
+                searchesAdapter.submitList(it) { searches_recycler_view.scrollToPosition(0) }
+            else
+                searchesAdapter.submitList(it)
         })
 
         searchesViewModel.searchesProgressBar.observe(viewLifecycleOwner, Observer {
@@ -147,7 +142,7 @@ class SearchesFragment : Fragment() {
         })
     }
 
-    fun setupRecyclerViewSwipeGestures() {
+    private fun setupRecyclerViewSwipeGestures() {
         deleteIcon = ContextCompat.getDrawable(this.requireContext(), R.drawable.delete_icon)!!
         //        callback for the swipe gesture
         itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
