@@ -2,6 +2,8 @@ package cache
 
 import co.example.envidual.finance.touchlab.db.CompaniesNews
 import co.touchlab.stately.freeze
+import com.squareup.sqldelight.runtime.coroutines.asFlow
+import com.squareup.sqldelight.runtime.coroutines.mapToList
 import domain.data.CompanyNews
 import domain.use_cases.backgroundDispatcher
 import kotlinx.coroutines.CoroutineDispatcher

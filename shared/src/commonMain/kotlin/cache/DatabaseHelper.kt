@@ -5,6 +5,9 @@ import co.example.envidual.finance.touchlab.db.Companies
 import co.example.envidual.finance.touchlab.db.CompaniesNews
 import co.touchlab.stately.freeze
 import com.squareup.sqldelight.Query
+import com.squareup.sqldelight.Transacter
+import com.squareup.sqldelight.TransactionWithReturn
+import com.squareup.sqldelight.TransactionWithoutReturn
 import domain.data.CompanyData
 import domain.data.CompanyNews
 import domain.use_cases.backgroundDispatcher
@@ -15,6 +18,7 @@ import kotlinx.coroutines.flow.map
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import org.koin.ext.scope
+import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.coroutineContext
 
 class DatabaseHelper(private val dbReference: EnvidualFinanceDatabase) {
@@ -155,4 +159,24 @@ class DatabaseHelper(private val dbReference: EnvidualFinanceDatabase) {
                 .deleteCompanyNewsWithTickerAndTimestamp(ticker, dateTime)
         }
     }
+
+    private suspend fun Transacter.transactionWithContext(
+        coroutineContext: CoroutineContext,
+        noEnclosing: Boolean = false,
+        body: TransactionWithoutReturn.() -> Unit
+) {
+    withContext(coroutineContext) {
+        this@transactionWithContext.transaction(noEnclosing) { body() }
+    }
+}
+
+private suspend fun Transacter.transactionWithContextAndReturn(
+    context: CoroutineContext,
+    noEnclosing: Boolean = false,
+    body: TransactionWithReturn<Query<Companies>>.() -> Query<Companies>
+) : Query<Companies>{
+    return withContext(context){
+        transactionWithResult(noEnclosing) { body() }
+    }
+}
 }

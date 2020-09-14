@@ -63,6 +63,7 @@ kotlin {
         implementation(Deps.Ktor.commonSerialization)
         api(Deps.kermit)
         implementation("org.jetbrains.kotlinx:atomicfu:0.14.4")
+        implementation("com.squareup.sqldelight:coroutines-extensions:1.4.3")
     }
 
     sourceSets["commonTest"].dependencies {
@@ -127,5 +128,6 @@ kotlin {
 sqldelight {
     database("EnvidualFinanceDatabase") {
         packageName = "co.example.envidual.finance.touchlab.db"
+        deriveSchemaFromMigrations = true
     }
 }
