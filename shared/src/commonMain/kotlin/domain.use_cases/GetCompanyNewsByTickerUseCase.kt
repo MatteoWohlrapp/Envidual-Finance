@@ -21,7 +21,7 @@ class GetCompanyNewsByTickerUseCase(
     private val remoteFinance: RemoteFinanceInterface
 ) {
 
-
+    @Throws(Exception::class, CompanyNewsNotFoundException::class)
     suspend fun invoke(ticker: String): List<CompanyNews> {
 //        try {
 //            remoteFinance.freeze()
