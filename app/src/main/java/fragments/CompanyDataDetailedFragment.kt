@@ -28,9 +28,9 @@ import viewmodel.CompanyDetailedViewModel
 
 class CompanyDataDetailedFragment : Fragment() {
 
-        private lateinit var binding: CompanyDataDetailedBinding
-    lateinit var companyDetailedViewModel: CompanyDetailedViewModel
-    lateinit var companyNewsAdapter: CompanyNewsAdapter
+    private lateinit var binding: CompanyDataDetailedBinding
+    private lateinit var companyDetailedViewModel: CompanyDetailedViewModel
+    private lateinit var companyNewsAdapter: CompanyNewsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -46,6 +46,7 @@ class CompanyDataDetailedFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+//        return inflater.inflate(R.layout.company_data_detailed, container, false)
         binding = CompanyDataDetailedBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -71,9 +72,18 @@ class CompanyDataDetailedFragment : Fragment() {
             binding.detailedName.text = args.name
             binding.detailedShareOutstandingData.text = args.shareOutstanding + " " + args.currency
             binding.detailedTicker.text = args.ticker
-            binding.companyDetailedLogo.load(args.logo){
+            binding.companyDetailedLogo.load(args.logo) {
 //                size(200)
             }
+//            detailed_industry_data.text = args.industry
+//            detailed_country_data.text = args.country
+//            detailed_ipo_data.text = args.ipo
+//            detailed_market_capitalization_data.text = args.marketCapitalization
+//            detailed_name.text = args.name
+//            detailed_share_outstanding_data.text = args.shareOutstanding
+//            detailed_ticker.text = args.ticker
+//            company_detailed_logo.load(args.logo)
+
             companyDetailedViewModel.getCompanyNewsByTicker(args.ticker)
             (activity as AppCompatActivity).supportActionBar?.title = args.name
             companyDetailedViewModel.getCompanyNewsByTicker(args.ticker)
@@ -88,14 +98,14 @@ class CompanyDataDetailedFragment : Fragment() {
 
         setupObservers()
 
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             (activity as AppCompatActivity).supportActionBar?.title = "Favourites"
             (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
             findNavController().popBackStack()
         }
     }
 
-    private fun setupObservers(){
+    private fun setupObservers() {
         companyDetailedViewModel.companyNews.observe(viewLifecycleOwner, {
             companyNewsAdapter.submitList(it)
         })
@@ -107,22 +117,25 @@ class CompanyDataDetailedFragment : Fragment() {
                 company_news_progress_bar.visibility = View.GONE
         })
 
-        companyDetailedViewModel.companyNewsNotFound.observe(viewLifecycleOwner, {
-            if (it)
-                companyNewsAdapter.submitList(
-                    listOf(
-                        CompanyNews(
-                            headline = "No news found",
-                            datetime = 0,
-                            source = "..."
-                        )
-                    )
-                )
-        })
+//        companyDetailedViewModel.companyNewsNotFound.observe(viewLifecycleOwner, {
+//            if (it)
+//                companyNewsAdapter.submitList(
+//                    listOf(
+//                        CompanyNews(
+//                            headline = "No news found",
+//                            datetime = 0,
+//                            source = "..."
+//                        )
+//                    )
+//                )
+//        })
 
-        companyDetailedViewModel.toManyRequests.observe(viewLifecycleOwner, {
-            if(it)
-                Toast.makeText(context, "Too many network requests, try again later!", Toast.LENGTH_SHORT).show()
+        companyDetailedViewModel.errorMessage.observe(viewLifecycleOwner, {
+                Toast.makeText(
+                    context,
+                    it,
+                    Toast.LENGTH_SHORT
+                ).show()
         })
     }
 }

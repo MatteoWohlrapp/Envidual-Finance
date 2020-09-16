@@ -34,6 +34,7 @@ class SearchesFragment : Fragment() {
     lateinit var searchesViewModel: SearchesViewModel
     lateinit var searchesAdapter: SearchesAdapter
     private val onCheckboxClick = MutableLiveData<CompanyData>()
+    private lateinit var searchView: SearchView
 
     //    needed for swipe gestures on Recycler view
     lateinit var itemTouchHelperCallback: ItemTouchHelper.SimpleCallback
@@ -89,7 +90,7 @@ class SearchesFragment : Fragment() {
         inflater.inflate(R.menu.search_menu, menu)
 
         val searchItem = menu.findItem(R.id.menu_search)
-        val searchView = searchItem.actionView as SearchView
+        searchView = searchItem.actionView as SearchView
 
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -98,6 +99,7 @@ class SearchesFragment : Fragment() {
                 if (query != null) {
                     searchesViewModel.getCompanyDataForSearchesWithTicker(query)
                 }
+                searchView.clearFocus()
                 return true
             }
 
@@ -107,7 +109,7 @@ class SearchesFragment : Fragment() {
         })
     }
 
-    fun setupObservers() {
+    private fun setupObservers() {
         onCheckboxClick.observe(viewLifecycleOwner,
             Observer {
                 needToScrollToTop = false
@@ -132,11 +134,10 @@ class SearchesFragment : Fragment() {
                 searches_progress_bar.visibility = View.GONE
         })
 
-        searchesViewModel.companyNotFound.observe(viewLifecycleOwner, Observer {
-            if (it)
+        searchesViewModel.errorMessage.observe(viewLifecycleOwner, Observer {
                 Toast.makeText(
                     this.context,
-                    "Sorry wrong ticker, we could not find your company",
+                    it,
                     Toast.LENGTH_SHORT
                 ).show()
         })
@@ -201,4 +202,8 @@ class SearchesFragment : Fragment() {
         }
     }
 
+    override fun onPause() {
+        searchView.clearFocus()
+        super.onPause()
+    }
 }

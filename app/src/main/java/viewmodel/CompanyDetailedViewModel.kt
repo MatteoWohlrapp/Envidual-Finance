@@ -14,13 +14,13 @@ import org.koin.core.KoinComponent
 import org.koin.core.inject
 import remote.CompanyDataNotFoundException
 import remote.CompanyNewsNotFoundException
+import remote.NoInternetConnectionException
 
 class CompanyDetailedViewModel : ViewModel(), KoinComponent {
 
     var companyNews = MutableLiveData<List<CompanyNews>>()
     var companyNewsProgressBar = MutableLiveData<Boolean>()
-    var companyNewsNotFound = MutableLiveData<Boolean>()
-    var toManyRequests = MutableLiveData<Boolean>()
+    var errorMessage = MutableLiveData<String>()
     private val getCompanyNewsByTicker: GetCompanyNewsByTickerUseCase by inject()
 
     fun getCompanyNewsByTicker(ticker: String) {
@@ -28,12 +28,9 @@ class CompanyDetailedViewModel : ViewModel(), KoinComponent {
             withContext(Dispatchers.IO) {
                 try {
                     val companyNewsFromUseCase = getCompanyNewsByTicker.invoke(ticker)
-                    companyNewsProgressBar.postValue(false)
                     companyNews.postValue(companyNewsFromUseCase)
-                } catch (e: CompanyNewsNotFoundException) {
-                    companyNewsNotFound.postValue(true)
-                } catch (e: ClientRequestException){
-                    toManyRequests.postValue(true)
+                } catch (e: Exception) {
+                    handleException(e)
                 } finally {
                     companyNewsProgressBar.postValue(false)
                 }
@@ -41,4 +38,13 @@ class CompanyDetailedViewModel : ViewModel(), KoinComponent {
         }
     }
 
+    private fun handleException(e:Exception){
+        when (e) {
+            is ClientRequestException -> errorMessage.postValue(e.message)
+            is CompanyDataNotFoundException -> errorMessage.postValue(e.message)
+            is CompanyNewsNotFoundException -> errorMessage.postValue(e.message)
+            is NoInternetConnectionException -> errorMessage.postValue(e.message)
+            else -> throw e
+        }
+    }
 }

@@ -2,32 +2,28 @@ package fragments
 
 import adapter.FavouritesAdapter
 import adapter.ItemSpacingDecoration
-import android.annotation.SuppressLint
-import android.app.AppComponentFactory
+import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
-import android.media.MediaRouter
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.envidual.finance.touchlab.R
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.favourites_fragment.*
 import viewmodel.FavouritesViewModel
-import io.ktor.client.request.HttpRequestPipeline
 
 class FavouritesFragment : Fragment(){
 
@@ -50,7 +46,6 @@ class FavouritesFragment : Fragment(){
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
         setupRecyclerViewSwipeGestures()
-
     }
 
 
@@ -65,18 +60,9 @@ class FavouritesFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupObservers()
+
         favouritesAdapter= FavouritesAdapter()
-
-
-
-        favouritesViewModel.favourites.observe(viewLifecycleOwner, Observer { favouritesAdapter.submitList(it)})
-
-        favouritesViewModel.favouritesProgressBar.observe(viewLifecycleOwner, Observer {
-            if(it)
-                favourites_progress_bar.visibility = View.VISIBLE
-            else
-                favourites_progress_bar.visibility = View.GONE
-        })
 
         favourites_recycler_view.apply {
             layoutManager = LinearLayoutManager(context)
@@ -88,7 +74,26 @@ class FavouritesFragment : Fragment(){
         itemTouchHelper.attachToRecyclerView(favourites_recycler_view)
     }
 
-    fun setupRecyclerViewSwipeGestures(){
+    private fun setupObservers(){
+        favouritesViewModel.errorMessage.observe(viewLifecycleOwner, {
+            Toast.makeText(
+                this.context,
+                it,
+                Toast.LENGTH_SHORT
+            ).show()
+        })
+        favouritesViewModel.favourites.observe(viewLifecycleOwner,
+            { favouritesAdapter.submitList(it) })
+
+        favouritesViewModel.favouritesProgressBar.observe(viewLifecycleOwner, {
+            if (it)
+                favourites_progress_bar.visibility = View.VISIBLE
+            else
+                favourites_progress_bar.visibility = View.GONE
+        })
+    }
+
+    private fun setupRecyclerViewSwipeGestures(){
         deleteIcon = ContextCompat.getDrawable(this.requireContext(), R.drawable.delete_icon)!!
 
 //        callback for the swipe gesture
