@@ -53,7 +53,7 @@ class GetCompanyByTickerUseCase(
                     companiesByRemoteTicker =
                         companyDataCache.selectByTicker(companyDataFromRemote.ticker!!)
                 } else
-                    throw CompanyDataNotFoundException("No company found.")
+                    throw CompanyDataNotFoundException("No company found for given ticker.")
 
                 if (companiesByRemoteTicker.isEmpty()) {
                     println("found no data for the remote ticker in the table")

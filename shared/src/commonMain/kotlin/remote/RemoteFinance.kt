@@ -26,8 +26,12 @@ class RemoteFinance(private val client: HttpClient) : RemoteFinanceInterface {
                 client.get {
                     finnhubData("api/v1/stock/profile2?symbol=$ticker&token=bsp7bq7rh5r8ktikc24g")
                 }
-            } catch (e: NullPointerException) {
+            } catch(e: NullPointerException) {
                 return@withContext CompanyData()
+            }
+            // we know that Throwable should be the networkException
+            catch(t: Throwable) {
+                throw NoInternetConnectionException("No internet connection!")
             }
         }
     }
