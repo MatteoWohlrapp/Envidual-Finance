@@ -1,7 +1,7 @@
 package koin
 
 import cache.*
-import co.example.envidual.finance.touchlab.db.EnvidualFinanceDatabase
+import co.example.EnvidualFinanceDatabase
 import domain.use_cases.*
 import io.ktor.client.*
 import io.ktor.client.engine.*

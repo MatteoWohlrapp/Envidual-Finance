@@ -127,7 +127,6 @@ kotlin {
 
 sqldelight {
     database("EnvidualFinanceDatabase") {
-        packageName = "co.example.envidual.finance.touchlab.db"
-        deriveSchemaFromMigrations = true
+        packageName = "co.example"
     }
 }

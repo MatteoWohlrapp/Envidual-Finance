@@ -1,6 +1,5 @@
 package cache
 
-import co.example.envidual.finance.touchlab.db.CompaniesNews
 import domain.data.CompanyNews
 import kotlinx.coroutines.flow.Flow
 

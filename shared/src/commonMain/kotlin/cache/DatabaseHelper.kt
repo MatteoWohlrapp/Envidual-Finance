@@ -1,8 +1,10 @@
 package cache
 
-import co.example.envidual.finance.touchlab.db.EnvidualFinanceDatabase
-import co.example.envidual.finance.touchlab.db.Companies
-import co.example.envidual.finance.touchlab.db.CompaniesNews
+
+
+import co.example.Companies
+import co.example.CompaniesNews
+import co.example.EnvidualFinanceDatabase
 import co.touchlab.stately.freeze
 import com.squareup.sqldelight.Query
 import com.squareup.sqldelight.Transacter

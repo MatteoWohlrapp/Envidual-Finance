@@ -1,6 +1,6 @@
 package koin
 
-import co.example.envidual.finance.touchlab.db.EnvidualFinanceDatabase
+import co.example.EnvidualFinanceDatabase
 import co.touchlab.kermit.Kermit
 import co.touchlab.kermit.NSLogLogger
 import com.russhwolf.settings.AppleSettings

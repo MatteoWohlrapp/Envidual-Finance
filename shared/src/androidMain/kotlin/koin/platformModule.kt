@@ -1,7 +1,7 @@
 package koin
 
 import android.content.Context
-import co.example.envidual.finance.touchlab.db.EnvidualFinanceDatabase
+import co.example.EnvidualFinanceDatabase
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
 import io.ktor.client.*

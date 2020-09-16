@@ -7,6 +7,7 @@ import domain.use_cases.mainDispatcher
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.http.*
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
 class RemoteFinance(private val client: HttpClient) : RemoteFinanceInterface {

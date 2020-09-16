@@ -1,7 +1,3 @@
-import io.ktor.util.date.GMTDate;
-import java.lang.Double;
-import java.util.Date;
-
 CREATE TABLE companies(
 country TEXT NOT NULL,
 currency TEXT NOT NULL,
@@ -16,6 +12,7 @@ isFavourite INTEGER AS Boolean,
 isSearched INTEGER AS Boolean,
 lastSearched INTEGER
 );
+
 
 
 selectAllFavouritesFromCompanies:

@@ -1,6 +1,6 @@
 package cache
 
-import co.example.envidual.finance.touchlab.db.CompaniesNews
+import co.example.CompaniesNews
 import co.touchlab.stately.freeze
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
