@@ -39,7 +39,7 @@ class SearchesViewModel() : ViewModel(), KoinComponent {
                     }
                 } catch (e: java.lang.Exception){
                     searchesProgressBar.postValue(false)
-                    handleException(e)
+                    handleException(e, errorMessage)
                 }
 
             }
@@ -53,7 +53,7 @@ class SearchesViewModel() : ViewModel(), KoinComponent {
                 try {
                     getCompanyByTicker.invoke(ticker)
                 } catch (e: Exception) {
-                    handleException(e)
+                    handleException(e, errorMessage)
                 } finally {
                     searchesProgressBar.postValue(false)
                 }
@@ -84,14 +84,4 @@ class SearchesViewModel() : ViewModel(), KoinComponent {
             }
         }
     }
-
-    private fun handleException(e:Exception){
-        when (e) {
-            is ClientRequestException -> errorMessage.postValue(e.message)
-            is CompanyDataNotFoundException -> errorMessage.postValue(e.message)
-            is NoInternetConnectionException -> errorMessage.postValue(e.message)
-            else -> throw e
-        }
-    }
-
 }

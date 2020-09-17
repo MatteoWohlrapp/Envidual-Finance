@@ -30,21 +30,11 @@ class CompanyDetailedViewModel : ViewModel(), KoinComponent {
                     val companyNewsFromUseCase = getCompanyNewsByTicker.invoke(ticker)
                     companyNews.postValue(companyNewsFromUseCase)
                 } catch (e: Exception) {
-                    handleException(e)
+                    handleException(e, errorMessage)
                 } finally {
                     companyNewsProgressBar.postValue(false)
                 }
             }
-        }
-    }
-
-    private fun handleException(e:Exception){
-        when (e) {
-            is ClientRequestException -> errorMessage.postValue(e.message)
-            is CompanyDataNotFoundException -> errorMessage.postValue(e.message)
-            is CompanyNewsNotFoundException -> errorMessage.postValue(e.message)
-            is NoInternetConnectionException -> errorMessage.postValue(e.message)
-            else -> throw e
         }
     }
 }

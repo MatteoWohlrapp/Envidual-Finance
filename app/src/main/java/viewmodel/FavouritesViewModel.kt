@@ -38,7 +38,7 @@ class FavouritesViewModel() : ViewModel(), KoinComponent{
                     data.collect { favourites.postValue(it) }
                 } catch (e: Exception){
                     favouritesProgressBar.postValue(false)
-                    handleException(e)
+                    handleException(e, errorMessage)
                 }
 
             }
@@ -59,18 +59,9 @@ class FavouritesViewModel() : ViewModel(), KoinComponent{
                 try{
                     updateCompanies.invoke()
                 } catch (e:Exception){
-                    handleException(e)
+                    handleException(e, errorMessage)
                 }
             }
-        }
-    }
-
-    private fun handleException(e:Exception){
-        when (e) {
-            is ClientRequestException -> errorMessage.postValue(e.message)
-            is CompanyDataNotFoundException -> errorMessage.postValue(e.message)
-            is NoInternetConnectionException -> errorMessage.postValue(e.message)
-            else -> throw e
         }
     }
 }

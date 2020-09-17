@@ -30,6 +30,8 @@ class RemoteFinance(private val client: HttpClient) : RemoteFinanceInterface {
                 }
             } catch (e: NullPointerException) {
                 return@withContext CompanyData()
+            } catch (e: ClientRequestException) {
+                throw RequestLimitReachedException("Too many requests, please try again in a moment.")
             }
             // we know that Throwable should be the networkException
             catch (t: Throwable) {
@@ -57,6 +59,8 @@ class RemoteFinance(private val client: HttpClient) : RemoteFinanceInterface {
                 }
             } catch (e: NullPointerException) {
                 return@withContext listOf()
+            } catch (e: ClientRequestException) {
+                throw RequestLimitReachedException("Too many requests, please try again in a moment.")
             } catch (t: Throwable) {
                 throw NoInternetConnectionException("No internet connection!")
             }
