@@ -6,7 +6,9 @@ import kotlinx.coroutines.flow.Flow
 import remote.CompanyDataNotFoundException
 import remote.RemoteFinanceInterface
 import co.touchlab.stately.freeze
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.withContext
+import remote.NoInternetConnectionException
 
 class GetCompaniesForFavouritesUseCase(
     private val companyDataCache: CompanyDataCacheInterface,
@@ -17,6 +19,7 @@ class GetCompaniesForFavouritesUseCase(
         mutableListOf("MSFT", "AAPL", "AMZN", "FB", "GOOGL", "IBM")
 
 
+    @Throws(Exception::class, NoInternetConnectionException::class)
     suspend fun invoke(): Flow<List<CompanyData>> {
 //        try {
 //            remoteFinance.freeze()

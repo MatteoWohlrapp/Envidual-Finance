@@ -14,6 +14,7 @@ import org.koin.core.Koin
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import remote.CompanyNewsNotFoundException
+import remote.NoInternetConnectionException
 import remote.RemoteFinanceInterface
 
 class GetCompanyNewsByTickerUseCase(
@@ -21,7 +22,7 @@ class GetCompanyNewsByTickerUseCase(
     private val remoteFinance: RemoteFinanceInterface
 ) {
 
-    @Throws(Exception::class, CompanyNewsNotFoundException::class)
+    @Throws(Exception::class, CompanyNewsNotFoundException::class, NoInternetConnectionException::class)
     suspend fun invoke(ticker: String): List<CompanyNews> {
 //        try {
 //            remoteFinance.freeze()

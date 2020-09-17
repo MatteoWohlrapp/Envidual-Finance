@@ -5,6 +5,7 @@ import co.touchlab.stately.freeze
 import domain.data.CompanyData
 import kotlinx.coroutines.withContext
 import remote.CompanyDataNotFoundException
+import remote.NoInternetConnectionException
 import remote.RemoteFinanceInterface
 
 
@@ -15,7 +16,7 @@ class GetCompanyByTickerUseCase(
 
 ) {
 
-    @Throws(Exception::class, CompanyDataNotFoundException::class)
+    @Throws(Exception::class, CompanyDataNotFoundException::class, NoInternetConnectionException::class)
     suspend fun invoke(ticker: String) {
         //        necessary to run for the first time, remote Finance gets frozen, http client throws exception but its caught. No further freezing, because remote finance is frozen
 //        try {
