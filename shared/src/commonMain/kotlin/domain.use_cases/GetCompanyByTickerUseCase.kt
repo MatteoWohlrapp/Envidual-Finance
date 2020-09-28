@@ -18,15 +18,7 @@ class GetCompanyByTickerUseCase(
 
     @Throws(Exception::class, CompanyDataNotFoundException::class, NoInternetConnectionException::class)
     suspend fun invoke(ticker: String) {
-        //        necessary to run for the first time, remote Finance gets frozen, http client throws exception but its caught. No further freezing, because remote finance is frozen
-//        try {
-//            remoteFinance.freeze()
-//        } catch (e: Throwable) {
-//            println(e.message)
-//        }
-
-        withContext(mainDispatcher) {
-
+        withContext(backgroundDispatcher) {
             val upperCaseTicker = ticker.toUpperCase()
             var companyByGivenTicker = listOf<CompanyData>()
             println("About to go into companyDataCache")

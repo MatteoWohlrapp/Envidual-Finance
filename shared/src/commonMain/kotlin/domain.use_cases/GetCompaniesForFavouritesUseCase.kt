@@ -21,23 +21,13 @@ class GetCompaniesForFavouritesUseCase(
 
     @Throws(Exception::class, NoInternetConnectionException::class)
     suspend fun invoke(): Flow<List<CompanyData>> {
-//        try {
-//            remoteFinance.freeze()
-//        } catch (e: Throwable) {
-//            println(e.message)
-//        }
-        return withContext(mainDispatcher) {
+        return withContext(backgroundDispatcher) {
             val data = companyDataCache.selectAllFavourites()
             if (data.isEmpty()) {
                 val companiesFromRemote = mutableListOf<CompanyData>()
                 for (ticker in defaultFavouriteCompaniesTicker) {
                     var company = CompanyData()
                     try {
-//                        try {
-//                            remoteFinance.freeze()
-//                        } catch (e: Throwable) {
-//                            println(e.message)
-//                        }
                         company = remoteFinance.getCompanyData(ticker)
                     } catch (e: CompanyDataNotFoundException) {
                         println(e.toString())

@@ -24,12 +24,7 @@ class GetCompanyNewsByTickerUseCase(
 
     @Throws(Exception::class, CompanyNewsNotFoundException::class, NoInternetConnectionException::class)
     suspend fun invoke(ticker: String): List<CompanyNews> {
-//        try {
-//            remoteFinance.freeze()
-//        } catch (e: Throwable) {
-//            println(e.message)
-//        }
-        return withContext(mainDispatcher) {
+        return withContext(backgroundDispatcher) {
             var data: List<CompanyNews> = companyNewsCache.selectByTicker(ticker)
 
             if (data.isEmpty()) {
